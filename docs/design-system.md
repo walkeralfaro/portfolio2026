@@ -28,6 +28,8 @@ The design system is defined in `src/styles/tokens.css` and `src/styles/global.c
 
 The light `--muted` value is slightly darker than the design sample (`#6c746f`) so small metadata text reaches 4.75:1 against `--paper`. The status colors are used for dots, not as the only status label; badge text uses `--ink` on `--surface`.
 
+Theme selection, storage, and the resolved `data-theme` attributes are documented in `docs/theme.md`. Components read the resolved theme from the document; they do not store or toggle theme classes themselves.
+
 ## Typography
 
 | Token | Value | Role |

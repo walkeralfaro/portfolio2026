@@ -35,12 +35,12 @@
 
 ## 4. Theme system
 
-- [ ] 4.1 Add the pre-paint inline script that reads the stored preference and applies `data-theme` before the stylesheet paints. Verify: a dark system preference shows no light flash on first load.
-- [ ] 4.2 Build `ThemeControl.astro` and `src/scripts/theme.ts` with three explicit options: system, light, dark. Verify: the control is keyboard operable, names every option, and exposes the selected state.
-- [ ] 4.3 Add a `matchMedia` listener so system mode updates when the operating-system theme changes. Verify: switching the OS theme updates the site without a reload.
-- [ ] 4.4 Verify both palettes meet WCAG AA for text and essential UI, and adjust token values where needed. Verify: an automated contrast check reports no failures in either theme.
-- [ ] 4.5 Add Playwright theme tests for first visit, manual persistence, and system changes. Verify: all theme scenarios pass.
-- [ ] 4.6 Document the theme contract, storage key, and token rules in `docs/theme.md`. Verify: the document matches the implemented keys and attributes.
+- [x] 4.1 Add the pre-paint inline script that reads the stored preference and applies `data-theme` before the stylesheet paints. Verify: a dark system preference shows no light flash on first load.
+- [x] 4.2 Build `ThemeControl.astro` and `src/scripts/theme.ts` with three explicit options: system, light, dark. Verify: the control is keyboard operable, names every option, and exposes the selected state.
+- [x] 4.3 Add a `matchMedia` listener so system mode updates when the operating-system theme changes. Verify: switching the OS theme updates the site without a reload.
+- [x] 4.4 Verify both palettes meet WCAG AA for text and essential UI, and adjust token values where needed. Verify: an automated contrast check reports no failures in either theme.
+- [x] 4.5 Add Playwright theme tests for first visit, manual persistence, and system changes. Verify: all theme scenarios pass.
+- [x] 4.6 Document the theme contract, storage key, and token rules in `docs/theme.md`. Verify: the document matches the implemented keys and attributes.
 
 ## 5. Localization system
 

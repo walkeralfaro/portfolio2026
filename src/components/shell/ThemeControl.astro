@@ -1,0 +1,99 @@
+---
+import Icon from '../icons/Icon.astro';
+import type { IconName } from '../icons/icon-paths';
+import type { ThemeMode } from '../../lib/theme-contract';
+
+interface Props {
+  legend: string;
+  systemLabel: string;
+  lightLabel: string;
+  darkLabel: string;
+}
+
+const { legend, systemLabel, lightLabel, darkLabel } = Astro.props;
+
+const options: Array<{ value: ThemeMode; label: string; icon: IconName }> = [
+  { value: 'system', label: systemLabel, icon: 'system' },
+  { value: 'light', label: lightLabel, icon: 'light' },
+  { value: 'dark', label: darkLabel, icon: 'dark' },
+];
+---
+
+<fieldset class="theme-control" data-theme-control>
+  <legend class="visually-hidden">{legend}</legend>
+  <div class="theme-control__options">
+    {
+      options.map(({ value, label, icon }) => (
+        <label class="theme-control__option">
+          <input
+            class="theme-control__input visually-hidden"
+            type="radio"
+            name="theme"
+            value={value}
+            checked={value === 'system'}
+          />
+          <Icon name={icon} />
+          <span>{label}</span>
+        </label>
+      ))
+    }
+  </div>
+</fieldset>
+
+<script>
+  import { initThemeControl } from '../../scripts/theme';
+
+  initThemeControl();
+</script>
+
+<style>
+  .theme-control {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .theme-control__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    width: fit-content;
+    max-inline-size: 100%;
+    padding: 2px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  .theme-control__option {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-block-size: var(--control-min-size);
+    padding: var(--space-1) var(--space-3);
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-weight: 600;
+    line-height: var(--type-meta-leading);
+    cursor: pointer;
+  }
+
+  .theme-control__option:hover {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .theme-control__option:has(.theme-control__input:checked) {
+    background: var(--signal);
+    color: var(--signal-ink);
+  }
+
+  .theme-control__option:has(.theme-control__input:focus-visible) {
+    z-index: 1;
+    outline: 3px solid var(--signal);
+    outline-offset: 3px;
+  }
+</style>
