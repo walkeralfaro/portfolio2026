@@ -1,12 +1,12 @@
 ---
-import LanguageSwitcher from '../components/shell/LanguageSwitcher.astro';
+import Container from '../components/primitives/Container.astro';
 import SeoHead from '../components/shell/SeoHead.astro';
-import ThemeControl from '../components/shell/ThemeControl.astro';
+import SiteFooter from '../components/shell/SiteFooter.astro';
+import SiteHeader from '../components/shell/SiteHeader.astro';
+import SkipLink from '../components/shell/SkipLink.astro';
 import ThemeScript from '../components/shell/ThemeScript.astro';
 import { getUi } from '../i18n/ui';
-import { routeHref } from '../i18n/routes';
 import type { Locale } from '../i18n/locales';
-import { site } from '../lib/site';
 import '../styles/global.css';
 
 interface Props {
@@ -14,13 +14,12 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
   type?: 'website' | 'article';
 }
 
-const { locale, title, description, image, type } = Astro.props;
+const { locale, title, description, image, imageAlt, type } = Astro.props;
 const ui = getUi(locale);
-const pathname = Astro.url.pathname;
-const search = Astro.url.search;
 ---
 
 <html lang={locale}>
@@ -31,114 +30,38 @@ const search = Astro.url.search;
     <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
-    <SeoHead locale={locale} title={title} description={description} image={image} type={type} />
+    <SeoHead
+      locale={locale}
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      type={type}
+    />
     <slot name="head" />
   </head>
   <body>
-    <a class="skip-link" href="#main">{ui.a11y.skipToContent}</a>
-    <header class="site-header">
-      <div class="site-header__inner">
-        <a class="site-header__brand" href={routeHref(locale, { name: 'home' })}>{site.name}</a>
-        <nav class="site-header__nav" aria-label={ui.nav.primary}>
-          <a href={routeHref(locale, { name: 'work' })}>{ui.nav.work}</a>
-          <a href={routeHref(locale, { name: 'about' })}>{ui.nav.about}</a>
-          <a href={routeHref(locale, { name: 'cv' })}>{ui.nav.cv}</a>
-        </nav>
-        <div class="site-header__controls">
-          <ThemeControl
-            legend={ui.theme.legend}
-            systemLabel={ui.theme.system}
-            lightLabel={ui.theme.light}
-            darkLabel={ui.theme.dark}
-          />
-          <LanguageSwitcher
-            locale={locale}
-            pathname={pathname}
-            search={search}
-            label={ui.language.switchLabel}
-            targetLabel={ui.language.targetLabel}
-          />
+    <SkipLink label={ui.a11y.skipToContent} />
+    <SiteHeader locale={locale} />
+    <main id="main" class="site-main" tabindex="-1">
+      <Container>
+        <div class="site-main__inner">
+          <slot />
         </div>
-      </div>
-    </header>
-    <main id="main" class="site-main">
-      <slot />
+      </Container>
     </main>
+    <SiteFooter locale={locale} />
   </body>
 </html>
 
 <style>
-  .skip-link {
-    position: fixed;
-    inset-block-start: var(--space-2);
-    inset-inline-start: var(--space-2);
-    z-index: 10;
-    padding: var(--space-2) var(--space-3);
-    background: var(--signal);
-    color: var(--signal-ink);
-    font-family: var(--font-family-sans);
-    font-weight: 650;
-    transform: translateY(-200%);
+  .site-main:focus-visible {
+    outline: none;
   }
 
-  .skip-link:focus-visible {
-    transform: translateY(0);
-  }
-
-  .site-header {
-    border-block-end: 1px solid var(--line);
-  }
-
-  .site-header__inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-3) var(--space-6);
-    max-width: calc(var(--content-max) + 2 * var(--page-margin));
-    margin-inline: auto;
-    padding: var(--space-3) var(--page-margin);
-  }
-
-  .site-header__brand {
-    color: var(--ink);
-    font-family: var(--font-family-sans);
-    font-size: 0.9375rem;
-    font-weight: 700;
-    line-height: 1.2;
-    text-decoration: none;
-  }
-
-  .site-header__nav,
-  .site-header__controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .site-header__nav a {
-    display: inline-flex;
-    align-items: center;
-    min-block-size: var(--control-min-size);
-    color: var(--ink);
-    font-family: var(--font-family-sans);
-    font-size: var(--type-meta-size);
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .site-header__nav a:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-  }
-
-  .site-header__controls {
-    margin-inline-start: auto;
-  }
-
-  .site-main {
-    max-width: calc(var(--content-max) + 2 * var(--page-margin));
-    margin-inline: auto;
-    padding: var(--space-8) var(--page-margin) var(--space-16);
+  .site-main__inner {
+    grid-column: 1 / -1;
+    min-inline-size: 0;
+    padding-block: var(--space-8) var(--space-24);
   }
 </style>

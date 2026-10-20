@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PersonJsonLd from '../components/shell/PersonJsonLd.astro';
 import { getUi } from '../i18n/ui';
 import { routeHref } from '../i18n/routes';
 import { site } from '../lib/site';
@@ -10,6 +11,7 @@ const title = `${site.name} — ${ui.profile.role}`;
 ---
 
 <BaseLayout locale={locale} title={title} description={ui.pages.home.description}>
+  <PersonJsonLd slot="head" locale={locale} />
   <h1>{site.name}</h1>
   <p class="home-page__role">{ui.profile.role}</p>
   <p>{ui.profile.location}</p>

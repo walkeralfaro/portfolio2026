@@ -12,6 +12,7 @@ export type LocalizedRoute =
   | { name: 'project'; slug: ProjectSlug }
   | { name: 'about' }
   | { name: 'cv' }
+  | { name: 'colophon' }
   | { name: 'not-found' };
 
 function localePrefix(locale: Locale): string {
@@ -47,6 +48,8 @@ export function routeHref(locale: Locale, route: LocalizedRoute): string {
       return `${prefix}/about/`;
     case 'cv':
       return `${prefix}/cv/`;
+    case 'colophon':
+      return `${prefix}/colophon/`;
     case 'not-found':
       return `${prefix}/404`;
   }
@@ -67,6 +70,7 @@ export function parseLocalizedUrl(pathname: string, search = ''): LocalizedRoute
   }
   if (normalized === '/about') return { name: 'about' };
   if (normalized === '/cv') return { name: 'cv' };
+  if (normalized === '/colophon') return { name: 'colophon' };
   if (normalized === '/404') return { name: 'not-found' };
 
   return null;

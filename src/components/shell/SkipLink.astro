@@ -1,0 +1,31 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<a class="skip-link" href="#main">{label}</a>
+
+<style>
+  .skip-link {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 100;
+    padding: var(--space-3) var(--space-4);
+    background: var(--signal);
+    color: var(--signal-ink);
+    font-family: var(--font-family-sans);
+    font-size: 0.9375rem;
+    font-weight: 650;
+    line-height: 1.2;
+    text-decoration: none;
+    transform: translateY(-120%);
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+</style>

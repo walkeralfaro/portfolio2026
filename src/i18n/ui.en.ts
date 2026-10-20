@@ -34,6 +34,14 @@ export const uiEn = {
       description: 'The page you requested does not exist or has moved.',
       message: 'You can return home or continue exploring the work catalog.',
     },
+    colophon: {
+      heading: 'Colophon',
+      description: 'How this portfolio was built: stack, typefaces, and publishing principles.',
+      intro: 'This site was designed and developed by Walker Rómulo Alfaro Trelles.',
+      stack:
+        'It is built with Astro, TypeScript, and Tailwind CSS. The Archivo and Source Serif 4 typefaces are self-hosted.',
+      privacy: 'The site has no analytics or third-party trackers.',
+    },
   },
   nav: {
     primary: 'Primary navigation',
@@ -42,6 +50,11 @@ export const uiEn = {
     about: 'About',
     cv: 'CV',
     social: 'Social links',
+    menu: 'Menu',
+  },
+  footer: {
+    contact: 'Contact',
+    colophon: 'Colophon',
   },
   theme: {
     legend: 'Theme',

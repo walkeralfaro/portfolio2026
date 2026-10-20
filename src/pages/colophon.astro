@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ButtonLink from '../components/primitives/ButtonLink.astro';
+import Prose from '../components/primitives/Prose.astro';
+import { getUi } from '../i18n/ui';
+import { routeHref } from '../i18n/routes';
+import { site } from '../lib/site';
+
+const locale = 'es' as const;
+const ui = getUi(locale);
+const title = `${ui.pages.colophon.heading} — ${site.name}`;
+---
+
+<BaseLayout locale={locale} title={title} description={ui.pages.colophon.description}>
+  <h1>{ui.pages.colophon.heading}</h1>
+  <Prose>
+    <p>{ui.pages.colophon.intro}</p>
+    <p>{ui.pages.colophon.stack}</p>
+    <p>{ui.pages.colophon.privacy}</p>
+  </Prose>
+  <p class="colophon__project-link">
+    <ButtonLink href={routeHref(locale, { name: 'project', slug: 'portfolio-2026' })} variant="quiet">
+      {ui.actions.viewProject}
+    </ButtonLink>
+  </p>
+</BaseLayout>
+
+<style>
+  .colophon__project-link {
+    margin-block-start: var(--space-6);
+  }
+</style>

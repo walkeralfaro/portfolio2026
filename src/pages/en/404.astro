@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ButtonLink from '../../components/primitives/ButtonLink.astro';
 import { getUi } from '../../i18n/ui';
 import { routeHref } from '../../i18n/routes';
 import { site } from '../../lib/site';
@@ -10,13 +11,19 @@ const title = `${ui.pages.notFound.heading} — ${site.name}`;
 ---
 
 <BaseLayout locale={locale} title={title} description={ui.pages.notFound.description}>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex" />
+  </Fragment>
+
   <p class="not-found__code">{ui.pages.notFound.code}</p>
   <h1>{ui.pages.notFound.heading}</h1>
-  <p>{ui.pages.notFound.message}</p>
-  <p>
-    <a href={routeHref(locale, { name: 'home' })}>{ui.actions.backHome}</a>
-    <a href={routeHref(locale, { name: 'work' })}>{ui.actions.viewAllWork}</a>
-  </p>
+  <p class="not-found__message">{ui.pages.notFound.message}</p>
+  <div class="not-found__actions">
+    <ButtonLink href={routeHref(locale, { name: 'home' })}>{ui.actions.backHome}</ButtonLink>
+    <ButtonLink href={routeHref(locale, { name: 'work' })} variant="secondary">
+      {ui.actions.viewAllWork}
+    </ButtonLink>
+  </div>
 </BaseLayout>
 
 <style>
@@ -26,5 +33,16 @@ const title = `${ui.pages.notFound.heading} — ${site.name}`;
     font-size: var(--type-meta-size);
     font-weight: 700;
     letter-spacing: 0.08em;
+  }
+
+  .not-found__message {
+    max-inline-size: var(--measure-prose);
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-8);
   }
 </style>

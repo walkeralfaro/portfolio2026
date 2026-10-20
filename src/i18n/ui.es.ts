@@ -32,6 +32,14 @@ export const uiEs = {
       description: 'La página solicitada no existe o cambió de ubicación.',
       message: 'Puedes volver al inicio o continuar explorando el catálogo de trabajo.',
     },
+    colophon: {
+      heading: 'Colofón',
+      description: 'Cómo se construyó este portafolio: stack, tipografías y criterios de publicación.',
+      intro: 'Este sitio fue diseñado y desarrollado por Walker Rómulo Alfaro Trelles.',
+      stack:
+        'Está construido con Astro, TypeScript y Tailwind CSS. Las tipografías Archivo y Source Serif 4 se sirven localmente.',
+      privacy: 'El sitio no incluye analítica ni rastreadores de terceros.',
+    },
   },
   nav: {
     primary: 'Navegación principal',
@@ -40,6 +48,11 @@ export const uiEs = {
     about: 'Sobre mí',
     cv: 'CV',
     social: 'Redes sociales',
+    menu: 'Menú',
+  },
+  footer: {
+    contact: 'Contacto',
+    colophon: 'Colofón',
   },
   theme: {
     legend: 'Tema',

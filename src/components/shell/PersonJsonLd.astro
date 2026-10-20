@@ -1,0 +1,30 @@
+---
+import { getUi } from '../../i18n/ui';
+import type { Locale } from '../../i18n/locales';
+import { site } from '../../lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const ui = getUi(locale);
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${site.url}/#person`,
+  name: site.name,
+  jobTitle: ui.profile.role,
+  url: site.url,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: ui.profile.location,
+  },
+  sameAs: site.socials.map(({ url }) => url),
+};
+
+const json = JSON.stringify(person).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" is:inline set:html={json}></script>

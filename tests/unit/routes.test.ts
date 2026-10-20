@@ -18,6 +18,8 @@ test('route helpers map home, work, filtered work, project, about, and CV', () =
   assert.equal(routeHref('en', { name: 'about' }), '/en/about/');
   assert.equal(routeHref('es', { name: 'cv' }), '/cv/');
   assert.equal(routeHref('en', { name: 'cv' }), '/en/cv/');
+  assert.equal(routeHref('es', { name: 'colophon' }), '/colophon/');
+  assert.equal(routeHref('en', { name: 'colophon' }), '/en/colophon/');
   assert.equal(routeHref('es', { name: 'not-found' }), '/404');
   assert.equal(routeHref('en', { name: 'not-found' }), '/en/404');
 });

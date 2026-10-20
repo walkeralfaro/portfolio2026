@@ -54,13 +54,13 @@
 
 ## 6. Site shell
 
-- [ ] 6.1 Build `BaseLayout.astro` with the document language, head slot, skip link, header, main landmark, footer, and theme pre-paint script. Verify: every page renders one `h1` and one `main`.
-- [ ] 6.2 Build `SiteHeader.astro` with the name, work/about/CV navigation, theme control, and language switcher. Verify: it remains usable at 320 px and all controls are keyboard reachable.
-- [ ] 6.3 Build `SiteFooter.astro` with email, LinkedIn, GitHub, CV, location, and a colophon link. Verify: the phone number is absent and every link resolves.
-- [ ] 6.4 Build `SeoHead.astro` with title, description, canonical, alternates, Open Graph, and Twitter metadata. Verify: a page audit shows no missing or duplicated tags.
-- [ ] 6.5 Build localized 404 pages with links back to home and work. Verify: unknown routes return the localized page with a working recovery action.
-- [ ] 6.6 Add `Person` JSON-LD to the home page with name, role, location, and social profiles. Verify: the structured data parses without errors.
-- [ ] 6.7 Add shell E2E tests for skip link, navigation, language switch, theme switch, and 320 px overflow. Verify: all shell scenarios pass.
+- [x] 6.1 Build `BaseLayout.astro` with the document language, head slot, skip link, header, main landmark, footer, and theme pre-paint script. Verify: every page renders one `h1` and one `main`.
+- [x] 6.2 Build `SiteHeader.astro` with the name, work/about/CV navigation, theme control, and language switcher. Verify: it remains usable at 320 px and all controls are keyboard reachable.
+- [x] 6.3 Build `SiteFooter.astro` with email, LinkedIn, GitHub, CV, location, and a colophon link. Verify: the phone number is absent and every link resolves.
+- [x] 6.4 Build `SeoHead.astro` with title, description, canonical, alternates, Open Graph, and Twitter metadata. Verify: a page audit shows no missing or duplicated tags.
+- [x] 6.5 Build localized 404 pages with links back to home and work. Verify: unknown routes return the localized page with a working recovery action.
+- [x] 6.6 Add `Person` JSON-LD to the home page with name, role, location, and social profiles. Verify: the structured data parses without errors.
+- [x] 6.7 Add shell E2E tests for skip link, navigation, language switch, theme switch, and 320 px overflow. Verify: all shell scenarios pass.
 
 ## 7. Work catalog
 

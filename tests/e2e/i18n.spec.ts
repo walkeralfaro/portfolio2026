@@ -6,6 +6,7 @@ const routePairs = [
   { es: '/work/todo-mcp/', en: '/en/work/todo-mcp/', status: 200 },
   { es: '/about/', en: '/en/about/', status: 200 },
   { es: '/cv/', en: '/en/cv/', status: 200 },
+  { es: '/colophon/', en: '/en/colophon/', status: 200 },
   { es: '/404', en: '/en/404', status: 404 },
 ];
 
@@ -29,7 +30,7 @@ test('switching language on a project page preserves the project', async ({ page
 
   await expect(page).toHaveURL('/en/work/todo-mcp/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.locator('h1')).toHaveText('TODO-mcp');
+  await expect(page.locator('main h1')).toHaveText('TODO-mcp');
 });
 
 test('language switching preserves the work category query', async ({ page }) => {
@@ -108,7 +109,7 @@ test('the English not-found page is localized and offers recovery links', async 
 
   expect(response?.status()).toBe(404);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.locator('h1')).toHaveText('Page not found');
+  await expect(page.locator('main h1')).toHaveText('Page not found');
   await expect(page.getByRole('link', { name: 'Back home' })).toHaveAttribute('href', '/en/');
   await expect(page.getByRole('link', { name: 'View all work' })).toHaveAttribute(
     'href',

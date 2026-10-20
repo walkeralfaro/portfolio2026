@@ -225,6 +225,18 @@ Inline 24×24 stroke icons. Icon names are `external`, `code`, `system`, `light`
 
 Icons are `aria-hidden="true"` when decorative. Pass `label` only when the icon is the standalone meaning; it then receives `role="img"` and that accessible name. Never use that standalone form as the only label of a button or link.
 
+### Shell components
+
+`SkipLink.astro` is the first focusable element and targets `#main`. Keep it before the header and keep `main` focusable with `tabindex="-1"`.
+
+`SiteHeader.astro` contains the name, work/about/CV navigation, theme control, and language switcher. At 900 px and wider the navigation is always visible. Below 900 px the same content opens through a native `details` disclosure; without JavaScript the navigation remains open and usable. The header must stay within the viewport at 320 px.
+
+`SiteFooter.astro` contains the email, LinkedIn, GitHub, CV, location, and colophon links. The phone number is intentionally absent. Every internal destination must resolve; placeholder `#` hrefs are not allowed.
+
+`SeoHead.astro` owns the document title, description, canonical URL, reciprocal `hreflang` links, Open Graph tags, and Twitter card tags. It must emit one copy of each tag per page.
+
+`PersonJsonLd.astro` adds the localized `Person` structured data to the home page only. It uses the shared site profile and UI role/location strings.
+
 ## Composing a page
 
 ```astro

@@ -8,14 +8,16 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
   type?: 'website' | 'article';
 }
 
-const { locale, title, description, image, type = 'website' } = Astro.props;
+const { locale, title, description, image, imageAlt, type = 'website' } = Astro.props;
 const siteUrl = Astro.site ?? new URL('https://example.com');
 const canonical = new URL(Astro.url.pathname, siteUrl).href;
 const spanishUrl = new URL(switchLocaleHref('es', Astro.url.pathname), siteUrl).href;
 const englishUrl = new URL(switchLocaleHref('en', Astro.url.pathname), siteUrl).href;
+const imageUrl = image ? new URL(image, siteUrl).href : undefined;
 const openGraphLocale = locale === 'es' ? 'es_PE' : 'en_US';
 const alternateOpenGraphLocale = locale === 'es' ? 'en_US' : 'es_PE';
 ---
@@ -33,4 +35,10 @@ const alternateOpenGraphLocale = locale === 'es' ? 'en_US' : 'es_PE';
 <meta property="og:url" content={canonical} />
 <meta property="og:locale" content={openGraphLocale} />
 <meta property="og:locale:alternate" content={alternateOpenGraphLocale} />
-{image && <meta property="og:image" content={new URL(image, siteUrl).href} />}
+{imageUrl && <meta property="og:image" content={imageUrl} />}
+{imageUrl && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+<meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{imageUrl && <meta name="twitter:image" content={imageUrl} />}
+{imageUrl && imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}

@@ -1,0 +1,284 @@
+---
+import Container from '../primitives/Container.astro';
+import Icon from '../icons/Icon.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import ThemeControl from './ThemeControl.astro';
+import { getUi } from '../../i18n/ui';
+import { parseLocalizedUrl, routeHref } from '../../i18n/routes';
+import type { Locale } from '../../i18n/locales';
+import { site } from '../../lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const ui = getUi(locale);
+const pathname = Astro.url.pathname;
+const search = Astro.url.search;
+const currentRoute = parseLocalizedUrl(pathname);
+const currentSection = currentRoute?.name === 'project' ? 'work' : currentRoute?.name;
+
+const navigation = [
+  { name: 'work', href: routeHref(locale, { name: 'work' }), label: ui.nav.work },
+  { name: 'about', href: routeHref(locale, { name: 'about' }), label: ui.nav.about },
+  { name: 'cv', href: routeHref(locale, { name: 'cv' }), label: ui.nav.cv },
+] as const;
+---
+
+<header class="site-header">
+  <Container>
+    <div class="site-header__inner">
+      <a
+        class="site-header__brand"
+        href={routeHref(locale, { name: 'home' })}
+        aria-current={currentSection === 'home' ? 'page' : undefined}
+      >
+        {site.name}
+      </a>
+
+      <details class="site-menu" data-site-menu open>
+        <summary class="site-menu__toggle">
+          <Icon class="site-menu__icon site-menu__icon--open" name="menu" />
+          <Icon class="site-menu__icon site-menu__icon--close" name="close" />
+          <span>{ui.nav.menu}</span>
+        </summary>
+
+        <div class="site-menu__panel">
+          <nav class="site-nav" aria-label={ui.nav.primary}>
+            {
+              navigation.map((item) => (
+                <a
+                  href={item.href}
+                  aria-current={currentSection === item.name ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+
+          <div class="site-controls">
+            <ThemeControl
+              legend={ui.theme.legend}
+              systemLabel={ui.theme.system}
+              lightLabel={ui.theme.light}
+              darkLabel={ui.theme.dark}
+            />
+            <LanguageSwitcher
+              locale={locale}
+              pathname={pathname}
+              search={search}
+              label={ui.language.switchLabel}
+              targetLabel={ui.language.targetLabel}
+            />
+          </div>
+        </div>
+      </details>
+    </div>
+  </Container>
+</header>
+
+<script is:inline>
+  (() => {
+    const menu = document.querySelector('[data-site-menu]');
+    if (!(menu instanceof HTMLDetailsElement)) return;
+
+    const desktop = window.matchMedia('(min-width: 900px)');
+    const sync = () => {
+      menu.open = desktop.matches;
+    };
+
+    sync();
+    desktop.addEventListener('change', sync);
+  })();
+</script>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('[data-site-menu]');
+
+  if (menu) {
+    const toggle = menu.querySelector('summary');
+
+    document.addEventListener('click', (event) => {
+      if (menu.open && event.target instanceof Node && !menu.contains(event.target)) {
+        menu.open = false;
+      }
+    });
+
+    menu.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        toggle?.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    border-block-end: 1px solid var(--line);
+  }
+
+  .site-header__inner {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: var(--space-4);
+    min-block-size: calc(var(--control-min-size) + 2 * var(--space-3));
+    padding-block: var(--space-3);
+  }
+
+  .site-header__brand {
+    flex: 1;
+    min-inline-size: 0;
+    color: var(--ink);
+    font-family: var(--font-family-sans);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    text-wrap: balance;
+  }
+
+  .site-header__brand:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 0.2em;
+  }
+
+  .site-menu {
+    position: relative;
+    margin-inline-start: auto;
+  }
+
+  .site-menu__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-block-size: var(--control-min-size);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-weight: 650;
+    line-height: var(--type-meta-leading);
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .site-menu__toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .site-menu__toggle::marker {
+    content: '';
+  }
+
+  .site-menu__toggle:hover,
+  .site-menu[open] .site-menu__toggle {
+    border-color: var(--ink);
+    background: var(--surface);
+  }
+
+  .site-menu__icon--close {
+    display: none;
+  }
+
+  .site-menu[open] .site-menu__icon--open {
+    display: none;
+  }
+
+  .site-menu[open] .site-menu__icon--close {
+    display: block;
+  }
+
+  .site-menu__panel {
+    position: absolute;
+    inset-block-start: calc(100% + var(--space-2));
+    inset-inline-end: 0;
+    z-index: 20;
+    display: none;
+    gap: var(--space-4);
+    inline-size: min(20rem, calc(100vw - 2 * var(--page-margin)));
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    background: var(--paper);
+    box-shadow: 0 16px 40px color-mix(in srgb, var(--ink) 12%, transparent);
+  }
+
+  .site-menu[open] .site-menu__panel {
+    display: grid;
+  }
+
+  .site-nav,
+  .site-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .site-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .site-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--control-min-size);
+    color: var(--ink);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-weight: 600;
+    line-height: var(--type-meta-leading);
+    text-decoration: none;
+    text-underline-offset: 0.2em;
+  }
+
+  .site-nav a:hover,
+  .site-nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+  }
+
+  @media (min-width: 900px) {
+    .site-menu {
+      position: static;
+    }
+
+    .site-menu__toggle {
+      display: none;
+    }
+
+    .site-menu__panel {
+      position: static;
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      inline-size: auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .site-menu[open] .site-menu__panel {
+      display: flex;
+    }
+
+    .site-nav {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .site-controls {
+      margin-inline-start: var(--space-4);
+    }
+  }
+</style>

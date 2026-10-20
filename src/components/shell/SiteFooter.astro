@@ -1,0 +1,114 @@
+---
+import Container from '../primitives/Container.astro';
+import { getUi } from '../../i18n/ui';
+import { routeHref } from '../../i18n/routes';
+import type { Locale } from '../../i18n/locales';
+import { site } from '../../lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const ui = getUi(locale);
+---
+
+<footer class="site-footer">
+  <Container>
+    <div class="site-footer__inner">
+      <div class="site-footer__identity">
+        <a class="site-footer__brand" href={routeHref(locale, { name: 'home' })}>{site.name}</a>
+        <p>{ui.profile.role}</p>
+        <p>{ui.profile.location}</p>
+      </div>
+
+      <nav class="site-footer__links" aria-label={ui.footer.contact}>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        {
+          site.socials.map(({ name, url }) => (
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              {name}
+            </a>
+          ))
+        }
+        <a href={routeHref(locale, { name: 'cv' })}>{ui.actions.readCv}</a>
+        <a href={routeHref(locale, { name: 'colophon' })}>{ui.footer.colophon}</a>
+      </nav>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .site-footer__inner {
+    display: grid;
+    grid-column: 1 / -1;
+    gap: var(--space-6);
+    padding-block: var(--space-8) var(--space-12);
+    border-block-start: 1px solid var(--line);
+  }
+
+  .site-footer__identity,
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    min-inline-size: 0;
+  }
+
+  .site-footer__identity {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .site-footer__identity p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--type-meta-size);
+    line-height: var(--type-meta-leading);
+  }
+
+  .site-footer__brand {
+    color: var(--ink);
+    font-family: var(--font-family-sans);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .site-footer__brand:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .site-footer__links {
+    align-items: center;
+  }
+
+  .site-footer__links a {
+    color: var(--ink);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-weight: 600;
+    line-height: var(--type-meta-leading);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 0.2em;
+  }
+
+  .site-footer__links a:hover {
+    text-decoration-color: var(--signal);
+  }
+
+  @media (min-width: 640px) {
+    .site-footer__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+
+    .site-footer__links {
+      justify-content: flex-end;
+      max-inline-size: 34rem;
+    }
+  }
+</style>
