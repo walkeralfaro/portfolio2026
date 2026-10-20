@@ -1,0 +1,37 @@
+---
+import { ICON_PATHS, type IconName } from './icon-paths';
+
+interface Props {
+  name: IconName;
+  label?: string;
+  class?: string;
+}
+
+const { name, label, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['icon', className]}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden={label ? undefined : 'true'}
+  aria-label={label}
+  role={label ? 'img' : undefined}
+  focusable="false"
+>
+  <Fragment set:html={ICON_PATHS[name]} />
+</svg>
+
+<style>
+  .icon {
+    display: inline-block;
+    flex: none;
+    inline-size: 1.25em;
+    block-size: 1.25em;
+    vertical-align: -0.15em;
+  }
+</style>

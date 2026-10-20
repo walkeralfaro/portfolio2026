@@ -1,0 +1,46 @@
+---
+interface Props {
+  items: readonly string[];
+  label?: string;
+  class?: string;
+}
+
+const { items, label, class: className } = Astro.props;
+---
+
+<ul class:list={['stack-list', className]} aria-label={label}>
+  {
+    items.map((item) => (
+      <li class="stack-list__item">
+        {item}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    margin: 0;
+    padding: 0;
+    color: var(--ink);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--type-meta-leading);
+    list-style: none;
+  }
+
+  .stack-list__item {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .stack-list__item + .stack-list__item::before {
+    content: '/';
+    margin-inline-end: var(--space-3);
+    color: var(--muted);
+  }
+</style>

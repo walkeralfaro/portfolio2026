@@ -1,0 +1,64 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['reading-prose', className]}>
+  <slot />
+</div>
+
+<style>
+  .reading-prose {
+    grid-column: 1 / -1;
+    max-inline-size: var(--measure-prose);
+    color: var(--ink);
+    font-family: var(--font-family-serif);
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-leading);
+  }
+
+  .reading-prose :global(p) {
+    margin-block: 0 1em;
+  }
+
+  .reading-prose :global(ul),
+  .reading-prose :global(ol) {
+    margin-block: 0 1.25em;
+    padding-inline-start: 1.25em;
+  }
+
+  .reading-prose :global(li + li) {
+    margin-block-start: 0.5em;
+  }
+
+  .reading-prose :global(a) {
+    color: var(--signal);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.16em;
+  }
+
+  .reading-prose :global(strong) {
+    font-weight: 700;
+  }
+
+  .reading-prose :global(h3) {
+    margin-block: 1.5em 0.5em;
+    font-family: var(--font-family-sans);
+    font-size: var(--type-h3-size);
+    line-height: var(--type-h3-leading);
+  }
+
+  .reading-prose :global(h3:first-child) {
+    margin-block-start: 0;
+  }
+
+  .reading-prose :global(blockquote) {
+    margin: 0 0 1em;
+    padding-inline-start: var(--space-6);
+    border-inline-start: 1px solid var(--line);
+    color: var(--muted);
+  }
+</style>

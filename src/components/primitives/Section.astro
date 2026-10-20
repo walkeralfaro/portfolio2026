@@ -1,0 +1,78 @@
+---
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  class?: string;
+}
+
+const { id, eyebrow, title, class: className } = Astro.props;
+const headingId = id && title ? `${id}-heading` : undefined;
+---
+
+<section
+  class:list={['site-section', className]}
+  id={id}
+  aria-labelledby={headingId}
+>
+  {
+    eyebrow && (
+      <p class="site-section__eyebrow">
+        {eyebrow}
+      </p>
+    )
+  }
+  {
+    title && (
+      <header class="site-section__header">
+        <h2 class="site-section__title" id={headingId}>
+          {title}
+        </h2>
+        <slot name="intro" />
+      </header>
+    )
+  }
+  <div class="site-section__body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .site-section {
+    grid-column: 1 / -1;
+    padding-block: clamp(var(--space-12), 8vw, var(--space-24));
+  }
+
+  .site-section:first-child {
+    padding-block-start: var(--space-8);
+  }
+
+  .site-section__eyebrow {
+    margin: 0 0 var(--space-3);
+    color: var(--muted);
+    font-size: var(--type-meta-size);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: var(--type-meta-leading);
+    text-transform: uppercase;
+  }
+
+  .site-section__header {
+    max-width: 36rem;
+    margin-block-end: var(--space-8);
+  }
+
+  .site-section__title {
+    margin: 0;
+    font-size: var(--type-h2-size);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: var(--type-h2-leading);
+    text-wrap: balance;
+  }
+
+  .site-section__body {
+    min-width: 0;
+  }
+</style>

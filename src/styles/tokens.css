@@ -5,7 +5,7 @@
   --paper: #f2f4f1;
   --surface: #fafbf8;
   --ink: #101314;
-  --muted: #6c746f;
+  --muted: #666e69;
   --line: #d8dcd6;
   --signal: #2447e8;
   --signal-ink: #ffffff;
@@ -43,7 +43,23 @@
 
   --page-margin: clamp(20px, 5vw, 64px);
   --content-max: 82.5rem;
-  --grid-gutter: 1.5rem;
+  --grid-columns: 12;
+  --grid-gutter: 1rem;
+  --measure-prose: 65ch;
+  --cover-aspect: 16 / 10;
+  --control-min-size: 2.75rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --grid-gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --grid-gutter: 2rem;
+  }
 }
 
 :root[data-theme="dark"] {

@@ -26,12 +26,12 @@
 
 ## 3. Design tokens and shared primitives
 
-- [ ] 3.1 Build `Container.astro`, `Section.astro`, and `Prose.astro` with the 12-column grid, max width, responsive gutters, and reading measure from `design.md`. Verify: a demo page has no horizontal scroll at 320 px and prose stays within 70 characters.
-- [ ] 3.2 Build `ButtonLink.astro`, `MetaLabel.astro`, `StatusBadge.astro`, and `StackList.astro` with keyboard focus, contrast, and semantic markup. Verify: each primitive passes a keyboard and contrast check in both themes.
-- [ ] 3.3 Build `PlaceholderCover.astro` as a 16:10 typographic cover with project name, category, and a deterministic slug-based mark. Verify: missing covers render at the correct ratio with a descriptive `aria-label`.
-- [ ] 3.4 Build `ProjectCover.astro` using responsive image sources, explicit dimensions, and lazy loading. Verify: the first cover loads eagerly, the rest lazily, and no layout shift occurs.
-- [ ] 3.5 Add the inline SVG icon set for external links, code, theme options, and menu controls, with accessible labels. Verify: icons are not the only label for any control.
-- [ ] 3.6 Document the token names, type scale, and primitive usage in `docs/design-system.md`. Verify: a new component can be built using only the documented tokens.
+- [x] 3.1 Build `Container.astro`, `Section.astro`, and `Prose.astro` with the 12-column grid, max width, responsive gutters, and reading measure from `design.md`. Verify: a demo page has no horizontal scroll at 320 px and prose stays within 70 characters.
+- [x] 3.2 Build `ButtonLink.astro`, `MetaLabel.astro`, `StatusBadge.astro`, and `StackList.astro` with keyboard focus, contrast, and semantic markup. Verify: each primitive passes a keyboard and contrast check in both themes.
+- [x] 3.3 Build `PlaceholderCover.astro` as a 16:10 typographic cover with project name, category, and a deterministic slug-based mark. Verify: missing covers render at the correct ratio with a descriptive `aria-label`.
+- [x] 3.4 Build `ProjectCover.astro` using responsive image sources, explicit dimensions, and lazy loading. Verify: the first cover loads eagerly, the rest lazily, and no layout shift occurs.
+- [x] 3.5 Add the inline SVG icon set for external links, code, theme options, and menu controls, with accessible labels. Verify: icons are not the only label for any control.
+- [x] 3.6 Document the token names, type scale, and primitive usage in `docs/design-system.md`. Verify: a new component can be built using only the documented tokens.
 
 ## 4. Theme system
 

@@ -1,0 +1,91 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'quiet';
+  external?: boolean;
+  download?: boolean | string;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  external = false,
+  download,
+  class: className,
+} = Astro.props;
+---
+
+<a
+  class:list={['button-link', `button-link--${variant}`, className]}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  download={download}
+>
+  <span class="button-link__label"><slot /></span>
+  <slot name="icon" />
+</a>
+
+<style>
+  .button-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--control-min-size);
+    min-inline-size: var(--control-min-size);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-family: var(--font-family-sans);
+    font-size: 0.9375rem;
+    font-weight: 650;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease;
+  }
+
+  .button-link--primary {
+    border-color: var(--signal);
+    background: var(--signal);
+    color: var(--signal-ink);
+  }
+
+  .button-link--primary:hover {
+    background: color-mix(in srgb, var(--signal) 86%, var(--ink));
+    border-color: color-mix(in srgb, var(--signal) 86%, var(--ink));
+  }
+
+  .button-link--secondary {
+    border-color: var(--line);
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .button-link--secondary:hover {
+    border-color: var(--ink);
+    background: var(--surface);
+  }
+
+  .button-link--quiet {
+    padding-inline: 0;
+    border-color: transparent;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 0.2em;
+  }
+
+  .button-link--quiet:hover {
+    text-decoration-color: var(--signal);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button-link {
+      transition: none;
+    }
+  }
+</style>
