@@ -44,13 +44,13 @@
 
 ## 5. Localization system
 
-- [ ] 5.1 Implement the Spanish root routes and the English `/en` routes for home, work, project detail, about, CV, and 404. Verify: every Spanish route has an English counterpart.
-- [ ] 5.2 Create `src/i18n/ui.es.ts` and `src/i18n/ui.en.ts` for navigation, filters, statuses, actions, empty states, and form labels. Verify: a grep finds no hardcoded UI string in page or component markup.
-- [ ] 5.3 Create typed route helpers that map a Spanish route to its English counterpart and preserve project slug and filter query. Verify: unit tests cover home, work, filtered work, project detail, about, and CV.
-- [ ] 5.4 Build `LanguageSwitcher.astro` using the route helpers. Verify: switching language on a project page opens the same project in the other locale.
-- [ ] 5.5 Add canonical URLs, `hreflang` alternates, localized titles and descriptions, and localized Open Graph metadata. Verify: both locales expose reciprocal alternates and no page points to the wrong language.
-- [ ] 5.6 Add a locale completeness check that fails when a project or UI key is missing in either language. Verify: removing one English summary fails the check.
-- [ ] 5.7 Document the translation workflow in `docs/i18n.md`. Verify: a new key requires one entry per locale and the check enforces it.
+- [x] 5.1 Implement the Spanish root routes and the English `/en` routes for home, work, project detail, about, CV, and 404. Verify: every Spanish route has an English counterpart.
+- [x] 5.2 Create `src/i18n/ui.es.ts` and `src/i18n/ui.en.ts` for navigation, filters, statuses, actions, empty states, and form labels. Verify: a grep finds no hardcoded UI string in page or component markup.
+- [x] 5.3 Create typed route helpers that map a Spanish route to its English counterpart and preserve project slug and filter query. Verify: unit tests cover home, work, filtered work, project detail, about, and CV.
+- [x] 5.4 Build `LanguageSwitcher.astro` using the route helpers. Verify: switching language on a project page opens the same project in the other locale.
+- [x] 5.5 Add canonical URLs, `hreflang` alternates, localized titles and descriptions, and localized Open Graph metadata. Verify: both locales expose reciprocal alternates and no page points to the wrong language.
+- [x] 5.6 Add a locale completeness check that fails when a project or UI key is missing in either language. Verify: removing one English summary fails the check.
+- [x] 5.7 Document the translation workflow in `docs/i18n.md`. Verify: a new key requires one entry per locale and the check enforces it.
 
 ## 6. Site shell
 

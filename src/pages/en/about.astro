@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUi } from '../../i18n/ui';
+import { routeHref } from '../../i18n/routes';
+import { site } from '../../lib/site';
+
+const locale = 'en' as const;
+const ui = getUi(locale);
+const title = `${ui.pages.about.heading} — ${site.name}`;
+---
+
+<BaseLayout locale={locale} title={title} description={ui.pages.about.description}>
+  <h1>{ui.pages.about.heading}</h1>
+  <p>{ui.pages.about.description}</p>
+  <p>{ui.profile.role} · {ui.profile.location}</p>
+  <p>
+    <a href={routeHref(locale, { name: 'work' })}>{ui.actions.viewAllWork}</a>
+    <a href={`mailto:${site.email}`}>{ui.profile.contact}</a>
+  </p>
+</BaseLayout>

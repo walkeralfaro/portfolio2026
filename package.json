@@ -8,13 +8,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "prebuild": "npm run validate:cv && npm run validate:theme",
+    "prebuild": "npm run validate:cv && npm run validate:theme && npm run validate:i18n",
     "preview": "astro preview",
     "check": "astro check",
     "validate:content": "node scripts/validate-content.ts",
     "validate:contrast": "node scripts/validate-theme.ts",
     "validate:cv": "node scripts/validate-cv.ts",
+    "validate:i18n": "node scripts/validate-i18n.ts",
     "validate:theme": "node scripts/validate-theme.ts",
+    "test:unit": "node --test tests/unit/*.test.ts",
     "test:e2e": "playwright test",
     "cv:pdf": "node scripts/generate-cv-pdf.ts",
     "astro": "astro"

@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ButtonLink from '../../components/primitives/ButtonLink.astro';
+import Icon from '../../components/icons/Icon.astro';
+import StackList from '../../components/primitives/StackList.astro';
+import { getUi } from '../../i18n/ui';
+import { routeHref } from '../../i18n/routes';
+import { getVisibleProjects, getProjectCopy, type ProjectEntry } from '../../lib/projects';
+import { site } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const projects = await getVisibleProjects();
+
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: ProjectEntry;
+}
+
+const locale = 'es' as const;
+const ui = getUi(locale);
+const { project } = Astro.props;
+const copy = getProjectCopy(project, locale);
+const title = `${copy.title} — ${site.name}`;
+const year = project.data.year === 'pending' ? ui.project.pending : String(project.data.year);
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={copy.summary}
+  type="article"
+>
+  <p>
+    <a href={routeHref(locale, { name: 'work' })}>{ui.actions.backToWork}</a>
+  </p>
+
+  <h1>{copy.title}</h1>
+  <p class="project-route__summary">{copy.summary}</p>
+
+  <dl class="project-route__meta">
+    <div>
+      <dt>{ui.project.year}</dt>
+      <dd>{year}</dd>
+    </div>
+    <div>
+      <dt>{ui.project.category}</dt>
+      <dd>{ui.categories[project.data.category]}</dd>
+    </div>
+    <div>
+      <dt>{ui.project.status}</dt>
+      <dd>{ui.statuses[project.data.status]}</dd>
+    </div>
+  </dl>
+
+  <section>
+    <h2>{ui.project.role}</h2>
+    <p>{copy.role}</p>
+  </section>
+
+  <section>
+    <h2>{ui.project.result}</h2>
+    <p>{copy.result}</p>
+  </section>
+
+  <section>
+    <h2>{ui.project.stack}</h2>
+    <StackList label={ui.project.technologies} items={project.data.stack} />
+  </section>
+
+  {
+    (project.data.links.live || project.data.links.code) && (
+      <div class="project-route__actions">
+        {project.data.links.live && (
+          <ButtonLink href={project.data.links.live} external>
+            <Icon slot="icon" name="external" />
+            {ui.actions.viewLive}
+          </ButtonLink>
+        )}
+        {project.data.links.code && (
+          <ButtonLink href={project.data.links.code} variant="secondary" external>
+            <Icon slot="icon" name="code" />
+            {ui.actions.viewCode}
+          </ButtonLink>
+        )}
+      </div>
+    )
+  }
+
+  {copy.availability && <p class="project-route__availability">{copy.availability}</p>}
+</BaseLayout>
+
+<style>
+  .project-route__summary {
+    max-inline-size: var(--measure-prose);
+    font-family: var(--font-family-serif);
+  }
+
+  .project-route__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin-block: var(--space-8);
+    padding-block: var(--space-4);
+    border-block: 1px solid var(--line);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+  }
+
+  .project-route__meta div {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .project-route__meta dt {
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-route__meta dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .project-route__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-8);
+  }
+
+  .project-route__availability {
+    max-inline-size: var(--measure-prose);
+    color: var(--muted);
+  }
+</style>

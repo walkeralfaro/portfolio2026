@@ -1,0 +1,36 @@
+---
+import { switchLocaleHref } from '../../i18n/routes';
+import type { Locale } from '../../i18n/locales';
+import { site } from '../../lib/site';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const { locale, title, description, image, type = 'website' } = Astro.props;
+const siteUrl = Astro.site ?? new URL('https://example.com');
+const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const spanishUrl = new URL(switchLocaleHref('es', Astro.url.pathname), siteUrl).href;
+const englishUrl = new URL(switchLocaleHref('en', Astro.url.pathname), siteUrl).href;
+const openGraphLocale = locale === 'es' ? 'es_PE' : 'en_US';
+const alternateOpenGraphLocale = locale === 'es' ? 'en_US' : 'es_PE';
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="es" href={spanishUrl} />
+<link rel="alternate" hreflang="en" href={englishUrl} />
+<link rel="alternate" hreflang="x-default" href={spanishUrl} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={openGraphLocale} />
+<meta property="og:locale:alternate" content={alternateOpenGraphLocale} />
+{image && <meta property="og:image" content={new URL(image, siteUrl).href} />}
