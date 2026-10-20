@@ -8,8 +8,8 @@ test('route helpers map home, work, filtered work, project, about, and CV', () =
 
   assert.equal(routeHref('es', { name: 'work' }), '/work/');
   assert.equal(routeHref('en', { name: 'work' }), '/en/work/');
-  assert.equal(routeHref('es', { name: 'work', category: 'ia' }), '/work/?category=ia');
-  assert.equal(routeHref('en', { name: 'work', category: 'ia' }), '/en/work/?category=ia');
+  assert.equal(routeHref('es', { name: 'work', category: 'ia' }), '/work/?c=ia');
+  assert.equal(routeHref('en', { name: 'work', category: 'ia' }), '/en/work/?c=ia');
 
   assert.equal(routeHref('es', { name: 'project', slug: 'todo-mcp' }), '/work/todo-mcp/');
   assert.equal(routeHref('en', { name: 'project', slug: 'todo-mcp' }), '/en/work/todo-mcp/');
@@ -27,15 +27,15 @@ test('route helpers map home, work, filtered work, project, about, and CV', () =
 test('the language switch preserves a project slug and the category filter', () => {
   assert.equal(switchLocaleHref('en', '/work/todo-mcp/'), '/en/work/todo-mcp/');
   assert.equal(switchLocaleHref('es', '/en/work/todo-mcp/'), '/work/todo-mcp/');
-  assert.equal(switchLocaleHref('en', '/work/', '?category=juegos'), '/en/work/?category=juegos');
-  assert.equal(switchLocaleHref('es', '/en/work/', '?category=producto'), '/work/?category=producto');
+  assert.equal(switchLocaleHref('en', '/work/', '?c=juegos'), '/en/work/?c=juegos');
+  assert.equal(switchLocaleHref('es', '/en/work/', '?c=producto'), '/work/?c=producto');
   assert.equal(switchLocaleHref('en', '/about/'), '/en/about/');
   assert.equal(switchLocaleHref('en', '/unknown/'), '/en/');
 });
 
 test('the route parser recognizes localized work and project routes', () => {
   assert.deepEqual(parseLocalizedUrl('/en/work/'), { name: 'work', category: undefined });
-  assert.deepEqual(parseLocalizedUrl('/work/', '?category=ia'), {
+  assert.deepEqual(parseLocalizedUrl('/work/', '?c=ia'), {
     name: 'work',
     category: 'ia',
   });

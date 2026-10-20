@@ -75,6 +75,12 @@ export const uiEn = {
     all: 'All',
     clear: 'Clear filter',
     empty: 'There are no projects in this category.',
+    countOne: 'project',
+    countMany: 'projects',
+  },
+  catalog: {
+    previewLabel: 'Project preview',
+    coverAlt: 'Cover of {title}, category {category}',
   },
   categories: {
     ia: 'AI & agents',
@@ -99,6 +105,7 @@ export const uiEn = {
     previousProject: 'Previous project',
     viewAllWork: 'View all work',
     backHome: 'Back home',
+    linksPending: 'Links pending.',
   },
   empty: {
     noProjects: 'No projects have been published yet.',

@@ -1,0 +1,206 @@
+---
+import { PROJECT_CATEGORIES } from '../../content/project-slugs';
+import { getUi } from '../../i18n/ui';
+import { routeHref } from '../../i18n/routes';
+import type { Locale } from '../../i18n/locales';
+import type { ProjectEntry } from '../../lib/projects';
+import ButtonLink from '../primitives/ButtonLink.astro';
+import CategoryFilter, { type CatalogCounts } from './CategoryFilter.astro';
+import ProjectRow from './ProjectRow.astro';
+import ProjectPreview from './ProjectPreview.astro';
+
+interface Props {
+  locale: Locale;
+  projects: ProjectEntry[];
+}
+
+const { locale, projects } = Astro.props;
+const ui = getUi(locale);
+const counts: CatalogCounts = {
+  all: projects.length,
+  ...Object.fromEntries(
+    PROJECT_CATEGORIES.map((category) => [
+      category,
+      projects.filter((project) => project.data.category === category).length,
+    ]),
+  ),
+} as CatalogCounts;
+const allProjectsHref = routeHref(locale, { name: 'work' });
+---
+
+<section class="work-catalog" data-catalog data-catalog-total={projects.length}>
+  <header class="work-catalog__header">
+    <div class="work-catalog__intro">
+      <h1 class="work-catalog__title">{ui.pages.work.heading}</h1>
+      <p class="work-catalog__description">{ui.pages.work.description}</p>
+    </div>
+
+    <p
+      class="work-catalog__count"
+      aria-live="polite"
+      data-catalog-count-wrap
+      data-count-one={ui.filters.countOne}
+      data-count-many={ui.filters.countMany}
+    >
+      <span class="work-catalog__count-value" data-catalog-count>{projects.length}</span>
+      <span data-catalog-count-label>
+        {projects.length === 1 ? ui.filters.countOne : ui.filters.countMany}
+      </span>
+    </p>
+  </header>
+
+  <div class="work-catalog__toolbar">
+    <CategoryFilter locale={locale} counts={counts} />
+  </div>
+
+  <div class="work-catalog__body">
+    <div class="work-catalog__list-column">
+      <ul class="work-catalog__list" data-project-list>
+        {
+          projects.map((project, index) => (
+            <ProjectRow project={project} locale={locale} position={index + 1} />
+          ))
+        }
+      </ul>
+
+      <div class="work-catalog__empty" data-catalog-empty hidden>
+        <p class="work-catalog__empty-message" role="status">{ui.filters.empty}</p>
+        <ButtonLink href={allProjectsHref} variant="secondary">
+          {ui.filters.clear}
+        </ButtonLink>
+      </div>
+    </div>
+
+    <ProjectPreview projects={projects} locale={locale} />
+  </div>
+</section>
+
+<style>
+  .work-catalog {
+    grid-column: 1 / -1;
+    min-inline-size: 0;
+  }
+
+  .work-catalog__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-4) var(--space-8);
+    align-items: end;
+    padding-block-end: var(--space-6);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .work-catalog__intro {
+    display: grid;
+    gap: var(--space-3);
+    max-inline-size: var(--measure-prose);
+  }
+
+  .work-catalog__title {
+    margin: 0;
+    font-family: var(--font-family-sans);
+    font-size: var(--type-h2-size);
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: var(--type-h2-leading);
+  }
+
+  .work-catalog__description {
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .work-catalog__count {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: var(--space-1);
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: var(--type-meta-leading);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .work-catalog__count-value {
+    color: var(--ink);
+    font-size: 1rem;
+    letter-spacing: 0;
+  }
+
+  .work-catalog__toolbar {
+    padding-block: var(--space-4) var(--space-6);
+  }
+
+  .work-catalog__body {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    column-gap: var(--grid-gutter);
+    align-items: start;
+  }
+
+  .work-catalog__list-column {
+    grid-column: 1 / span 7;
+    min-inline-size: 0;
+  }
+
+  .work-catalog__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .work-catalog__empty {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    padding-block: var(--space-12);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .work-catalog__empty[hidden] {
+    display: none;
+  }
+
+  .work-catalog__empty-message {
+    max-inline-size: var(--measure-prose);
+    margin: 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-leading);
+  }
+
+  @media (max-width: 899.98px) {
+    .work-catalog__header {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .work-catalog__count {
+      justify-content: flex-start;
+      white-space: normal;
+    }
+
+    .work-catalog__body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .work-catalog__list-column {
+      grid-column: 1 / -1;
+    }
+  }
+</style>
+
+<script>
+  import '../../scripts/catalog';
+</script>

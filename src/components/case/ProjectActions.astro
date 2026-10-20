@@ -1,0 +1,78 @@
+---
+import ButtonLink from '../primitives/ButtonLink.astro';
+import Icon from '../icons/Icon.astro';
+import { getUi } from '../../i18n/ui';
+import type { Locale } from '../../i18n/locales';
+
+interface Props {
+  locale: Locale;
+  live: string | null;
+  code: string | null;
+  availability?: string;
+  class?: string;
+}
+
+const { locale, live, code, availability, class: className } = Astro.props;
+const ui = getUi(locale);
+const hasLive = Boolean(live);
+const hasCode = Boolean(code);
+const showsAvailability = !hasLive || !hasCode;
+const availabilityLabel = availability?.trim() || ui.actions.linksPending;
+---
+
+<div
+  class:list={['project-actions', className]}
+  data-project-actions
+  data-has-live={String(hasLive)}
+  data-has-code={String(hasCode)}
+>
+  {
+    (hasLive || hasCode) && (
+      <div class="project-actions__links">
+        {live && (
+          <ButtonLink href={live} external>
+            {ui.actions.viewLive}
+            <Icon slot="icon" name="external" />
+          </ButtonLink>
+        )}
+        {code && (
+          <ButtonLink href={code} variant="secondary" external>
+            {ui.actions.viewCode}
+            <Icon slot="icon" name="code" />
+          </ButtonLink>
+        )}
+      </div>
+    )
+  }
+
+  {
+    showsAvailability && (
+      <p class="project-actions__availability">
+        {availabilityLabel}
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .project-actions {
+    display: grid;
+    gap: var(--space-3);
+    min-inline-size: 0;
+  }
+
+  .project-actions__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .project-actions__availability {
+    max-inline-size: var(--measure-prose);
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    line-height: var(--type-meta-leading);
+  }
+</style>

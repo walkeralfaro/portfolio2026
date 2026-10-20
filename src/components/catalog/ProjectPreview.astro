@@ -1,0 +1,201 @@
+---
+import type { ProjectEntry } from '../../lib/projects';
+import { getProjectCopy } from '../../lib/projects';
+import { getUi } from '../../i18n/ui';
+import type { Locale } from '../../i18n/locales';
+import PlaceholderCover from './PlaceholderCover.astro';
+import MetaLabel from '../primitives/MetaLabel.astro';
+import StackList from '../primitives/StackList.astro';
+import StatusBadge from '../primitives/StatusBadge.astro';
+import ProjectActions from '../case/ProjectActions.astro';
+
+interface Props {
+  projects: ProjectEntry[];
+  locale: Locale;
+  class?: string;
+}
+
+const { projects, locale, class: className } = Astro.props;
+const ui = getUi(locale);
+---
+
+<aside
+  class:list={['work-preview', className]}
+  aria-label={ui.catalog.previewLabel}
+  data-work-preview
+>
+  <div class="work-preview__panels">
+    {
+      projects.map((project, index) => {
+        const data = project.data;
+        const copy = getProjectCopy(project, locale);
+        const categoryLabel = ui.categories[data.category];
+        const yearLabel = data.year === 'pending' ? ui.project.pending : String(data.year);
+        const coverLabel = ui.catalog.coverAlt
+          .replace('{title}', copy.title)
+          .replace('{category}', categoryLabel);
+        const isActive = index === 0;
+
+        return (
+          <div
+            class="work-preview__panel"
+            data-preview-panel
+            data-project={data.slug}
+            data-active={String(isActive)}
+            aria-hidden={isActive ? undefined : 'true'}
+            inert={isActive ? undefined : true}
+          >
+            <PlaceholderCover
+              class="work-preview__cover"
+              slug={data.slug}
+              name={copy.title}
+              category={data.category}
+              categoryLabel={categoryLabel}
+              label={coverLabel}
+            />
+
+            <div class="work-preview__body">
+              <div class="work-preview__meta">
+                <MetaLabel>{yearLabel}</MetaLabel>
+                <span class="work-preview__category">{categoryLabel}</span>
+              </div>
+
+              <p class="work-preview__title">{copy.title}</p>
+              <p class="work-preview__summary">{copy.summary}</p>
+
+              <StackList
+                class="work-preview__stack"
+                label={ui.project.technologies}
+                items={data.stack}
+              />
+
+              <div class="work-preview__footer">
+                <StatusBadge status={data.status} label={ui.statuses[data.status]} />
+                <ProjectActions
+                  locale={locale}
+                  live={data.links.live}
+                  code={data.links.code}
+                  availability={copy.availability}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</aside>
+
+<style>
+  .work-preview {
+    position: sticky;
+    top: var(--space-8);
+    grid-column: 8 / span 5;
+    align-self: start;
+    min-inline-size: 0;
+  }
+
+  .work-preview[hidden] {
+    display: none;
+  }
+
+  .work-preview__panels {
+    display: grid;
+    align-items: start;
+  }
+
+  .work-preview__panel {
+    grid-area: 1 / 1;
+    display: grid;
+    gap: var(--space-4);
+    min-inline-size: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 140ms ease,
+      visibility 0s linear 140ms;
+  }
+
+  .work-preview__panel[data-active='true'] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity 140ms ease,
+      visibility 0s linear 0s;
+  }
+
+  .work-preview__cover {
+    box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 9%, transparent);
+  }
+
+  .work-preview__body {
+    display: grid;
+    gap: var(--space-3);
+    min-inline-size: 0;
+  }
+
+  .work-preview__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .work-preview__category {
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: var(--type-meta-leading);
+    text-transform: uppercase;
+  }
+
+  .work-preview__title {
+    margin: 0;
+    font-family: var(--font-family-sans);
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .work-preview__summary {
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-family-serif);
+    font-size: 1rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .work-preview__stack {
+    margin-block-start: var(--space-1);
+  }
+
+  .work-preview__footer {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    margin-block-start: var(--space-2);
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--line);
+  }
+
+  @media (max-width: 899.98px) {
+    .work-preview {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .work-preview__panel,
+    .work-preview__panel[data-active='true'] {
+      transition: none;
+    }
+  }
+</style>

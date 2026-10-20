@@ -73,6 +73,12 @@ export const uiEs = {
     all: 'Todos',
     clear: 'Limpiar filtro',
     empty: 'No hay proyectos en esta categoría.',
+    countOne: 'proyecto',
+    countMany: 'proyectos',
+  },
+  catalog: {
+    previewLabel: 'Vista previa del proyecto',
+    coverAlt: 'Portada de {title}, categoría {category}',
   },
   categories: {
     ia: 'IA y agentes',
@@ -97,6 +103,7 @@ export const uiEs = {
     previousProject: 'Proyecto anterior',
     viewAllWork: 'Ver todo el trabajo',
     backHome: 'Volver al inicio',
+    linksPending: 'Enlaces pendientes.',
   },
   empty: {
     noProjects: 'Todavía no hay proyectos publicados.',

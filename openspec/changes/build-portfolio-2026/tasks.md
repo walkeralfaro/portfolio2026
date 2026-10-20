@@ -64,16 +64,16 @@
 
 ## 7. Work catalog
 
-- [ ] 7.1 Build `WorkIndex.astro` to server-render all 14 projects, the computed total, and the category counts. Verify: the page contains 14 entries and no Puja reference.
-- [ ] 7.2 Build `ProjectRow.astro` with year, title, one-line summary, category, 3–5 stack items, and status. Verify: every row exposes the required metadata and the whole row is the link target.
-- [ ] 7.3 Build `ProjectPreview.astro` as the sticky 5-column pane with cover, title, summary, and stack. Verify: the desktop layout uses the 7/5 split and the preview does not shift the list.
-- [ ] 7.4 Build `CategoryFilter.astro` with all four categories and real counts, updating `?c=` in the URL. Verify: filter state survives reload and a shared URL restores the same view.
-- [ ] 7.5 Implement the mobile catalog below 900 px as a single-column list with thumbnails and no preview pane. Verify: 375 px and 768 px layouts show the list only.
-- [ ] 7.6 Implement `src/scripts/catalog.ts` for the 90 ms pointer preview, immediate focus preview, 140 ms crossfade, and progressive filtering. Verify: with JavaScript disabled all 14 projects remain visible and navigable.
-- [ ] 7.7 Build `ProjectActions.astro` to render live and code links only when real URLs exist, with an availability label otherwise. Verify: null links produce no `#` href and no disabled button.
-- [ ] 7.8 Build the empty filter state with a clear message and a reset action. Verify: an empty query shows the state and the reset returns to all projects.
-- [ ] 7.9 Add catalog E2E tests for hover delay, focus preview, filters, counts, reload, empty state, and mobile layout. Verify: all catalog scenarios pass.
-- [ ] 7.10 Document the catalog interaction and filter URL contract in `docs/catalog.md`. Verify: the documented behavior matches the E2E tests.
+- [x] 7.1 Build `WorkIndex.astro` to server-render all 14 projects, the computed total, and the category counts. Verify: the page contains 14 entries and no Puja reference.
+- [x] 7.2 Build `ProjectRow.astro` with year, title, one-line summary, category, 3–5 stack items, and status. Verify: every row exposes the required metadata and the whole row is the link target.
+- [x] 7.3 Build `ProjectPreview.astro` as the sticky 5-column pane with cover, title, summary, and stack. Verify: the desktop layout uses the 7/5 split and the preview does not shift the list.
+- [x] 7.4 Build `CategoryFilter.astro` with all four categories and real counts, updating `?c=` in the URL. Verify: filter state survives reload and a shared URL restores the same view.
+- [x] 7.5 Implement the mobile catalog below 900 px as a single-column list with thumbnails and no preview pane. Verify: 375 px and 768 px layouts show the list only.
+- [x] 7.6 Implement `src/scripts/catalog.ts` for the 90 ms pointer preview, immediate focus preview, 140 ms crossfade, and progressive filtering. Verify: with JavaScript disabled all 14 projects remain visible and navigable.
+- [x] 7.7 Build `ProjectActions.astro` to render live and code links only when real URLs exist, with an availability label otherwise. Verify: null links produce no `#` href and no disabled button.
+- [x] 7.8 Build the empty filter state with a clear message and a reset action. Verify: an empty query shows the state and the reset returns to all projects.
+- [x] 7.9 Add catalog E2E tests for hover delay, focus preview, filters, counts, reload, empty state, and mobile layout. Verify: all catalog scenarios pass.
+- [x] 7.10 Document the catalog interaction and filter URL contract in `docs/catalog.md`. Verify: the documented behavior matches the E2E tests.
 
 ## 8. Project detail pages
 

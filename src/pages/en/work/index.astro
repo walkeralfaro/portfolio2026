@@ -1,9 +1,8 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StatusBadge from '../../../components/primitives/StatusBadge.astro';
+import WorkIndex from '../../../components/catalog/WorkIndex.astro';
 import { getUi } from '../../../i18n/ui';
-import { routeHref } from '../../../i18n/routes';
-import { getProjects, getProjectCopy } from '../../../lib/projects';
+import { getProjects } from '../../../lib/projects';
 import { site } from '../../../lib/site';
 
 const locale = 'en' as const;
@@ -13,71 +12,5 @@ const title = `${ui.pages.work.heading} — ${site.name}`;
 ---
 
 <BaseLayout locale={locale} title={title} description={ui.pages.work.description}>
-  <h1>{ui.pages.work.heading}</h1>
-  <p>{ui.pages.work.description}</p>
-
-  {
-    projects.length === 0 ? (
-      <p>{ui.empty.noProjects}</p>
-    ) : (
-      <ul class="work-route-list">
-        {projects.map((project) => {
-          const copy = getProjectCopy(project, locale);
-          const hasPage = project.data.tier <= 2;
-
-          return (
-            <li class="work-route-list__item">
-              <h2>
-                {hasPage ? (
-                  <a href={routeHref(locale, { name: 'project', slug: project.data.slug })}>
-                    {copy.title}
-                  </a>
-                ) : (
-                  copy.title
-                )}
-              </h2>
-              <p class="work-route-list__meta">
-                <span>{ui.categories[project.data.category]}</span>
-                <StatusBadge
-                  status={project.data.status}
-                  label={ui.statuses[project.data.status]}
-                />
-              </p>
-              <p>{copy.summary}</p>
-            </li>
-          );
-        })}
-      </ul>
-    )
-  }
+  <WorkIndex locale={locale} projects={projects} />
 </BaseLayout>
-
-<style>
-  .work-route-list {
-    display: grid;
-    gap: var(--space-8);
-    margin: var(--space-8) 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .work-route-list__item {
-    max-inline-size: var(--measure-prose);
-    padding-block-end: var(--space-8);
-    border-block-end: 1px solid var(--line);
-  }
-
-  .work-route-list__item h2 {
-    margin: 0;
-    font-size: var(--type-row-size);
-    line-height: var(--type-row-leading);
-  }
-
-  .work-route-list__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    align-items: center;
-    margin-block: var(--space-2);
-  }
-</style>

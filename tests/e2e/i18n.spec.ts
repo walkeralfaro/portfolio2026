@@ -34,15 +34,15 @@ test('switching language on a project page preserves the project', async ({ page
 });
 
 test('language switching preserves the work category query', async ({ page }) => {
-  await page.goto('/work/?category=ia');
+  await page.goto('/work/?c=ia');
 
   await expect(page.locator('.language-switcher')).toHaveAttribute(
     'href',
-    '/en/work/?category=ia',
+    '/en/work/?c=ia',
   );
 
   await page.locator('.language-switcher').click();
-  await expect(page).toHaveURL('/en/work/?category=ia');
+  await expect(page).toHaveURL('/en/work/?c=ia');
 });
 
 test('both locales expose reciprocal metadata and localized social fields', async ({ page }) => {

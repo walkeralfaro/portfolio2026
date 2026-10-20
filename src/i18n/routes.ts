@@ -28,7 +28,7 @@ function isProjectCategory(value: string | null): value is ProjectCategory {
 }
 
 function categoryFromSearch(search: string): ProjectCategory | undefined {
-  const value = new URLSearchParams(search).get('category');
+  const value = new URLSearchParams(search).get('c');
   return isProjectCategory(value) ? value : undefined;
 }
 
@@ -39,7 +39,7 @@ export function routeHref(locale: Locale, route: LocalizedRoute): string {
     case 'home':
       return `${prefix}/`;
     case 'work': {
-      const category = route.category ? `?category=${route.category}` : '';
+      const category = route.category ? `?c=${route.category}` : '';
       return `${prefix}/work/${category}`;
     }
     case 'project':
