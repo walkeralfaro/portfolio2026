@@ -1,0 +1,24 @@
+slug: multi-step-form
+year: pending
+category: frontend
+tags: [formularios, frontend, nextjs]
+tier: 1
+status: live
+featured: false
+order: 5
+stack: [Next.js, React, TypeScript, Tailwind CSS, React Hook Form]
+links:
+  live: https://multi-step-form-walker-alfaro.vercel.app/
+  code: https://github.com/walkeralfaro/frontendmentor-multi-step-form.git
+cover: null
+locales:
+  es:
+    title: Multi-step Form
+    summary: Formulario por pasos con validación, resumen de selecciones y confirmación final.
+    role: Desarrollo individual para el reto de Frontend Mentor, incluyendo el flujo por pasos, la validación y los estilos.
+    result: Flujo que permite volver a pasos anteriores, resumen y confirmación de la orden, validación de campos y correo, y diseño responsive.
+  en:
+    title: Multi-step Form
+    summary: Multi-step form with validation, a selection summary, and final confirmation.
+    role: Individual development for the Frontend Mentor challenge, covering the step flow, validation, and styling.
+    result: A flow that allows returning to previous steps, an order summary and confirmation, field and email validation, and a responsive layout.

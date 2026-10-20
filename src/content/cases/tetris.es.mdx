@@ -1,0 +1,35 @@
+---
+project: tetris
+locale: es
+order: 12
+---
+
+## Problema
+
+El objetivo era construir Tetris íntegramente con JavaScript, sin bibliotecas externas, y resolver el bucle de juego, el audio y los controles táctiles con APIs nativas del navegador.
+
+## Rol
+
+Desarrollo individual a partir del código de Midudev. Implementé el bucle, los controles, la administración de audio y el despliegue.
+
+## Decisiones
+
+1. **Un bucle de estados sobre canvas.** `requestAnimationFrame` sincroniza el dibujo con el refresco de pantalla y alterna entre pantalla de inicio, partida y fin del juego.
+2. **Audio nativo con Web Audio API.** Los efectos y la música de fondo se cargan como objetos de audio; cada reproducción clona el nodo para ajustar volumen, bucle y detención sin compartir la misma instancia.
+3. **Controles táctiles por gestos.** Los eventos `touchstart`, `touchmove` y `touchend` distinguen desplazamientos laterales y hacia abajo; un toque sin desplazamiento rota la pieza.
+
+## Resultado
+
+El juego está disponible en línea y mantiene un bucle de renderizado a 60 cuadros por segundo. Incluye efectos y música, además de gestos táctiles para mover y rotar las piezas. La nota de origen documenta las pantallas de inicio, partida y fin del juego.
+
+## Stack
+
+- HTML y CSS
+- JavaScript sin bibliotecas externas
+- Canvas
+- Web Audio API
+- Eventos táctiles
+
+## Galería
+
+Las capturas de inicio, partida y fin están enlazadas desde la nota de origen. Falta copiarlas al repositorio del sitio; hasta entonces se usará una portada generada.

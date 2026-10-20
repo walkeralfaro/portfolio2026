@@ -1,0 +1,26 @@
+slug: tic-tac-toe
+year: pending
+category: juegos
+tags: [react, juego-local, nextjs]
+tier: 2
+status: in-development
+featured: false
+order: 8
+stack: [React 19, Next.js 16, TypeScript, Tailwind CSS, Sonner]
+links:
+  live: null
+  code: null
+cover: null
+locales:
+  es:
+    title: Tic Tac Toe
+    summary: Tres en línea para dos jugadores locales con historial de movimientos y viaje en el tiempo.
+    role: Desarrollo individual como proyecto personal, incluyendo la lógica del juego, el estado y la interfaz.
+    result: Detector de ganador y empate, historial con mini-tableros, viaje en el tiempo, reinicio y notificaciones toast.
+    availability: Demo y código pendientes.
+  en:
+    title: Tic Tac Toe
+    summary: Local two-player tic-tac-toe with move history and time travel.
+    role: Individual development as a personal project, including game logic, state, and the interface.
+    result: Winner and draw detection, a history panel with mini-boards, time travel, restart, and toast notifications.
+    availability: Demo and code pending.

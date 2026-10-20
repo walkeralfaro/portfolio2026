@@ -1,0 +1,29 @@
+---
+import { site } from "../lib/site";
+import "../styles/global.css";
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{site.name} — {site.role}</title>
+	</head>
+	<body>
+		<main class="p-8">
+			<h1 class="text-3xl font-bold">{site.name}</h1>
+			<p>{site.role}</p>
+			<p>{site.location}</p>
+			<a href={`mailto:${site.email}`}>{site.email}</a>
+			<nav aria-label="Redes sociales" class="mt-4 flex gap-4">
+				{site.socials.map(({ name, url }) => (
+					<a href={url} target="_blank" rel="noopener noreferrer">{name}</a>
+				))}
+			</nav>
+		</main>
+	</body>
+</html>

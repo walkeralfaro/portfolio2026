@@ -1,0 +1,265 @@
+# Content source map
+
+This map records where each published project claim, metric, and editorial field comes from. The allowed content inputs are:
+
+- `data.js`, generated and read-only. Its CV data is used directly by the CV adapters; its `projects` array (lines 130–195) is a source for five project records.
+- `projects/*.md`, source notes. These are not runtime content.
+- `openspec/changes/build-portfolio-2026/{proposal.md,design.md,tasks.md}` for catalog curation and for **Portfolio 2026**, which has no project note because it is this site.
+
+`projects/contries.md` contains only the default `create-next-app` boilerplate, so it contributes no project claims. `projects/weather.md` is an unfinished challenge template, so its record uses an explicit pending state.
+
+All English fields are translations of the Spanish fields. Translation does not add claims.
+
+## Metrics
+
+| Published metric | Value | Project | Origin |
+| --- | --- | --- | --- |
+| Catalog size | 14 | Catalog | `proposal.md:10,34`; `specs/work-catalog/spec.md:11` |
+| Featured projects | 4 | Home | `design.md:171` |
+| Tier depths | 6 / 4 / 4 | Catalog | `tasks.md` 2.5 and 2.7; `design.md:190–191` |
+| Prompt length | 7 lines | Image Prompt | `data.js:151` |
+| Prompt styles | 17 | Image Prompt | `data.js:152` |
+| Anti-topic themes | 7 | Image Prompt | `data.js:152` |
+| CRUD tools | 5 | TODO-mcp | `data.js:138` |
+| Token hash | SHA-256 | TODO-mcp | `data.js:139` |
+| Pokémon covered | 151 | Pokedex | `projects/pokedex.md:3` |
+| Render target | 60 fps | Tetris | `projects/tetris.md:54` |
+| PDF columns | 2 | Cheatsheet Editor | `data.js:166` |
+| Documented Tetris screens | 3 | Tetris | `projects/tetris.md:14–23` |
+
+## Editorial fields
+
+The following fields are curation, not factual claims from the project notes:
+
+- `slug` and `title`: required catalog inventory in `tasks.md` 2.2 and `specs/work-catalog/spec.md:11`.
+- `tier`: tier 1 set in `tasks.md` 2.5; tier 2 and tier 3 sets in `tasks.md` 2.7; depth definitions in `design.md:190–191,309–313`.
+- `category`: the four allowed filters come from `proposal.md:13`; assignment to a project is editorial.
+- `tags`: editorial retrieval labels drawn from the source technology and feature notes.
+- `featured`: fixed set from `design.md:171`.
+- `order`: the inventory order in `tasks.md` 2.2.
+- `cover`: `null` for all 14 because no local cover asset exists. Covers will use the designed placeholder.
+- `status`: an availability label, not a business outcome. `live` means a real live URL is documented; `in-development` means no live deployment is documented; `archived` means an archive-depth entry without a documented live implementation. Tip Calculator and Portfolio Profesional are archive-depth entries with live URLs, so they are marked `live`.
+
+| Project | Tier | Category | Featured | Order | Status | Year | Year origin |
+| --- | ---: | --- | --- | ---: | --- | --- | --- |
+| TODO-mcp | 1 | ia | yes | 1 | in-development | 2026 | `data.js:135` |
+| Image Prompt | 1 | ia | yes | 2 | in-development | 2026 | `data.js:149` |
+| Cheatsheet Editor | 1 | producto | no | 3 | in-development | 2026 | `data.js:162` |
+| URL Shortener | 1 | producto | yes | 4 | live | pending | no date in `projects/urlshortener.md` |
+| Multi-step Form | 1 | frontend | no | 5 | live | pending | no date in `projects/multistep.md` |
+| Pokedex | 2 | frontend | no | 6 | in-development | pending | no date in `projects/pokedex.md` |
+| Todo App | 2 | frontend | no | 7 | live | pending | no date in `projects/todoappdrag.md` |
+| Tic Tac Toe | 2 | juegos | no | 8 | in-development | pending | no date in `projects/tictactoe.md` |
+| Tip Calculator | 3 | frontend | no | 9 | live | pending | no date in `projects/tipcalculator.md` |
+| Weather App | 3 | frontend | no | 10 | archived | pending | no date in `projects/weather.md` |
+| REST Countries Explorer | 3 | frontend | no | 11 | archived | 2023 | `data.js:187` |
+| Tetris | 1 | juegos | yes | 12 | live | pending | no date in `projects/tetris.md` |
+| Portfolio Profesional | 3 | producto | no | 13 | live | 2023 | `data.js:175` |
+| Portfolio 2026 | 2 | producto | no | 14 | in-development | 2026 | Project scope and current year; `proposal.md:34` |
+
+## Record and case provenance
+
+### TODO-mcp
+
+Record source: `data.js:132–144`. There is no `projects/todo-mcp.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Task app with a Next.js interface and an MCP server sharing one business layer and persistence | `data.js:137` |
+| Individual personal project covering interface, MCP server, authentication, tests, and documentation | `data.js:133,137–140` |
+| Next.js 16, React 19, Server Actions, MCP over SQLite, Prisma, and Zod | `data.js:137,142` |
+| Five CRUD tools, status filters, paginated search, automatic completion date | `data.js:138` |
+| Per-user MCP tokens, SHA-256 hashes, immediate revocation, Better Auth | `data.js:139` |
+| Unit, integration, and E2E tests with Vitest and Playwright; interactive architecture documentation | `data.js:140,142` |
+| Code URL | `data.js:143` |
+| Public demo and screenshots pending | No live URL or screenshots in `data.js:132–144` |
+
+### Image Prompt
+
+Record source: `data.js:146–157`. There is no `projects/image-prompt.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Guided questionnaire producing seven-line prompts for AI image generators | `data.js:151` |
+| Catalog of 17 styles, anti-cliché filters across 7 themes, live preview, empty-adjective detector | `data.js:152` |
+| Multiple projects, drafts, history, ES/EN interface, Zustand and localStorage, Markdown export, light/dark themes | `data.js:153` |
+| React 19, TypeScript, Vite, React Router, Zustand, Tailwind CSS v4, Lucide React, localStorage | `data.js:155` |
+| Code URL | `data.js:156` |
+| Public demo and screenshots pending | No live URL or screenshots in `data.js:146–157` |
+
+### Cheatsheet Editor
+
+Record source: `data.js:159–170`. There is no `projects/cheatsheet-editor.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Local app for creating, organizing, and managing keyboard-shortcut cheat sheets | `data.js:164` |
+| Multiple sheets, inline editing, live preview, dark mode, localStorage persistence | `data.js:165` |
+| Two-column PDF print view built with Astro, React, TypeScript, and Tailwind CSS v4 | `data.js:166,168` |
+| Code URL | `data.js:169` |
+| Public demo and screenshots pending | No live URL or screenshots in `data.js:159–170` |
+
+### URL Shortener
+
+Record source: `projects/urlshortener.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Frontend Mentor URL-shortening challenge; responsive layout; empty-input error | `projects/urlshortener.md:3,25–30` |
+| Live site and code URLs | `projects/urlshortener.md:34–35` |
+| Custom backend instead of Clean URI; GET `/r/123abc`; database lookup; original URL retrieval | `projects/urlshortener.md:51–61` |
+| Zod validation of stored URLs and shared client/server input validation | `projects/urlshortener.md:61–67` |
+| Next.js, React, React Hook Form, Shadcn, Mongoose, MongoDB Atlas | `projects/urlshortener.md:41–46` |
+| Link list survives refresh | `projects/urlshortener.md:27,39–69` |
+| Authentication, analytics, branded URLs, and UTM tracking are future work | `projects/urlshortener.md:71–82` |
+| Year pending | The note has no year or creation date |
+| Gallery pending | The note has no image references; a live URL exists |
+
+### Multi-step Form
+
+Record source: `projects/multistep.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Step sequence, back navigation, summary, confirmation, responsive layout, hover/focus states | `projects/multistep.md:23–29` |
+| Missing-field, invalid-email, and missing-selection validation | `projects/multistep.md:30–33` |
+| Live site and code URLs | `projects/multistep.md:37–38` |
+| Next.js, React, TypeScript, Shadcn, Tailwind CSS, mobile-first workflow | `projects/multistep.md:42–49` |
+| Custom fonts with CSS variables | `projects/multistep.md:54–60` |
+| React Hook Form global context | `projects/multistep.md:62–63` |
+| Shadcn and Tailwind styling | `projects/multistep.md:65–66` |
+| Year pending | The note has no year or creation date |
+| Gallery pending | The note has no image references; a live URL exists |
+
+### Pokedex
+
+Record source: `projects/pokedex.md`.
+
+| Claim | Origin |
+| --- | --- |
+| First 151 Pokémon with types, weight, moves, and evolution chains | `projects/pokedex.md:3` |
+| React 19, TypeScript, Vite, Tailwind CSS, Zustand, React Router, Axios, Zod | `projects/pokedex.md:5–14` |
+| Grid list, per-Pokémon detail, type badges, evolution chain, home/previous navigation | `projects/pokedex.md:32–38` |
+| Loading and error states | `projects/pokedex.md:42–48` |
+| Zustand store and PokeAPI service | `projects/pokedex.md:59–97,143–145` |
+| Recursive evolution-chain traversal | `projects/pokedex.md:99–126` |
+| Author and personal project | `projects/pokedex.md:149`; no organisation/client claim is made |
+| Year, live URL, code URL, and screenshots pending | The note has no date, links section, or image references |
+
+### Todo App
+
+Record source: `projects/todoappdrag.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Add, complete, delete, filter, clear completed, theme toggle, drag-and-drop, responsive layout | `projects/todoappdrag.md:25–35` |
+| Live site and code URLs | `projects/todoappdrag.md:46–49` |
+| React, `@hello-pangea/dnd`, Sass, Vite, mobile-first workflow | `projects/todoappdrag.md:53–60` |
+| Global theme state through React Context | `projects/todoappdrag.md:65` |
+| Drag-and-drop ordering | `projects/todoappdrag.md:66` |
+| CSS modules combined with Sass; conditional classes with clsx | `projects/todoappdrag.md:67–76` |
+| Year pending | The note has no year or creation date |
+| Screenshots referenced but not present as site assets | `projects/todoappdrag.md:39–44`; local cover remains `null` |
+
+### Tic Tac Toe
+
+Record source: `projects/tictactoe.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Local two-player 3×3 game with alternating X/O turns and win/draw detection | `projects/tictactoe.md:3–7` |
+| Eight winning combinations | `projects/tictactoe.md:28,69–78` |
+| Move history, mini-boards, time travel, restart, toast notifications, responsive layout | `projects/tictactoe.md:35–62` |
+| React 19, Next.js 16, TypeScript, Tailwind CSS v4, Sonner, Geist | `projects/tictactoe.md:88–95` |
+| Colour and animation notes | `projects/tictactoe.md:97–102` |
+| Year, live URL, code URL, and screenshots pending | The note has no date, links section, or image references |
+
+### Tip Calculator
+
+Record source: `projects/tipcalculator.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Tip calculation by percentage and number of people; reset blocked when there is no tip | `projects/tipcalculator.md:24–26` |
+| Responsive layout | `projects/tipcalculator.md:25` |
+| Live site and code URLs | `projects/tipcalculator.md:35–36` |
+| HTML5, SCSS/Sass, vanilla JavaScript | `projects/tipcalculator.md:42–44` |
+| Conditional button states and event-driven calculation | `projects/tipcalculator.md:48–50` |
+| Year pending | The note has no year or creation date |
+| Gallery pending | The note links two GitHub screenshots; no local asset exists |
+
+### Weather App
+
+Record source: `projects/weather.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Frontend Mentor weather challenge identity | `projects/weather.md:3,25–38` |
+| Source retains the challenge template and does not document an implementation | `projects/weather.md:21,42–50,70,96–107,111–119` |
+| Links are placeholders, not real destinations | `projects/weather.md:52–55` |
+| React, Next.js, and Styled Components appear only in the template's example stack | `projects/weather.md:59–68`; the note explicitly calls the list examples at line 70 |
+| Year, role, result, links, and gallery pending | No date, implementation result, real links, or screenshots are documented |
+
+### REST Countries Explorer
+
+Record source: `data.js:184–194`. `projects/contries.md` is generic Next.js boilerplate and contributes no claims.
+
+| Claim | Origin |
+| --- | --- |
+| Responsive app using the REST Countries API to search and filter by name or region | `data.js:189` |
+| Light/dark themes, detail views, accessible interface with React, Next.js, TypeScript | `data.js:190` |
+| React, Next.js, TypeScript, API REST, Tailwind CSS | `data.js:192` |
+| Dates April–May 2023 | `data.js:187` |
+| Project-specific live and code links pending | `data.js:193` points to the portfolio homepage, not a project destination, so no project action is published |
+| Screenshots pending | No image references in `data.js` or the boilerplate note |
+
+### Tetris
+
+Record source: `projects/tetris.md`.
+
+| Claim | Origin |
+| --- | --- |
+| Tetris built entirely in JavaScript without external libraries, based on Midudev's code | `projects/tetris.md:4–7` |
+| Live demo | `projects/tetris.md:9–12` |
+| Start, play, and game-over screenshots | `projects/tetris.md:14–23` |
+| `requestAnimationFrame` loop, start/play/game-over states, 60 fps render target | `projects/tetris.md:27–54` |
+| Web Audio API sound effects and background music, volume/loop/stop handling | `projects/tetris.md:56–102` |
+| Touch gestures for left/right/down movement and tap-to-rotate | `projects/tetris.md:104–170` |
+| HTML, CSS, JavaScript | `projects/tetris.md:174–176` |
+| Code URL | Derived from the repository path in the screenshot URLs at `projects/tetris.md:17–23`; author attribution at lines 178–181 |
+| Year pending | The note has no year or creation date |
+| Local gallery pending | Screenshots are remote references; no local asset exists |
+
+### Portfolio Profesional
+
+Record source: `data.js:172–182`.
+
+| Claim | Origin |
+| --- | --- |
+| Portfolio presenting frontend and full-stack projects with performance, accessibility, and scalable-architecture focus | `data.js:177` |
+| Next.js, React, TypeScript, Tailwind CSS, UI/UX practices, reusable components | `data.js:178,180` |
+| Dates April 2023–present | `data.js:175` |
+| Live URL | `data.js:181` |
+| Public code and screenshots pending | No code URL or image references in `data.js:172–182` |
+
+### Portfolio 2026
+
+There is no project note. This entry is the current site, so its sources are the approved OpenSpec artifacts.
+
+| Claim | Origin |
+| --- | --- |
+| Bilingual project catalog with light/dark themes and static output | `proposal.md:9,15,18`; `design.md:36,287,336–345` |
+| Fourteen projects and the 6/4/4 tier model | `proposal.md:10,34`; `design.md:190–191`; `tasks.md` 2.2, 2.5, 2.7 |
+| ES/EN routes, system theme, print-ready CV, performance budget | `design.md:287,323–325,336–345`; `tasks.md` sections 2, 9, and 10 |
+| Design and development of the content model through E2E tests | `tasks.md` sections 1–10 |
+| Year 2026 | Project scope and current year |
+| Live URL, code URL, and screenshots pending | No deployment or repository is documented in the source artifacts |
+
+## Pending and null fields
+
+- Pending years: URL Shortener, Multi-step Form, Pokedex, Todo App, Tic Tac Toe, Tip Calculator, Weather App, Tetris.
+- Missing live URLs: TODO-mcp, Image Prompt, Cheatsheet Editor, Pokedex, Tic Tac Toe, Weather App, REST Countries Explorer, Portfolio 2026.
+- Missing code URLs: Pokedex, Tic Tac Toe, Weather App, REST Countries Explorer, Portfolio Profesional, Portfolio 2026.
+- No local cover asset: all 14 projects. The UI will use the local placeholder component.
+- Unconfirmed stack: Weather App uses the three technologies listed by its template, but the template itself labels them as examples. The record does not claim an implementation.
+- The REST Countries link in `data.js` points to the portfolio homepage, so it is not reused as a project destination.

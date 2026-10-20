@@ -1,0 +1,35 @@
+---
+project: multi-step-form
+locale: en
+order: 5
+---
+
+## Problem
+
+An order form split into steps must preserve selections, allow returning to an earlier step, validate each field, and show a clear summary before confirmation. The interface also has to respond to mobile and desktop layouts and keep focus states visible.
+
+## Role
+
+Individual development for the Frontend Mentor challenge: step flow, validation, and styling.
+
+## Decisions
+
+1. **Shared state with React Hook Form.** The library's global context lets the steps and summary read the same selection without duplicating state.
+2. **A visual system with Shadcn and Tailwind.** Components and CSS variables keep typography and visual language consistent, including the custom font.
+3. **Validation with specific messages.** The flow reports a missing field, an invalid email format, and an attempt to continue without selecting an option.
+
+## Result
+
+The form lets the user complete the sequence, return to a previous step, review a summary, and confirm the order. Validation covers empty fields, email format, and missing selections, while the layout uses a mobile-first workflow with hover and focus states.
+
+## Stack
+
+- Next.js and React
+- TypeScript and React Hook Form
+- Shadcn and Tailwind CSS
+- CSS variables for typography
+- Mobile-first workflow
+
+## Gallery
+
+The source note has no screenshots. The application is deployed and can be reviewed at its public URL; the local gallery remains pending.

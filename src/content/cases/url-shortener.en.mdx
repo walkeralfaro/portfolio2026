@@ -1,0 +1,34 @@
+---
+project: url-shortener
+locale: en
+order: 4
+---
+
+## Problem
+
+The Frontend Mentor challenge suggested handling shortening through an external API. To keep control of the flow, the project needed its own backend that could shorten links, resolve codes, and keep the list after a browser refresh.
+
+## Role
+
+Individual development of the challenge: frontend, backend, persistence, and validation.
+
+## Decisions
+
+1. **A custom backend instead of Clean URI.** Next.js takes the full-stack role. A GET request to `/r/123abc` looks up the code in the database, retrieves the original URL, and validates it as a real address with a Zod schema.
+2. **Persistence with MongoDB.** Mongoose and MongoDB Atlas store the links so the list survives a refresh, while clipboard copying is handled in a single click.
+3. **Shared validation.** Zod is used on the frontend and backend to keep the same input rule across the stack.
+
+## Result
+
+The shortener creates links, keeps the list after a refresh, and resolves each short code through its own backend. The form reports an empty field, and the interface adapts to the screen size. Authentication, analytics, branded URLs, and UTM tracking are documented as future work, not as delivered features.
+
+## Stack
+
+- Next.js and React
+- React Hook Form and Shadcn
+- Zod on client and server
+- Mongoose and MongoDB Atlas
+
+## Gallery
+
+The source note has no screenshots. The application is deployed and can be reviewed at its public URL; the local gallery remains pending.

@@ -1,0 +1,35 @@
+---
+project: image-prompt
+locale: es
+order: 2
+---
+
+## Problema
+
+Un prompt para generar imágenes puede ser tan ambiguo que el resultado dependa de la suerte. El proyecto convierte una idea inicial en una estructura repetible de siete líneas, con decisiones explícitas sobre estilo, composición y temas que se quieren evitar.
+
+## Rol
+
+Proyecto personal. Desarrollé el cuestionario, el motor de prompts, la interfaz, el estado, la persistencia y la exportación.
+
+## Decisiones
+
+1. **Cuestionario guiado en lugar de texto libre.** La persona completa una secuencia que alimenta un prompt de siete líneas para generadores de imágenes con IA.
+2. **Un motor con catálogo y filtros.** El catálogo reúne 17 estilos y filtros anti-tópicos para 7 temáticas. La vista previa se actualiza en vivo y un detector señala adjetivos vacíos.
+3. **Trabajo persistente por proyectos.** Zustand y localStorage sostienen múltiples proyectos, borradores e historial, con interfaz en español e inglés, exportación a Markdown y tema claro/oscuro.
+
+## Resultado
+
+Image Prompt entrega un prompt estructurado a partir de un cuestionario, con catálogo de estilos, filtros por temática, vista previa inmediata, detección de adjetivos vacíos, historial y exportación. El código está publicado en GitHub; la demo pública sigue pendiente.
+
+## Stack
+
+- React 19 y TypeScript
+- Vite 8 y React Router 7
+- Zustand y localStorage
+- Tailwind CSS v4 y Lucide React
+- Prompt Engineering
+
+## Galería
+
+La nota de origen no contiene capturas. La galería visual queda pendiente y no se sustituye por imágenes genéricas.

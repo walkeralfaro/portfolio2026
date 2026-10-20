@@ -1,0 +1,24 @@
+slug: tip-calculator
+year: pending
+category: frontend
+tags: [frontend-mentor, vanilla-js, scss]
+tier: 3
+status: live
+featured: false
+order: 9
+stack: [HTML5, SCSS, JavaScript]
+links:
+  live: https://walker-alfaro-tip-calculator.netlify.app
+  code: https://github.com/WalkerAlfaro/tip-calculator-app-main
+cover: null
+locales:
+  es:
+    title: Tip Calculator
+    summary: Calculadora de propina y división por persona para el reto de Frontend Mentor.
+    role: Desarrollo individual del reto, incluyendo la lógica de cálculo, los estados del botón y los estilos responsive.
+    result: Cálculo según porcentaje y número de personas, reinicio condicionado y adaptación responsive.
+  en:
+    title: Tip Calculator
+    summary: Tip and per-person split calculator for the Frontend Mentor challenge.
+    role: Individual development of the challenge, including calculation logic, button states, and responsive styling.
+    result: Calculation by percentage and number of people, conditional reset, and a responsive layout.

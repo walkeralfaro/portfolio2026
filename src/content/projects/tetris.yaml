@@ -1,0 +1,24 @@
+slug: tetris
+year: pending
+category: juegos
+tags: [canvas, vanilla-js, juego]
+tier: 1
+status: live
+featured: true
+order: 12
+stack: [HTML, CSS, JavaScript, Canvas, Web Audio API]
+links:
+  live: https://tetris.walkeralfaro.com
+  code: https://github.com/walkeralfaro/tetris_game_js
+cover: null
+locales:
+  es:
+    title: Tetris
+    summary: Tetris desarrollado íntegramente con JavaScript, sin bibliotecas externas, con controles táctiles y audio.
+    role: Desarrollo individual a partir del código de Midudev, incluyendo el bucle de juego, los controles, el audio y el despliegue.
+    result: Juego disponible en línea con bucle requestAnimationFrame, efectos y música con Web Audio API, y gestos táctiles para mover y rotar piezas.
+  en:
+    title: Tetris
+    summary: Tetris built entirely in JavaScript without external libraries, with touch controls and audio.
+    role: Individual development based on Midudev's code, including the game loop, controls, audio, and deployment.
+    result: An online game with a requestAnimationFrame loop, sound effects and music through the Web Audio API, and touch gestures for moving and rotating pieces.

@@ -2,27 +2,27 @@
 
 ## 1. Scaffold and baseline
 
-- [ ] 1.1 Create the Astro project with `npm create astro@latest`, choosing the minimal template and strict TypeScript. Verify: `npm run dev` serves the starter page.
-- [ ] 1.2 Install `tailwindcss` and `@tailwindcss/vite`, register the Vite plugin, and add `@import "tailwindcss";` to the global stylesheet. Verify: a production build succeeds and a test utility class renders.
-- [ ] 1.3 Configure `astro.config.mjs` with a placeholder `site` URL, Spanish default locale with no prefix, English under `/en`, and prefetch enabled. Verify: `npm run build` succeeds and the config is documented in the README.
-- [ ] 1.4 Add `@astrojs/check`, TypeScript, `@playwright/test`, and scripts for `check`, `test:e2e`, and `cv:pdf`. Verify: `npm run check` passes and the sample Playwright test runs.
-- [ ] 1.5 Self-host subset WOFF2 files for Archivo variable and Source Serif 4; add `@font-face`, preload the display face, and set metric-compatible fallbacks. Verify: no external font requests and no visible layout shift on load.
-- [ ] 1.6 Create `src/styles/tokens.css` and `src/styles/global.css` with the light and dark token sets, reset, type scale, spacing scale, and focus styles from `design.md`. Verify: tokens resolve in the browser and the build has no missing-variable warnings.
-- [ ] 1.7 Add `src/lib/site.ts` with name, role, location, email, social URLs, and the site URL placeholder. Verify: the values are imported by at least one page and no personal data is duplicated.
+- [x] 1.1 Create the Astro project with `npm create astro@latest`, choosing the minimal template and strict TypeScript. Verify: `npm run dev` serves the starter page.
+- [x] 1.2 Install `tailwindcss` and `@tailwindcss/vite`, register the Vite plugin, and add `@import "tailwindcss";` to the global stylesheet. Verify: a production build succeeds and a test utility class renders.
+- [x] 1.3 Configure `astro.config.mjs` with a placeholder `site` URL, Spanish default locale with no prefix, English under `/en`, and prefetch enabled. Verify: `npm run build` succeeds and the config is documented in the README.
+- [x] 1.4 Add `@astrojs/check`, TypeScript, `@playwright/test`, and scripts for `check`, `test:e2e`, and `cv:pdf`. Verify: `npm run check` passes and the sample Playwright test runs.
+- [x] 1.5 Self-host subset WOFF2 files for Archivo variable and Source Serif 4; add `@font-face`, preload the display face, and set metric-compatible fallbacks. Verify: no external font requests and no visible layout shift on load.
+- [x] 1.6 Create `src/styles/tokens.css` and `src/styles/global.css` with the light and dark token sets, reset, type scale, spacing scale, and focus styles from `design.md`. Verify: tokens resolve in the browser and the build has no missing-variable warnings.
+- [x] 1.7 Add `src/lib/site.ts` with name, role, location, email, social URLs, and the site URL placeholder. Verify: the values are imported by at least one page and no personal data is duplicated.
 
 ## 2. Content model and source data
 
-- [ ] 2.1 Define the `projects` content collection in `src/content.config.ts` with `slug`, `year`, `category`, `tags`, `tier`, `status`, `featured`, `order`, `stack` (3–5), optional `links`, optional `cover`, and required `locales.es` / `locales.en`. Verify: `npm run check` accepts a valid fixture and rejects a missing locale.
-- [ ] 2.2 Author the 14 project YAML records: TODO-mcp, Image Prompt, Cheatsheet Editor, URL Shortener, Multi-step Form, Pokedex, Todo App, Tic Tac Toe, Tip Calculator, Weather App, REST Countries Explorer, Tetris, Portfolio Profesional, Portfolio 2026. Verify: the count is 14 and Puja Inmobiliaria does not appear.
-- [ ] 2.3 Add `scripts/validate-content.ts` to enforce 14 unique slugs, both locales, 3–5 stack items, valid categories, tier rules, and the exclusion of Puja. Verify: `npm run validate:content` passes and fails on a deliberately broken fixture.
-- [ ] 2.4 Define the `cases` collection for tier 1 MDX bodies with `project`, `locale`, `order`, and optional `updated` fields. Verify: `npm run check` accepts a valid entry and rejects an unknown project slug.
-- [ ] 2.5 Write the Spanish tier 1 case bodies for TODO-mcp, Image Prompt, URL Shortener, Tetris, Multi-step Form, and Cheatsheet Editor using the fixed sequence: problem, role, decisions, result, stack, gallery notes. Verify: all six files render through a temporary route without missing sections.
-- [ ] 2.6 Write the English tier 1 case bodies for the same six projects with equivalent meaning and no untranslated fragments. Verify: both locales pass the content completeness check.
-- [ ] 2.7 Complete the tier 2 localized fields for Pokedex, Todo App, Tic Tac Toe, and Portfolio 2026, and the tier 3 archive metadata for Tip Calculator, Weather App, REST Countries Explorer, and Portfolio Profesional. Verify: each tier has the expected number of entries (6 / 4 / 4).
-- [ ] 2.8 Audit every project record against `data.js` and `projects/*.md`; replace invented or missing facts with an explicit pending state. Verify: a source map lists the origin of every metric and claim.
-- [ ] 2.9 Create `src/data/cv.schema.ts` and `src/data/cv.es.ts`, importing the read-only `data.js`, validating it with Zod, and stripping the mobile phone. Verify: `npm run build` fails on an invalid CV object and the phone is absent from the adapted output.
-- [ ] 2.10 Create `src/data/cv.en.ts` with a complete English translation of the same structure. Verify: both CV objects satisfy the same schema and contain the same section counts.
-- [ ] 2.11 Document the content model, the 14-project inventory, tier rules, and the read-only nature of `data.js` in `docs/content.md`. Verify: the documented commands run as written.
+- [x] 2.1 Define the `projects` content collection in `src/content.config.ts` with `slug`, `year`, `category`, `tags`, `tier`, `status`, `featured`, `order`, `stack` (3–5), optional `links`, optional `cover`, and required `locales.es` / `locales.en`. Verify: `npm run check` accepts a valid fixture and rejects a missing locale.
+- [x] 2.2 Author the 14 project YAML records: TODO-mcp, Image Prompt, Cheatsheet Editor, URL Shortener, Multi-step Form, Pokedex, Todo App, Tic Tac Toe, Tip Calculator, Weather App, REST Countries Explorer, Tetris, Portfolio Profesional, Portfolio 2026. Verify: the count is 14 and Puja Inmobiliaria does not appear.
+- [x] 2.3 Add `scripts/validate-content.ts` to enforce 14 unique slugs, both locales, 3–5 stack items, valid categories, tier rules, and the exclusion of Puja. Verify: `npm run validate:content` passes and fails on a deliberately broken fixture.
+- [x] 2.4 Define the `cases` collection for tier 1 MDX bodies with `project`, `locale`, `order`, and optional `updated` fields. Verify: `npm run check` accepts a valid entry and rejects an unknown project slug.
+- [x] 2.5 Write the Spanish tier 1 case bodies for TODO-mcp, Image Prompt, URL Shortener, Tetris, Multi-step Form, and Cheatsheet Editor using the fixed sequence: problem, role, decisions, result, stack, gallery notes. Verify: all six files render through a temporary route without missing sections.
+- [x] 2.6 Write the English tier 1 case bodies for the same six projects with equivalent meaning and no untranslated fragments. Verify: both locales pass the content completeness check.
+- [x] 2.7 Complete the tier 2 localized fields for Pokedex, Todo App, Tic Tac Toe, and Portfolio 2026, and the tier 3 archive metadata for Tip Calculator, Weather App, REST Countries Explorer, and Portfolio Profesional. Verify: each tier has the expected number of entries (6 / 4 / 4).
+- [x] 2.8 Audit every project record against `data.js` and `projects/*.md`; replace invented or missing facts with an explicit pending state. Verify: a source map lists the origin of every metric and claim.
+- [x] 2.9 Create `src/data/cv.schema.ts` and `src/data/cv.es.ts`, importing the read-only `data.js`, validating it with Zod, and stripping the mobile phone. Verify: `npm run build` fails on an invalid CV object and the phone is absent from the adapted output.
+- [x] 2.10 Create `src/data/cv.en.ts` with a complete English translation of the same structure. Verify: both CV objects satisfy the same schema and contain the same section counts.
+- [x] 2.11 Document the content model, the 14-project inventory, tier rules, and the read-only nature of `data.js` in `docs/content.md`. Verify: the documented commands run as written.
 
 ## 3. Design tokens and shared primitives
 

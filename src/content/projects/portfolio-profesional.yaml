@@ -1,0 +1,26 @@
+slug: portfolio-profesional
+year: 2023
+category: producto
+tags: [portfolio, nextjs, full-stack]
+tier: 3
+status: live
+featured: false
+order: 13
+stack: [Next.js, React, TypeScript, Tailwind CSS]
+links:
+  live: https://walkeralfaro.com/
+  code: null
+cover: null
+locales:
+  es:
+    title: Portfolio Profesional
+    summary: Portfolio web para presentar proyectos frontend y full-stack con enfoque en rendimiento, accesibilidad y arquitectura escalable.
+    role: Diseño y desarrollo individual del portfolio profesional.
+    result: Sitio con Next.js, React, TypeScript y Tailwind CSS, componentes reutilizables y enfoque en UI/UX, rendimiento y accesibilidad.
+    availability: Código público pendiente.
+  en:
+    title: Portfolio Profesional
+    summary: Web portfolio for presenting frontend and full-stack projects with a focus on performance, accessibility, and scalable architecture.
+    role: Individual design and development of the professional portfolio.
+    result: A site built with Next.js, React, TypeScript, and Tailwind CSS, reusable components, and a focus on UI/UX, performance, and accessibility.
+    availability: Public code pending.

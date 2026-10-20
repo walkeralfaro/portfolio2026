@@ -1,0 +1,34 @@
+{
+  "name": "portfolio2026",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "prebuild": "npm run validate:cv",
+    "preview": "astro preview",
+    "check": "astro check",
+    "validate:content": "node scripts/validate-content.ts",
+    "validate:cv": "node scripts/validate-cv.ts",
+    "test:e2e": "playwright test",
+    "cv:pdf": "node scripts/generate-cv-pdf.ts",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^8.1.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.4.1",
+    "tailwindcss": "^4.3.3",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.11",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "typescript": "^6.0.3"
+  }
+}

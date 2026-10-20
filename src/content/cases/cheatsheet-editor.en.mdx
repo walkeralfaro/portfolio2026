@@ -1,0 +1,34 @@
+---
+project: cheatsheet-editor
+locale: en
+order: 3
+---
+
+## Problem
+
+Keyboard shortcuts often end up scattered across notes and documentation. This project gathers them into a local application where cheat sheets can be created, organized, and edited without an account or a server.
+
+## Role
+
+Personal project. I developed editing, local persistence, live preview, and print output.
+
+## Decisions
+
+1. **Fully local operation.** The application needs no backend: data is kept in localStorage, with multiple cheat sheets available in the same browser.
+2. **Editing and preview on one surface.** Inline editing is paired with a live preview, dark mode, and an interface that keeps attention on the content.
+3. **Printing treated as an output.** The print view is optimized for generating a two-column PDF using Astro, React, TypeScript, and Tailwind CSS v4.
+
+## Result
+
+Cheatsheet Editor manages multiple sheets, edits their content inline, shows the result while typing, and prepares a two-column printout. The code is available on GitHub; the public demo is still pending.
+
+## Stack
+
+- Astro and React
+- TypeScript and Tailwind CSS v4
+- localStorage
+- Two-column PDF printing
+
+## Gallery
+
+The source material contains no screenshots. The gallery is pending a demo or verified visual material.

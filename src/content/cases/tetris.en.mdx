@@ -1,0 +1,35 @@
+---
+project: tetris
+locale: en
+order: 12
+---
+
+## Problem
+
+The goal was to build Tetris entirely in JavaScript, without external libraries, and solve the game loop, audio, and touch controls using native browser APIs.
+
+## Role
+
+Individual development based on Midudev's code. I implemented the loop, controls, audio management, and deployment.
+
+## Decisions
+
+1. **A state-based loop on canvas.** `requestAnimationFrame` synchronizes drawing with the display refresh and switches between the start screen, gameplay, and game over.
+2. **Native audio with the Web Audio API.** Sound effects and background music load as audio objects; each playback clones the node so volume, looping, and stopping do not share the same instance.
+3. **Touch controls through gestures.** The `touchstart`, `touchmove`, and `touchend` events distinguish sideways and downward movement; a tap without movement rotates the piece.
+
+## Result
+
+The game is available online and keeps a render loop at 60 frames per second. It includes effects and music, plus touch gestures for moving and rotating pieces. The source note documents the start, play, and game-over screens.
+
+## Stack
+
+- HTML and CSS
+- JavaScript without external libraries
+- Canvas
+- Web Audio API
+- Touch events
+
+## Gallery
+
+The start, play, and game-over screenshots are linked from the source note. They still need to be copied into the site repository; a generated cover will be used until then.

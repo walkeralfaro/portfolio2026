@@ -1,0 +1,35 @@
+---
+project: image-prompt
+locale: en
+order: 2
+---
+
+## Problem
+
+An image-generation prompt can be so ambiguous that the result depends on luck. This project turns an initial idea into a repeatable seven-line structure with explicit decisions about style, composition, and the themes to avoid.
+
+## Role
+
+Personal project. I developed the questionnaire, prompt engine, interface, state, persistence, and export.
+
+## Decisions
+
+1. **A guided questionnaire instead of free text.** The user completes a sequence that feeds a seven-line prompt for AI image generators.
+2. **An engine with a catalog and filters.** The catalog contains 17 styles and anti-cliché filters across 7 themes. The preview updates live, and a detector flags empty adjectives.
+3. **Persistent work by project.** Zustand and localStorage support multiple projects, drafts, and history, with a Spanish/English interface, Markdown export, and light/dark themes.
+
+## Result
+
+Image Prompt produces a structured prompt from a questionnaire, with a style catalog, theme filters, immediate preview, empty-adjective detection, history, and export. The code is published on GitHub; the public demo is still pending.
+
+## Stack
+
+- React 19 and TypeScript
+- Vite 8 and React Router 7
+- Zustand and localStorage
+- Tailwind CSS v4 and Lucide React
+- Prompt Engineering
+
+## Gallery
+
+The source note has no screenshots. The visual gallery remains pending and is not replaced with generic images.
