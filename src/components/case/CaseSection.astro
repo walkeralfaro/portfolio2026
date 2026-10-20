@@ -1,0 +1,34 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<h2 class:list={['case-section', className]} id={id}>
+  <slot />
+</h2>
+
+<style>
+  .case-section {
+    margin-block: var(--space-12) var(--space-4);
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--line);
+    color: var(--ink);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-h3-size);
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    line-height: var(--type-h3-leading);
+    scroll-margin-block-start: var(--space-8);
+    text-wrap: balance;
+  }
+
+  .case-section:first-child {
+    margin-block-start: 0;
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+</style>

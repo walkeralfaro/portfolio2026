@@ -1,0 +1,104 @@
+---
+import Icon from '../icons/Icon.astro';
+
+interface Props {
+  id: string;
+  label: string;
+  closeLabel: string;
+  caption?: string;
+  class?: string;
+}
+
+const { id, label, closeLabel, caption, class: className } = Astro.props;
+---
+
+<dialog
+  id={id}
+  class:list={['lightbox', className]}
+  aria-label={label}
+  data-lightbox
+>
+  <div class="lightbox__frame">
+    <button
+      type="button"
+      class="lightbox__close"
+      aria-label={closeLabel}
+      data-lightbox-close
+    >
+      <Icon name="close" />
+    </button>
+
+    <div class="lightbox__body">
+      <slot />
+    </div>
+
+    {caption && <p class="lightbox__caption">{caption}</p>}
+  </div>
+</dialog>
+
+<style>
+  .lightbox {
+    width: min(94vw, 72rem);
+    max-height: 90vh;
+    margin: auto;
+    padding: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 30px 90px rgb(0 0 0 / 0.35);
+  }
+
+  .lightbox::backdrop {
+    background: rgb(0 0 0 / 0.62);
+  }
+
+  .lightbox__frame {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    padding: clamp(var(--space-4), 3vw, var(--space-8));
+  }
+
+  .lightbox__close {
+    position: absolute;
+    inset-block-start: var(--space-3);
+    inset-inline-end: var(--space-3);
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--control-min-size);
+    block-size: var(--control-min-size);
+    padding: 0;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .lightbox__close:hover {
+    border-color: var(--ink);
+  }
+
+  .lightbox__body {
+    display: grid;
+    justify-items: center;
+    min-inline-size: 0;
+  }
+
+  .lightbox__body :global(img) {
+    inline-size: 100%;
+    block-size: auto;
+  }
+
+  .lightbox__caption {
+    max-inline-size: 65ch;
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    line-height: var(--type-meta-leading);
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import { render } from 'astro:content';
+import type { Locale } from '../../i18n/locales';
+import { getUi } from '../../i18n/ui';
+import {
+  getAdjacentProjects,
+  getCaseEntry,
+  getProjectCopy,
+  type ProjectEntry,
+} from '../../lib/projects';
+import Prose from '../primitives/Prose.astro';
+import CaseHeader from './CaseHeader.astro';
+import CaseSection from './CaseSection.astro';
+import DecisionList from './DecisionList.astro';
+import ProjectPager from './ProjectPager.astro';
+import ScreenshotGallery from './ScreenshotGallery.astro';
+
+interface Props {
+  project: ProjectEntry;
+  projects: ProjectEntry[];
+  locale: Locale;
+}
+
+const { project, projects, locale } = Astro.props;
+const ui = getUi(locale);
+const data = project.data;
+const copy = getProjectCopy(project, locale);
+const adjacent = getAdjacentProjects(projects, data.slug);
+const caseEntry = data.tier === 1 ? await getCaseEntry(data.slug, locale) : null;
+const CaseBody = caseEntry ? (await render(caseEntry)).Content : null;
+---
+
+<article class="project-detail" data-project-detail={data.slug} data-tier={data.tier}>
+  <CaseHeader project={project} locale={locale} />
+
+  <div class="project-detail__body" data-case-body>
+    {
+      data.tier === 1 && CaseBody && (
+        <Prose class="case-body">
+          <CaseBody components={{ h2: CaseSection, ol: DecisionList }} />
+        </Prose>
+      )
+    }
+
+    {
+      data.tier === 2 && (
+        <Prose class="case-body">
+          <CaseSection>{ui.project.what}</CaseSection>
+          <p>{copy.summary}</p>
+
+          <CaseSection>{ui.project.role}</CaseSection>
+          <p>{copy.role}</p>
+
+          <CaseSection>{ui.project.result}</CaseSection>
+          <p>{copy.result}</p>
+        </Prose>
+      )
+    }
+
+    {
+      data.tier === 1 && (
+        <ScreenshotGallery project={project} locale={locale} />
+      )
+    }
+  </div>
+
+  {adjacent && (
+    <ProjectPager
+      locale={locale}
+      previous={adjacent.previous}
+      next={adjacent.next}
+    />
+  )}
+</article>
+
+<style>
+  .project-detail {
+    max-inline-size: 100%;
+  }
+
+  .project-detail__body {
+    display: grid;
+    gap: var(--space-8);
+    max-inline-size: var(--measure-prose);
+    margin-block: var(--space-12) 0;
+  }
+
+  .project-detail__body :global(.decision-list) {
+    margin-block: var(--space-2) var(--space-8);
+    padding: 0;
+    list-style: none;
+  }
+
+  .project-detail__body :global(.decision-list li) {
+    margin-block-start: 0;
+  }
+</style>

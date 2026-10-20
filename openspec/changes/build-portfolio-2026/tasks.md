@@ -77,15 +77,15 @@
 
 ## 8. Project detail pages
 
-- [ ] 8.1 Create `/work/[slug]` and `/en/work/[slug]` with static paths for tier 1 and tier 2 only. Verify: tier 3 slugs return the localized 404 and do not generate empty pages.
-- [ ] 8.2 Build `CaseHeader.astro` with back link, title, summary, year, category, status, stack, and conditional actions. Verify: metadata matches the project record and actions respect null links.
-- [ ] 8.3 Render tier 1 case bodies with `CaseSection.astro` and `DecisionList.astro` in the fixed sequence. Verify: all six tier 1 pages render problem, role, decisions, result, stack, and gallery in both locales.
-- [ ] 8.4 Render tier 2 pages from the localized project fields without requiring MDX. Verify: all four tier 2 pages render what, role, result, and actions.
-- [ ] 8.5 Add previous and next project navigation using the catalog order. Verify: first and last projects wrap or disable correctly without dead links.
-- [ ] 8.6 Integrate `ScreenshotGallery.astro` and `Lightbox.astro` with Escape, focus return, and scroll lock. Verify: keyboard open/close works and the page scroll position is preserved.
-- [ ] 8.7 Ensure tier 3 archive entries link externally and never create internal detail pages. Verify: each tier 3 row opens its real destination or shows a pending state.
-- [ ] 8.8 Add detail-page E2E tests for shareable URLs, action conditions, tier rules, and lightbox behavior. Verify: all detail scenarios pass.
-- [ ] 8.9 Document the case-study authoring sequence and tier rules in `docs/cases.md`. Verify: a new tier 1 case can be added by following the document.
+- [x] 8.1 Create `/work/[slug]` and `/en/work/[slug]` with static paths for tier 1 and tier 2 only. Verify: tier 3 slugs return the localized 404 and do not generate empty pages.
+- [x] 8.2 Build `CaseHeader.astro` with back link, title, summary, year, category, status, stack, and conditional actions. Verify: metadata matches the project record and actions respect null links.
+- [x] 8.3 Render tier 1 case bodies with `CaseSection.astro` and `DecisionList.astro` in the fixed sequence. Verify: all six tier 1 pages render problem, role, decisions, result, stack, and gallery in both locales.
+- [x] 8.4 Render tier 2 pages from the localized project fields without requiring MDX. Verify: all four tier 2 pages render what, role, result, and actions.
+- [x] 8.5 Add previous and next project navigation using the catalog order. Verify: first and last projects wrap or disable correctly without dead links.
+- [x] 8.6 Integrate `ScreenshotGallery.astro` and `Lightbox.astro` with Escape, focus return, and scroll lock. Verify: keyboard open/close works and the page scroll position is preserved.
+- [x] 8.7 Ensure tier 3 archive entries link externally and never create internal detail pages. Verify: each tier 3 row opens its real destination or shows a pending state.
+- [x] 8.8 Add detail-page E2E tests for shareable URLs, action conditions, tier rules, and lightbox behavior. Verify: all detail scenarios pass.
+- [x] 8.9 Document the case-study authoring sequence and tier rules in `docs/cases.md`. Verify: a new tier 1 case can be added by following the document.
 
 ## 9. Home and profile
 

@@ -122,11 +122,23 @@ export const uiEs = {
     category: 'Categoría',
     status: 'Estado',
     stack: 'Stack',
+    what: 'Qué es',
     role: 'Rol',
     result: 'Resultado',
     pending: 'Pendiente',
     technologies: 'Tecnologías del proyecto',
     availability: 'Disponibilidad',
+  },
+  caseStudy: {
+    navigation: 'Navegación entre proyectos',
+    galleryLabel: 'Galería del proyecto',
+    coverLabel: 'Portada',
+    coverCaption:
+      'Portada generada a partir de los metadatos del proyecto. No hay capturas verificadas.',
+    openCover: 'Ampliar portada de {title}',
+    openImage: 'Ampliar imagen de {title}: {alt}',
+    lightboxLabel: 'Vista ampliada de {title}',
+    closeLightbox: 'Cerrar imagen',
   },
 };
 

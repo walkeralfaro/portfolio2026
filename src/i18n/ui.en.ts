@@ -124,10 +124,22 @@ export const uiEn = {
     category: 'Category',
     status: 'Status',
     stack: 'Stack',
+    what: 'What it is',
     role: 'Role',
     result: 'Result',
     pending: 'Pending',
     technologies: 'Project technologies',
     availability: 'Availability',
+  },
+  caseStudy: {
+    navigation: 'Project navigation',
+    galleryLabel: 'Project gallery',
+    coverLabel: 'Cover',
+    coverCaption:
+      'Cover generated from the project metadata. There are no verified screenshots.',
+    openCover: 'Enlarge cover of {title}',
+    openImage: 'Enlarge image of {title}: {alt}',
+    lightboxLabel: 'Enlarged view of {title}',
+    closeLightbox: 'Close image',
   },
 } satisfies UiStrings;

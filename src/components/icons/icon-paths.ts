@@ -9,6 +9,10 @@ export const ICON_PATHS = {
   dark: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />',
   menu: '<path d="M4 7h16M4 12h16M4 17h16" />',
   close: '<path d="m6 6 12 12M18 6 6 18" />',
+  'arrow-left': '<path d="M19 12H5" /><path d="m12 19-7-7 7-7" />',
+  'arrow-right': '<path d="M5 12h14" /><path d="m12 5 7 7-7 7" />',
+  expand:
+    '<path d="M15 3h6v6" /><path d="M9 21H3v-6" /><path d="m21 3-7 7" /><path d="m3 21 7-7" />',
 } as const;
 
 export type IconName = keyof typeof ICON_PATHS;

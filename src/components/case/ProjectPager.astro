@@ -1,0 +1,120 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { routeHref } from '../../i18n/routes';
+import { getUi } from '../../i18n/ui';
+import { getProjectCopy, type ProjectEntry } from '../../lib/projects';
+import Icon from '../icons/Icon.astro';
+
+interface Props {
+  locale: Locale;
+  previous: ProjectEntry;
+  next: ProjectEntry;
+  class?: string;
+}
+
+const { locale, previous, next, class: className } = Astro.props;
+const ui = getUi(locale);
+const previousCopy = getProjectCopy(previous, locale);
+const nextCopy = getProjectCopy(next, locale);
+---
+
+<nav
+  class:list={['project-pager', className]}
+  aria-label={ui.caseStudy.navigation}
+  data-case-pager
+>
+  <a
+    class="project-pager__link"
+    href={routeHref(locale, { name: 'project', slug: previous.data.slug })}
+    rel="prev"
+    data-pager-direction="previous"
+  >
+    <span class="project-pager__label">
+      <Icon name="arrow-left" />
+      <span>{ui.actions.previousProject}</span>
+    </span>
+    <span class="project-pager__title">{previousCopy.title}</span>
+  </a>
+
+  <a
+    class="project-pager__link project-pager__link--next"
+    href={routeHref(locale, { name: 'project', slug: next.data.slug })}
+    rel="next"
+    data-pager-direction="next"
+  >
+    <span class="project-pager__label">
+      <span>{ui.actions.nextProject}</span>
+      <Icon name="arrow-right" />
+    </span>
+    <span class="project-pager__title">{nextCopy.title}</span>
+  </a>
+</nav>
+
+<style>
+  .project-pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--grid-gutter);
+    margin-block-start: var(--space-16);
+    padding-block-start: var(--space-6);
+    border-block-start: 1px solid var(--line);
+  }
+
+  .project-pager__link {
+    display: grid;
+    gap: var(--space-2);
+    min-inline-size: 0;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .project-pager__link--next {
+    justify-items: end;
+    text-align: end;
+  }
+
+  .project-pager__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: var(--type-meta-leading);
+  }
+
+  .project-pager__title {
+    font-family: var(--font-family-sans);
+    font-size: 1.125rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: var(--type-row-leading);
+    text-wrap: balance;
+  }
+
+  .project-pager__link:hover .project-pager__title {
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  .project-pager__link:hover .project-pager__label {
+    color: var(--ink);
+  }
+
+  @media (max-width: 639.98px) {
+    .project-pager {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .project-pager__link--next {
+      justify-items: start;
+      text-align: start;
+      padding-block-start: var(--space-4);
+      border-block-start: 1px solid var(--line);
+    }
+  }
+</style>

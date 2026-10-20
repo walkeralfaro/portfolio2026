@@ -1,0 +1,237 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { getUi } from '../../i18n/ui';
+import { getProjectCopy, type ProjectEntry } from '../../lib/projects';
+import Icon from '../icons/Icon.astro';
+import PlaceholderCover from '../catalog/PlaceholderCover.astro';
+import Lightbox from './Lightbox.astro';
+
+interface GalleryImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+interface Props {
+  project: ProjectEntry;
+  locale: Locale;
+  images?: GalleryImage[];
+  class?: string;
+}
+
+const { project, locale, images = [], class: className } = Astro.props;
+const ui = getUi(locale);
+const data = project.data;
+const copy = getProjectCopy(project, locale);
+const categoryLabel = ui.categories[data.category];
+const coverLabel = ui.catalog.coverAlt
+  .replace('{title}', copy.title)
+  .replace('{category}', categoryLabel);
+const hasImages = images.length > 0;
+const openCoverLabel = ui.caseStudy.openCover.replace('{title}', copy.title);
+const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
+---
+
+<div
+  class:list={['screenshot-gallery', className]}
+  data-gallery
+  role="group"
+  aria-label={ui.caseStudy.galleryLabel}
+>
+  <ul class="screenshot-gallery__list">
+    {
+      hasImages ? (
+        images.map((image, index) => (
+          <li class="screenshot-gallery__item">
+            <button
+              type="button"
+              class="screenshot-gallery__trigger"
+              data-lightbox-open={`gallery-${data.slug}-${index}`}
+              aria-haspopup="dialog"
+              aria-label={ui.caseStudy.openImage
+                .replace('{title}', copy.title)
+                .replace('{alt}', image.alt)}
+            >
+              <span class="screenshot-gallery__thumb">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  width={image.width}
+                  height={image.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </span>
+              <span class="screenshot-gallery__hint" aria-hidden="true">
+                <Icon name="expand" />
+              </span>
+            </button>
+          </li>
+        ))
+      ) : (
+        <li class="screenshot-gallery__item">
+          <button
+            type="button"
+            class="screenshot-gallery__trigger"
+            data-lightbox-open={`gallery-${data.slug}-cover`}
+            aria-haspopup="dialog"
+            aria-label={openCoverLabel}
+          >
+            <span class="screenshot-gallery__thumb">
+              <PlaceholderCover
+                slug={data.slug}
+                name={copy.title}
+                category={data.category}
+                categoryLabel={categoryLabel}
+                label={coverLabel}
+              />
+            </span>
+            <span class="screenshot-gallery__hint">
+              <Icon name="expand" />
+              <span aria-hidden="true">{ui.caseStudy.coverLabel}</span>
+            </span>
+          </button>
+        </li>
+      )
+    }
+  </ul>
+
+  {
+    !hasImages && (
+      <p class="screenshot-gallery__caption">{ui.caseStudy.coverCaption}</p>
+    )
+  }
+
+  {
+    !hasImages && (
+      <Lightbox
+        id={`gallery-${data.slug}-cover`}
+        label={lightboxLabel}
+        closeLabel={ui.caseStudy.closeLightbox}
+        caption={ui.caseStudy.coverCaption}
+      >
+        <PlaceholderCover
+          slug={data.slug}
+          name={copy.title}
+          category={data.category}
+          categoryLabel={categoryLabel}
+          label={coverLabel}
+        />
+      </Lightbox>
+    )
+  }
+
+  {
+    hasImages &&
+      images.map((image, index) => (
+        <Lightbox
+          id={`gallery-${data.slug}-${index}`}
+          label={lightboxLabel}
+          closeLabel={ui.caseStudy.closeLightbox}
+        >
+          <img
+            src={image.src}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </Lightbox>
+      ))
+  }
+</div>
+
+<style>
+  .screenshot-gallery {
+    display: grid;
+    gap: var(--space-3);
+    margin-block: var(--space-4) var(--space-12);
+  }
+
+  .screenshot-gallery__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .screenshot-gallery__item {
+    min-inline-size: 0;
+  }
+
+  .screenshot-gallery__trigger {
+    display: grid;
+    inline-size: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: var(--surface);
+    color: var(--ink);
+    cursor: zoom-in;
+    text-align: start;
+    transition: border-color 140ms ease;
+  }
+
+  .screenshot-gallery__trigger:hover {
+    border-color: var(--ink);
+  }
+
+  .screenshot-gallery__thumb {
+    display: block;
+    aspect-ratio: var(--cover-aspect);
+    overflow: hidden;
+  }
+
+  .screenshot-gallery__thumb :global(.placeholder-cover) {
+    border: 0;
+    block-size: 100%;
+  }
+
+  .screenshot-gallery__thumb :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .screenshot-gallery__hint {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-block-start: 1px solid var(--line);
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-weight: 600;
+    line-height: var(--type-meta-leading);
+  }
+
+  .screenshot-gallery__trigger:hover .screenshot-gallery__hint {
+    color: var(--ink);
+  }
+
+  .screenshot-gallery__caption {
+    max-inline-size: var(--measure-prose);
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    line-height: var(--type-meta-leading);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .screenshot-gallery__trigger {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import '../../scripts/lightbox';
+</script>
