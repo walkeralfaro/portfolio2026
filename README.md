@@ -12,6 +12,6 @@ npm run build
 
 ## Site and locale configuration
 
-`astro.config.mjs` sets `site` to `https://example.com` as a placeholder. Replace it with the production origin before publishing so generated canonical URLs and sitemap entries use the correct domain.
+`astro.config.mjs` sets `site` to `https://walkeralfaro.com` so generated canonical URLs and sitemap entries use the production domain.
 
 Spanish (`es`) is the default locale and uses unprefixed routes (`/`, `/work`). English (`en`) uses the `/en` prefix. Astro prefetching is enabled for internal links through `prefetch.prefetchAll`.

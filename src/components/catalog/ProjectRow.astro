@@ -13,9 +13,10 @@ interface Props {
   project: ProjectEntry;
   locale: Locale;
   position: number;
+  headingLevel?: 'h2' | 'h3';
 }
 
-const { project, locale, position } = Astro.props;
+const { project, locale, position, headingLevel = 'h2' } = Astro.props;
 const ui = getUi(locale);
 const copy = getProjectCopy(project, locale);
 const data = project.data;
@@ -29,6 +30,7 @@ const href = detailHref ?? externalHref;
 const isExternal = href !== null && detailHref === null;
 const hasDestination = href !== null;
 const RowTag = hasDestination ? 'a' : 'div';
+const TitleTag = headingLevel;
 const coverLabel = ui.catalog.coverAlt
   .replace('{title}', copy.title)
   .replace('{category}', categoryLabel);
@@ -63,7 +65,7 @@ const coverLabel = ui.catalog.coverAlt
         <span class="project-row__category">{categoryLabel}</span>
       </span>
 
-      <h2 class="project-row__title">{copy.title}</h2>
+      <TitleTag class="project-row__title" translate="no">{copy.title}</TitleTag>
       <span class="project-row__summary">{copy.summary}</span>
 
       <StackList

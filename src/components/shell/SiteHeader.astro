@@ -22,7 +22,7 @@ const currentSection = currentRoute?.name === 'project' ? 'work' : currentRoute?
 const navigation = [
   { name: 'work', href: routeHref(locale, { name: 'work' }), label: ui.nav.work },
   { name: 'about', href: routeHref(locale, { name: 'about' }), label: ui.nav.about },
-  { name: 'cv', href: routeHref(locale, { name: 'cv' }), label: ui.nav.cv },
+  { name: 'cv', href: site.cvUrl, label: ui.nav.cv, external: true },
 ] as const;
 ---
 
@@ -50,6 +50,8 @@ const navigation = [
               navigation.map((item) => (
                 <a
                   href={item.href}
+                  target={'external' in item && item.external ? '_blank' : undefined}
+                  rel={'external' in item && item.external ? 'noopener noreferrer' : undefined}
                   aria-current={currentSection === item.name ? 'page' : undefined}
                 >
                   {item.label}

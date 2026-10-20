@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { parseLocalizedUrl, routeHref, switchLocaleHref } from '../../src/i18n/routes.ts';
 
-test('route helpers map home, work, filtered work, project, about, and CV', () => {
+test('route helpers map home, work, filtered work, project, about, and colophon', () => {
   assert.equal(routeHref('es', { name: 'home' }), '/');
   assert.equal(routeHref('en', { name: 'home' }), '/en/');
 
@@ -16,8 +16,6 @@ test('route helpers map home, work, filtered work, project, about, and CV', () =
 
   assert.equal(routeHref('es', { name: 'about' }), '/about/');
   assert.equal(routeHref('en', { name: 'about' }), '/en/about/');
-  assert.equal(routeHref('es', { name: 'cv' }), '/cv/');
-  assert.equal(routeHref('en', { name: 'cv' }), '/en/cv/');
   assert.equal(routeHref('es', { name: 'colophon' }), '/colophon/');
   assert.equal(routeHref('en', { name: 'colophon' }), '/en/colophon/');
   assert.equal(routeHref('es', { name: 'not-found' }), '/404');
@@ -30,6 +28,7 @@ test('the language switch preserves a project slug and the category filter', () 
   assert.equal(switchLocaleHref('en', '/work/', '?c=juegos'), '/en/work/?c=juegos');
   assert.equal(switchLocaleHref('es', '/en/work/', '?c=producto'), '/work/?c=producto');
   assert.equal(switchLocaleHref('en', '/about/'), '/en/about/');
+  assert.equal(switchLocaleHref('en', '/cv/'), '/en/');
   assert.equal(switchLocaleHref('en', '/unknown/'), '/en/');
 });
 

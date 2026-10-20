@@ -1,0 +1,99 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { profileCopy } from '../../data/profile-copy';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = profileCopy[locale].skills;
+---
+
+<section class="skill-tiers" aria-labelledby="skill-tiers-title" data-skill-tiers>
+  <header class="skill-tiers__header">
+    <h2 id="skill-tiers-title">{copy.title}</h2>
+  </header>
+  <div class="skill-tiers__groups">
+    {copy.groups.map((group) => (
+      <section aria-labelledby={`skill-tier-${group.key}`} data-skill-tier={group.key}>
+        <h3 id={`skill-tier-${group.key}`}>{group.title}</h3>
+        <ul>
+          {group.items.map((skill) => <li data-skill={skill} translate="no">{skill}</li>)}
+        </ul>
+      </section>
+    ))}
+  </div>
+</section>
+
+<style>
+  .skill-tiers {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-8) var(--grid-gutter);
+    padding-block: var(--space-12);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .skill-tiers__header {
+    grid-column: span 3;
+  }
+
+  .skill-tiers__header h2 {
+    margin: 0;
+    font-size: var(--type-h2-size);
+    line-height: var(--type-h2-leading);
+    text-wrap: balance;
+  }
+
+  .skill-tiers__groups {
+    display: grid;
+    grid-column: span 9;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6) var(--grid-gutter);
+  }
+
+  .skill-tiers__groups > section {
+    min-inline-size: 0;
+    padding-block-start: var(--space-3);
+    border-block-start: 2px solid var(--line);
+  }
+
+  .skill-tiers h3 {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-family-sans);
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .skill-tiers ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin: 0;
+    padding: 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    list-style: none;
+  }
+
+  .skill-tiers li {
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 899.98px) {
+    .skill-tiers__header,
+    .skill-tiers__groups {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 639.98px) {
+    .skill-tiers__groups {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

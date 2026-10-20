@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Presents Walker as a full-stack web developer through a focused home narrative, evidence-backed capabilities, a tiered skills view, a concise trajectory, and a downloadable CV, while using the industrial and project-management background as a credibility signal.
+Presents Walker as a full-stack web developer through a focused home narrative, evidence-backed capabilities, a tiered skills view, a concise trajectory, and an external CV link, while using the industrial and project-management background as a credibility signal.
 
 ## ADDED Requirements
 
@@ -44,7 +44,7 @@ Skills SHALL be grouped into three tiers: used daily, used in production, and pr
 
 ### Requirement: Trajectory
 
-The profile SHALL present three career eras: industrial automation and electronics from 2006 to 2019, the transition to web development from 2023 to 2024, and independent full-stack work from 2025 to the present. The full role history SHALL be available on the about page or CV.
+The profile SHALL present three career eras: industrial automation and electronics from 2006 to 2019, the transition to web development from 2023 to 2024, and independent full-stack work from 2025 to the present. The full role history SHALL be available on the about page.
 
 #### Scenario: Three-era summary
 
@@ -65,28 +65,19 @@ The industrial automation and project-management background SHALL appear as tran
 - **WHEN** a visitor reads the home hero
 - **THEN** the hero presents a full-stack web developer, and the industrial background appears only as supporting context in the profile
 
-### Requirement: CV page
+### Requirement: External CV link
 
-The site SHALL provide a CV page in both locales with summary, experience, education, projects, skills, courses, and languages derived from the read-only generated `data.js`. The public CV page SHALL omit the mobile phone number.
+The site SHALL provide a CV link to `https://resume.walkeralfaro.com/` from its CV controls. The portfolio SHALL NOT provide an internal CV page or generate or print a CV PDF.
 
-#### Scenario: CV content
+#### Scenario: Open the external CV
 
-- **WHEN** a visitor opens the CV page
-- **THEN** all documented sections render and the mobile phone number is absent
+- **WHEN** a visitor activates a CV control
+- **THEN** the browser navigates to `https://resume.walkeralfaro.com/`
 
-#### Scenario: Generated source is preserved
+#### Scenario: No portfolio CV output
 
-- **WHEN** the CV data is loaded
-- **THEN** `data.js` remains unmodified and is treated as a read-only input
-
-### Requirement: Downloadable CV
-
-The CV SHALL be downloadable as a PDF in each locale, and the PDF content SHALL match the corresponding CV page.
-
-#### Scenario: Download Spanish CV
-
-- **WHEN** a visitor selects the Spanish PDF download
-- **THEN** a Spanish PDF with the same sections and content as the Spanish CV page is delivered
+- **WHEN** the portfolio is built or a visitor uses a CV control
+- **THEN** the portfolio serves no internal CV page and produces no CV PDF
 
 ### Requirement: Contact surface
 
@@ -95,16 +86,16 @@ The site SHALL provide email, LinkedIn, GitHub, and CV access. The public contac
 #### Scenario: Contact links
 
 - **WHEN** a visitor opens the contact section
-- **THEN** email, LinkedIn, GitHub, and CV are available and the phone number is not shown
+- **THEN** email, LinkedIn, GitHub, and a CV link to `https://resume.walkeralfaro.com/` are available and the phone number is not shown
 
 ### Requirement: Bilingual profile
 
-The home, about, and CV content SHALL exist in Spanish and English with equivalent meaning, claims, and dates.
+The home and about content SHALL exist in Spanish and English with equivalent meaning, claims, and dates. CV controls SHALL have localized labels in both locales and lead to the same external resume URL.
 
 #### Scenario: English profile
 
 - **WHEN** a visitor opens the English home and about pages
-- **THEN** the narrative, capabilities, skills, trajectory, and CV match the Spanish content in meaning
+- **THEN** the narrative, capabilities, and trajectory match the Spanish content in meaning, and the CV control opens the external resume site
 
 ### Requirement: Content integrity
 

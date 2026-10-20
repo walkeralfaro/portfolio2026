@@ -1,62 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PersonJsonLd from '../components/shell/PersonJsonLd.astro';
+import ProfileIntro from '../components/profile/ProfileIntro.astro';
+import FeaturedWork from '../components/profile/FeaturedWork.astro';
+import IndexExcerpt from '../components/profile/IndexExcerpt.astro';
+import CapabilityGrid from '../components/profile/CapabilityGrid.astro';
+import Trajectory from '../components/profile/Trajectory.astro';
 import { getUi } from '../i18n/ui';
 import { routeHref } from '../i18n/routes';
 import { site } from '../lib/site';
+import { getProjects } from '../lib/projects';
 
 const locale = 'es' as const;
 const ui = getUi(locale);
+const projects = await getProjects();
 const title = `${site.name} — ${ui.profile.role}`;
 ---
 
 <BaseLayout locale={locale} title={title} description={ui.pages.home.description}>
   <PersonJsonLd slot="head" locale={locale} />
-  <h1>{site.name}</h1>
-  <p class="home-page__role">{ui.profile.role}</p>
-  <p>{ui.profile.location}</p>
-  <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
-
-  <nav aria-label={ui.nav.social}>
-    <ul class="home-page__socials">
-      {
-        site.socials.map(({ name, url }) => (
-          <li>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              {name}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
-
+  <ProfileIntro locale={locale} />
+  <FeaturedWork locale={locale} projects={projects} />
+  <IndexExcerpt locale={locale} projects={projects} />
+  <CapabilityGrid locale={locale} projects={projects} />
+  <Trajectory locale={locale} />
   <p class="home-page__links">
-    <a href={routeHref(locale, { name: 'work' })}>{ui.actions.viewAllWork}</a>
     <a href={routeHref(locale, { name: 'about' })}>{ui.nav.about}</a>
-    <a href={routeHref(locale, { name: 'cv' })}>{ui.nav.cv}</a>
   </p>
 </BaseLayout>
 
 <style>
-  .home-page__role {
-    font-size: var(--type-h3-size);
-    line-height: var(--type-h3-leading);
-  }
-
-  .home-page__socials {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin: var(--space-4) 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
   .home-page__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-block-start: var(--space-8);
+    margin-block-start: var(--space-6);
   }
 </style>

@@ -18,7 +18,7 @@ Constraints that shape the approach:
 
 - Make the work catalog the primary surface, with a sticky preview on desktop and a thumbnail list on mobile.
 - Keep the design distinctive without costume: cool paper, cobalt signal, strong typography, precise metadata, no industrial-themed decoration.
-- Establish a component architecture that can be implemented atomically: shell, catalog, case study, profile, CV, localization, theme.
+- Establish a component architecture that can be implemented atomically: shell, catalog, case study, profile, localization, and theme.
 - Keep the site static, fast, accessible, and maintainable by one person.
 
 **Non-Goals:**
@@ -198,10 +198,8 @@ About
   trajectory: 3 eras + full timeline
   contact
 
-CV
-  print-optimized sections from data.js
-  language-specific content
-  PDF download
+CV access
+  external link to https://resume.walkeralfaro.com/
 ```
 
 The home opens with a compact statement, not a full-viewport hero. The work index begins within the first viewport on desktop so the work is visible immediately.
@@ -251,9 +249,6 @@ src/
       SkillTiers.astro
       Trajectory.astro
       ContactLinks.astro
-    cv/
-      CvDocument.astro
-      CvSection.astro
   scripts/
     catalog.ts                filter + preview
     theme.ts                  theme control (the pre-paint part is inline)
@@ -261,8 +256,6 @@ src/
   content/
     projects/*.yaml
     cases/*.mdx
-  data/
-    cv.es.ts, cv.en.ts, cv.schema.ts
   i18n/
     ui.es.ts, ui.en.ts, routes.ts
   pages/
@@ -270,13 +263,11 @@ src/
     work/index.astro
     work/[slug].astro
     about.astro
-    cv.astro
     404.astro
     en/index.astro
     en/work/index.astro
     en/work/[slug].astro
     en/about.astro
-    en/cv.astro
     en/404.astro
 ```
 
@@ -318,18 +309,17 @@ Each component owns one visual or behavioral concern. Pages compose; they do not
 - Only 4 featured projects: underuses the breadth the user wants to show.
 - Auto-generated case pages from READMEs: produces inconsistent, first-person-plural, template copy.
 
-### 12. CV data adapter and PDF
+### 12. External CV destination
 
-**Decision:** Wrap `data.js` in a typed adapter (`cv.es.ts`) that validates the generated object and strips the mobile phone. Create `cv.en.ts` as a complete English translation of the same structure. Both are validated against a shared Zod schema at build time. Render print-optimized `/cv` and `/en/cv` pages. Generate PDFs with a small Playwright script into `public/cv/` and link them from the pages; keep the browser print stylesheet as a fallback.
+**Decision:** CV controls in the portfolio link directly to `https://resume.walkeralfaro.com/`. The portfolio does not create CV routes, adapt CV data, add print-specific CV styling, or generate or host CV PDFs.
 
-**Why:** The CV is generated elsewhere; treating it as a read-only input avoids a second source of truth. Validation catches schema drift in the generated file. Playwright is already in Walker's stack and runs at build time, not in the browser. Committing the generated PDFs keeps deployment static.
+**Why:** The resume is maintained and served on its own subdomain. Keeping the portfolio link-only avoids duplicating CV content or producing a second representation that can drift.
 
 **Alternatives considered:**
 
-- Edit `data.js`: forbidden; it is generated.
-- Client-side PDF generation: heavy and inconsistent.
-- Hand-maintained PDF: drifts from the CV page.
-- Include the phone number: rejected for public scraping; email and LinkedIn are sufficient.
+- Portfolio-owned localized CV pages: rejected; the portfolio only links to the external resume.
+- Generated or hand-maintained PDF downloads: rejected; no CV PDF is produced or printed by the portfolio.
+- Adapt `data.js` into portfolio CV data: unnecessary when the portfolio does not render a CV.
 
 ### 13. SEO, performance, and quality floor
 
@@ -351,7 +341,7 @@ Each component owns one visual or behavioral concern. Pages compose; they do not
 - **The master–detail interaction is desktop-centric** → Mobile uses a thumbnail list, and the preview is decorative/informational, never the only path to a project.
 - **Hover preview can flicker** → 90 ms entry delay, 140 ms crossfade, preload adjacent covers, and instant focus updates.
 - **Dark theme doubles visual QA** → Separate token sets, contrast checks, and screenshot review in both themes. Do not invert.
-- **PDF generation adds a dev dependency** → Use Playwright only in a build script; commit the generated PDFs and keep print CSS as fallback.
+- **The external CV destination may be unavailable independently of the portfolio** → Keep the destination explicit and verify the CV link during site QA; the portfolio does not duplicate or generate CV content.
 - **Excluding Puja removes a professional case** → Accepted by the user. Portfolio 2026 and URL Shortener carry the full-stack/professional proof.
 - **Case-study copy could become generic** → Cap each case at the fixed sequence, require specific decisions and verifiable results, and link to the source material.
 - **Static filters need JavaScript** → Without JavaScript all 14 projects remain visible and navigable; filtering is an enhancement, not a requirement.
@@ -364,7 +354,7 @@ This is a greenfield build, so there is no data migration.
 1. Scaffold the Astro project and Tailwind v4 integration.
 2. Build the design tokens, shell, and shared primitives.
 3. Add the 14 project records and tier 1 case bodies, with placeholders where assets are missing.
-4. Build the catalog, detail pages, home, about, and CV.
+4. Build the catalog, detail pages, home, and about; point CV controls to the external resume site.
 5. Add Spanish/English routing and the theme system.
 6. Run accessibility, performance, and content QA in both locales and themes.
 7. Deploy a preview, verify canonical URLs and redirects, then cut over.
@@ -375,4 +365,3 @@ Rollback: keep the current `walkeralfaro.com` deployment live until the new buil
 
 - The production domain and whether this replaces `walkeralfaro.com` or ships on a new subdomain. This affects canonical URLs and deployment configuration, not the architecture; resolve before the SEO task.
 - Final screenshots and live URLs for the projects that currently use placeholders. These improve visual quality but do not change the design or task breakdown.
-- Whether the English CV should be a professional translation reviewed by a native speaker. Recommended; the site can ship with a careful translation and be refined later.

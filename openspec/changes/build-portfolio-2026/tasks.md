@@ -5,7 +5,7 @@
 - [x] 1.1 Create the Astro project with `npm create astro@latest`, choosing the minimal template and strict TypeScript. Verify: `npm run dev` serves the starter page.
 - [x] 1.2 Install `tailwindcss` and `@tailwindcss/vite`, register the Vite plugin, and add `@import "tailwindcss";` to the global stylesheet. Verify: a production build succeeds and a test utility class renders.
 - [x] 1.3 Configure `astro.config.mjs` with a placeholder `site` URL, Spanish default locale with no prefix, English under `/en`, and prefetch enabled. Verify: `npm run build` succeeds and the config is documented in the README.
-- [x] 1.4 Add `@astrojs/check`, TypeScript, `@playwright/test`, and scripts for `check`, `test:e2e`, and `cv:pdf`. Verify: `npm run check` passes and the sample Playwright test runs.
+- [x] 1.4 Add `@astrojs/check`, TypeScript, `@playwright/test`, and scripts for `check` and `test:e2e`. Verify: `npm run check` passes and the sample Playwright test runs.
 - [x] 1.5 Self-host subset WOFF2 files for Archivo variable and Source Serif 4; add `@font-face`, preload the display face, and set metric-compatible fallbacks. Verify: no external font requests and no visible layout shift on load.
 - [x] 1.6 Create `src/styles/tokens.css` and `src/styles/global.css` with the light and dark token sets, reset, type scale, spacing scale, and focus styles from `design.md`. Verify: tokens resolve in the browser and the build has no missing-variable warnings.
 - [x] 1.7 Add `src/lib/site.ts` with name, role, location, email, social URLs, and the site URL placeholder. Verify: the values are imported by at least one page and no personal data is duplicated.
@@ -20,9 +20,7 @@
 - [x] 2.6 Write the English tier 1 case bodies for the same six projects with equivalent meaning and no untranslated fragments. Verify: both locales pass the content completeness check.
 - [x] 2.7 Complete the tier 2 localized fields for Pokedex, Todo App, Tic Tac Toe, and Portfolio 2026, and the tier 3 archive metadata for Tip Calculator, Weather App, REST Countries Explorer, and Portfolio Profesional. Verify: each tier has the expected number of entries (6 / 4 / 4).
 - [x] 2.8 Audit every project record against `data.js` and `projects/*.md`; replace invented or missing facts with an explicit pending state. Verify: a source map lists the origin of every metric and claim.
-- [x] 2.9 Create `src/data/cv.schema.ts` and `src/data/cv.es.ts`, importing the read-only `data.js`, validating it with Zod, and stripping the mobile phone. Verify: `npm run build` fails on an invalid CV object and the phone is absent from the adapted output.
-- [x] 2.10 Create `src/data/cv.en.ts` with a complete English translation of the same structure. Verify: both CV objects satisfy the same schema and contain the same section counts.
-- [x] 2.11 Document the content model, the 14-project inventory, tier rules, and the read-only nature of `data.js` in `docs/content.md`. Verify: the documented commands run as written.
+- [x] 2.9 Document the content model, the 14-project inventory, tier rules, and the read-only nature of `data.js` in `docs/content.md`. Verify: the documented commands run as written.
 
 ## 3. Design tokens and shared primitives
 
@@ -44,9 +42,9 @@
 
 ## 5. Localization system
 
-- [x] 5.1 Implement the Spanish root routes and the English `/en` routes for home, work, project detail, about, CV, and 404. Verify: every Spanish route has an English counterpart.
+- [x] 5.1 Implement the Spanish root routes and the English `/en` routes for home, work, project detail, about, and 404. Verify: every Spanish site route has an English counterpart; CV links lead to the external resume site.
 - [x] 5.2 Create `src/i18n/ui.es.ts` and `src/i18n/ui.en.ts` for navigation, filters, statuses, actions, empty states, and form labels. Verify: a grep finds no hardcoded UI string in page or component markup.
-- [x] 5.3 Create typed route helpers that map a Spanish route to its English counterpart and preserve project slug and filter query. Verify: unit tests cover home, work, filtered work, project detail, about, and CV.
+- [x] 5.3 Create typed route helpers that map a Spanish route to its English counterpart and preserve project slug and filter query. Verify: unit tests cover home, work, filtered work, project detail, and about; the external CV link is not treated as a localized site route.
 - [x] 5.4 Build `LanguageSwitcher.astro` using the route helpers. Verify: switching language on a project page opens the same project in the other locale.
 - [x] 5.5 Add canonical URLs, `hreflang` alternates, localized titles and descriptions, and localized Open Graph metadata. Verify: both locales expose reciprocal alternates and no page points to the wrong language.
 - [x] 5.6 Add a locale completeness check that fails when a project or UI key is missing in either language. Verify: removing one English summary fails the check.
@@ -55,8 +53,8 @@
 ## 6. Site shell
 
 - [x] 6.1 Build `BaseLayout.astro` with the document language, head slot, skip link, header, main landmark, footer, and theme pre-paint script. Verify: every page renders one `h1` and one `main`.
-- [x] 6.2 Build `SiteHeader.astro` with the name, work/about/CV navigation, theme control, and language switcher. Verify: it remains usable at 320 px and all controls are keyboard reachable.
-- [x] 6.3 Build `SiteFooter.astro` with email, LinkedIn, GitHub, CV, location, and a colophon link. Verify: the phone number is absent and every link resolves.
+- [x] 6.2 Build `SiteHeader.astro` with the name, work/about navigation, a CV link to `https://resume.walkeralfaro.com/`, theme control, and language switcher. Verify: it remains usable at 320 px, all controls are keyboard reachable, and the CV link opens the external resume site.
+- [x] 6.3 Build `SiteFooter.astro` with email, LinkedIn, GitHub, a CV link to `https://resume.walkeralfaro.com/`, location, and a colophon link. Verify: the phone number is absent and every link resolves.
 - [x] 6.4 Build `SeoHead.astro` with title, description, canonical, alternates, Open Graph, and Twitter metadata. Verify: a page audit shows no missing or duplicated tags.
 - [x] 6.5 Build localized 404 pages with links back to home and work. Verify: unknown routes return the localized page with a working recovery action.
 - [x] 6.6 Add `Person` JSON-LD to the home page with name, role, location, and social profiles. Verify: the structured data parses without errors.
@@ -89,33 +87,24 @@
 
 ## 9. Home and profile
 
-- [ ] 9.1 Build `ProfileIntro.astro` with name, full-stack role, one-sentence value proposition, core stack, location, availability, work CTA, and CV CTA. Verify: all elements are visible in the first desktop viewport.
-- [ ] 9.2 Build `FeaturedWork.astro` with exactly TODO-mcp, Image Prompt, URL Shortener, and Tetris. Verify: the section contains four entries and each links to its detail or archive destination.
-- [ ] 9.3 Add the home index excerpt with six to eight rows and a link to the full catalog. Verify: the excerpt count matches the rendered rows and the link opens `/work`.
-- [ ] 9.4 Build `CapabilityGrid.astro` with end-to-end product, frontend craft, backend/data, and quality/documentation, each linked to evidence. Verify: all four blocks have a working project link.
-- [ ] 9.5 Build `Trajectory.astro` with the three eras and their dates. Verify: the order and dates match `design.md`.
-- [ ] 9.6 Build the about page with the web-first narrative, the background-as-plus section, and the full role history from `data.js`. Verify: the hero remains web-first and every role is present.
-- [ ] 9.7 Build `SkillTiers.astro` with daily, production, and prior-context groups and no logo wall. Verify: every skill appears in exactly one tier.
-- [ ] 9.8 Build `ContactLinks.astro` with email, LinkedIn, GitHub, and CV. Verify: the phone number is absent and external links use `rel="noopener noreferrer"`.
-- [ ] 9.9 Add home and about E2E tests for the first screen, featured set, capability links, skills tiers, trajectory, and contact. Verify: all scenarios pass.
+- [x] 9.1 Build `ProfileIntro.astro` with name, full-stack role, one-sentence value proposition, core stack, location, availability, work CTA, and CV link to `https://resume.walkeralfaro.com/`. Verify: all elements are visible in the first desktop viewport and the CV CTA opens the external resume site.
+- [x] 9.2 Build `FeaturedWork.astro` with exactly TODO-mcp, Image Prompt, URL Shortener, and Tetris. Verify: the section contains four entries and each links to its detail or archive destination.
+- [x] 9.3 Add the home index excerpt with six to eight rows and a link to the full catalog. Verify: the excerpt count matches the rendered rows and the link opens `/work`.
+- [x] 9.4 Build `CapabilityGrid.astro` with end-to-end product, frontend craft, backend/data, and quality/documentation, each linked to evidence. Verify: all four blocks have a working project link.
+- [x] 9.5 Build `Trajectory.astro` with the three eras and their dates. Verify: the order and dates match `design.md`.
+- [x] 9.6 Build the about page with the web-first narrative, the background-as-plus section, and the full role history from `data.js`. Verify: the hero remains web-first and every role is present.
+- [x] 9.7 Build `SkillTiers.astro` with daily, production, and prior-context groups and no logo wall. Verify: every skill appears in exactly one tier.
+- [x] 9.8 Build `ContactLinks.astro` with email, LinkedIn, GitHub, and a CV link to `https://resume.walkeralfaro.com/`. Verify: the phone number is absent and external links use `rel="noopener noreferrer"`.
+- [x] 9.9 Add home and about E2E tests for the first screen, featured set, capability links, skills tiers, trajectory, and contact. Verify: all scenarios pass.
 
-## 10. CV and PDF
+## 10. Integration quality
 
-- [ ] 10.1 Build `/cv` and `/en/cv` with summary, experience, education, projects, skills, courses, and languages from the adapted CV data. Verify: both pages render all sections and omit the phone.
-- [ ] 10.2 Add a print stylesheet with A4 page size, readable type, page-break control, and visible link URLs. Verify: browser print preview produces a clean multi-page CV.
-- [ ] 10.3 Add `scripts/generate-cv-pdf.ts` using Playwright to render both CV pages to `public/cv/walker-alfaro-es.pdf` and `walker-alfaro-en.pdf`. Verify: both files exist, open, and contain the expected sections.
-- [ ] 10.4 Link the PDFs from the CV pages and footer with localized labels. Verify: each download returns the correct language and no 404.
-- [ ] 10.5 Add CV E2E tests for section parity between locales, phone absence, and PDF availability. Verify: all CV scenarios pass.
-- [ ] 10.6 Document the CV update workflow, including the read-only `data.js` and the English translation source, in `docs/cv.md`. Verify: the documented regeneration command runs as written.
-
-## 11. Integration quality
-
-- [ ] 11.1 Run an automated accessibility audit on home, work, a tier 1 case, about, and CV in both locales and both themes. Verify: no critical or serious violations remain.
-- [ ] 11.2 Complete a keyboard-only pass through navigation, theme, language, filters, project rows, lightbox, and CV downloads. Verify: every action is reachable and focus is always visible.
-- [ ] 11.3 Verify reduced-motion behavior and remove any motion that is not user-triggered or explanatory. Verify: the site remains fully understandable with motion disabled.
-- [ ] 11.4 Measure the production build against the performance budget: ≤30 KB compressed initial JS and LCP ≤2.0 s on mid-tier mobile. Verify: the report is recorded and any regression is fixed.
-- [ ] 11.5 Audit the sitemap, robots, canonical URLs, `hreflang`, Open Graph images, and 404 pages. Verify: the sitemap lists both locales and excludes Puja Inmobiliaria.
-- [ ] 11.6 Audit all copy for invented claims, mixed languages, unlabeled placeholders, and missing project actions. Verify: every claim maps to a source and every placeholder is explicit.
-- [ ] 11.7 Run the full production build and preview locally. Verify: no broken internal links, no console errors, and no missing assets.
-- [ ] 11.8 Deploy a preview build to the chosen static host and verify the production URL, canonical host, and redirects. Verify: the preview is reachable and the old site remains live until cutover.
-- [ ] 11.9 Complete the final QA checklist across 320, 768, 1024, and 1440 px in both themes and locales. Verify: all checks pass and the change is ready for review.
+- [x] 10.1 Run an automated accessibility audit on home, work, a tier 1 case, and about in both locales and both themes. Verify: no critical or serious violations remain.
+- [x] 10.2 Complete a keyboard-only pass through navigation, theme, language, filters, project rows, lightbox, and CV links. Verify: every action is reachable, focus is always visible, and CV links open `https://resume.walkeralfaro.com/`.
+- [x] 10.3 Verify reduced-motion behavior and remove any motion that is not user-triggered or explanatory. Verify: the site remains fully understandable with motion disabled.
+- [x] 10.4 Measure the production build against the performance budget: ≤30 KB compressed initial JS and LCP ≤2.0 s on mid-tier mobile. Verify: the report is recorded and any regression is fixed.
+- [x] 10.5 Audit the sitemap, robots, canonical URLs, `hreflang`, Open Graph images, and 404 pages. Verify: the sitemap lists both locales and excludes Puja Inmobiliaria.
+- [x] 10.6 Audit all copy for invented claims, mixed languages, unlabeled placeholders, and missing project actions. Verify: every claim maps to a source and every placeholder is explicit.
+- [x] 10.7 Run the full production build and preview locally. Verify: no broken internal links, no console errors, and no missing assets.
+- [ ] 10.8 Deploy a preview build to the chosen static host and verify the production URL, canonical host, and redirects. Verify: the preview is reachable and the old site remains live until cutover.
+- [x] 10.9 Complete the final QA checklist across 320, 768, 1024, and 1440 px in both themes and locales. Verify: all checks pass and the change is ready for review.

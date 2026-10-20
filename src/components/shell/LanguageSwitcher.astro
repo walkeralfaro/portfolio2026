@@ -20,7 +20,7 @@ const href = switchLocaleHref(targetLocale, pathname, search);
   href={href}
   hreflang={targetLocale}
   lang={targetLocale}
-  aria-label={label}
+  aria-label={`${targetLabel} — ${label}`}
   data-language-switcher
   data-locale={locale}
 >

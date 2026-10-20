@@ -215,15 +215,15 @@ test('detail pages expose canonical and reciprocal language alternates', async (
 
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
-    'https://example.com/work/todo-mcp/',
+    'https://walkeralfaro.com/work/todo-mcp/',
   );
   await expect(page.locator('link[hreflang="es"]')).toHaveAttribute(
     'href',
-    'https://example.com/work/todo-mcp/',
+    'https://walkeralfaro.com/work/todo-mcp/',
   );
   await expect(page.locator('link[hreflang="en"]')).toHaveAttribute(
     'href',
-    'https://example.com/en/work/todo-mcp/',
+    'https://walkeralfaro.com/en/work/todo-mcp/',
   );
 
   await page.reload();
@@ -233,11 +233,11 @@ test('detail pages expose canonical and reciprocal language alternates', async (
   await openCase(page, '/en/work/todo-mcp/');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
-    'https://example.com/en/work/todo-mcp/',
+    'https://walkeralfaro.com/en/work/todo-mcp/',
   );
   await expect(page.locator('link[hreflang="es"]')).toHaveAttribute(
     'href',
-    'https://example.com/work/todo-mcp/',
+    'https://walkeralfaro.com/work/todo-mcp/',
   );
 });
 

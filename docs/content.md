@@ -105,11 +105,12 @@ The validator enforces 6 / 4 / 4, the featured set, unique slugs and order value
 - Do not copy `data.js` into a page. Import it through the adapters in `src/data/`.
 - `projects/*.md` are source notes, not runtime content.
 - `src/data/cv.schema.ts` validates the generated shape with Zod.
-- `src/data/cv.es.ts` imports `data.js` and parses it through the schema.
+- `src/data/cv.es.ts` imports `data.js` and parses it through the schema for the about-page history.
 - `src/data/cv.en.ts` is a complete English translation with the same structure.
-- The CV schema omits the `mobile` field, so the phone number is stripped from the adapted output.
+- The schema omits the `mobile` field, so the phone number is stripped from the adapted output.
 - The adapters describe the excluded client project generically; it is never published.
-- `npm run build` runs the CV validation before Astro builds.
+- The site does not render a CV page or produce a PDF; CV controls link to `https://resume.walkeralfaro.com/`.
+- `npm run build` runs the profile data validation before Astro builds.
 
 When the generated source changes upstream, regenerate `data.js`, then run the commands below before committing.
 
@@ -128,7 +129,7 @@ npm run check
 npm run build
 ```
 
-`validate:content` checks the 14 YAML records and the 12 tier 1 case bodies. `validate:cv` checks both CV adapters, the section counts, the schema, and the absence of the mobile phone and excluded client data. `check` runs Astro's TypeScript and content diagnostics. `build` runs the CV validation again through `prebuild` and produces the static site.
+`validate:content` checks the 14 YAML records and the 12 tier 1 case bodies. `validate:cv` checks both profile data adapters, the section counts, the schema, and the absence of the mobile phone and excluded client data. `check` runs Astro's TypeScript and content diagnostics. `build` runs the CV validation again through `prebuild` and produces the static site.
 
 Expected validation summaries:
 

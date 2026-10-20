@@ -9,8 +9,6 @@ const shellRoutes = [
   '/en/work/todo-mcp/',
   '/about/',
   '/en/about/',
-  '/cv/',
-  '/en/cv/',
   '/colophon/',
   '/en/colophon/',
   '/404',
@@ -37,9 +35,12 @@ test('the desktop header exposes navigation, theme, and language controls', asyn
   await expect(header.getByRole('navigation', { name: 'Navegación principal' })).toBeVisible();
   await expect(header.getByRole('link', { name: 'Trabajo' })).toHaveAttribute('href', '/work/');
   await expect(header.getByRole('link', { name: 'Sobre mí' })).toHaveAttribute('href', '/about/');
-  await expect(header.getByRole('link', { name: 'CV' })).toHaveAttribute('href', '/cv/');
+  await expect(header.getByRole('link', { name: 'CV' })).toHaveAttribute(
+    'href',
+    'https://resume.walkeralfaro.com/',
+  );
   await expect(header.getByRole('group', { name: 'Tema' })).toBeVisible();
-  await expect(header.getByRole('link', { name: 'Cambiar idioma a inglés' })).toBeVisible();
+  await expect(header.getByRole('link', { name: /English — Cambiar idioma a inglés/ })).toBeVisible();
   await expect(header.locator('.site-menu__toggle')).toBeHidden();
 });
 
@@ -58,7 +59,7 @@ test('the mobile menu is keyboard operable and fits at 320 px', async ({ page })
 
   await expect(navigation).toBeVisible();
   await expect(page.getByRole('group', { name: 'Tema' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Cambiar idioma a inglés' })).toBeVisible();
+  await expect(page.getByRole('link', { name: /English — Cambiar idioma a inglés/ })).toBeVisible();
 
   expect(
     await page.evaluate(
@@ -97,7 +98,7 @@ test('the footer exposes contact and CV links without the phone number', async (
   expect(hrefs).toContain('mailto:walkeralfarotrelles@gmail.com');
   expect(hrefs).toContain('https://www.linkedin.com/in/walkeralfaro/');
   expect(hrefs).toContain('https://github.com/walkeralfaro');
-  expect(hrefs).toContain('/cv/');
+  expect(hrefs).toContain('https://resume.walkeralfaro.com/');
   expect(hrefs).toContain('/colophon/');
   expect(hrefs).not.toContain('#');
   await expect(footer).not.toContainText('+51');
@@ -151,6 +152,10 @@ test('every page has one complete set of localized social metadata tags', async 
     'meta[property="og:locale"]',
     'meta[property="og:locale:alternate"]',
     'meta[name="twitter:card"]',
+    'meta[property="og:image"]',
+    'meta[property="og:image:alt"]',
+    'meta[name="twitter:image"]',
+    'meta[name="twitter:image:alt"]',
     'meta[name="twitter:title"]',
     'meta[name="twitter:description"]',
   ];
@@ -165,7 +170,14 @@ test('every page has one complete set of localized social metadata tags', async 
     await expect(page.locator('main')).toHaveCount(1);
     await expect(page.locator('main h1'), `${path} should render one H1`).toHaveCount(1);
 
-    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary');
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary_large_image',
+    );
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      'content',
+      'https://walkeralfaro.com/og/default.png',
+    );
     expect((await page.locator('title').textContent())?.trim().length).toBeGreaterThan(0);
     expect(
       (await page.locator('meta[name="description"]').getAttribute('content'))?.trim().length,

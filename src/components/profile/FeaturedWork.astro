@@ -1,0 +1,147 @@
+---
+import type { ProjectSlug } from '../../content/project-slugs';
+import { routeHref } from '../../i18n/routes';
+import { getUi } from '../../i18n/ui';
+import type { Locale } from '../../i18n/locales';
+import { getProjectCopy, type ProjectEntry } from '../../lib/projects';
+import { profileCopy } from '../../data/profile-copy';
+
+interface Props {
+  locale: Locale;
+  projects: ProjectEntry[];
+}
+
+const { locale, projects } = Astro.props;
+const ui = getUi(locale);
+const copy = profileCopy[locale].featured;
+const slugs: ProjectSlug[] = ['todo-mcp', 'image-prompt', 'url-shortener', 'tetris'];
+const featured = slugs.map((slug) => {
+  const project = projects.find((entry) => entry.data.slug === slug);
+  if (!project) throw new Error(`Featured project "${slug}" is missing from the project collection.`);
+  return project;
+});
+---
+
+<section class="featured-work" aria-labelledby="featured-work-title" data-featured-work>
+  <header class="featured-work__header">
+    <h2 id="featured-work-title">{copy.title}</h2>
+    <p>{copy.intro}</p>
+  </header>
+  <ul class="featured-work__list">
+    {featured.map((project) => {
+      const projectCopy = getProjectCopy(project, locale);
+      return (
+        <li data-featured-project={project.data.slug}>
+          <article>
+            <p class="featured-work__meta">{project.data.year === 'pending' ? ui.project.pending : project.data.year} · {ui.categories[project.data.category]}</p>
+            <h3 translate="no">{projectCopy.title}</h3>
+            <p class="featured-work__summary">{projectCopy.summary}</p>
+            <a href={routeHref(locale, { name: 'project', slug: project.data.slug })}>
+              {ui.actions.viewProject}<span aria-hidden="true"> ↗</span>
+            </a>
+          </article>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<style>
+  .featured-work {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-8) var(--grid-gutter);
+    padding-block: var(--space-12);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .featured-work__header {
+    grid-column: span 4;
+    min-inline-size: 0;
+  }
+
+  .featured-work__header h2 {
+    margin: 0;
+    font-size: var(--type-h2-size);
+    letter-spacing: -0.02em;
+    line-height: var(--type-h2-leading);
+    text-wrap: balance;
+  }
+
+  .featured-work__header p {
+    max-inline-size: 32ch;
+    margin: var(--space-3) 0 0;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .featured-work__list {
+    display: grid;
+    grid-column: span 8;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--grid-gutter);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .featured-work__list li {
+    min-inline-size: 0;
+    padding-block: var(--space-4);
+    border-block-start: 1px solid var(--line);
+  }
+
+  .featured-work__meta {
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .featured-work h3 {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-family-sans);
+    font-size: 1.25rem;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  .featured-work__summary {
+    margin: var(--space-2) 0 var(--space-3);
+    color: var(--muted);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .featured-work a {
+    color: var(--signal);
+    font-weight: 650;
+    text-underline-offset: 0.2em;
+  }
+
+  .featured-work a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .featured-work a:focus-visible {
+    border-radius: 2px;
+  }
+
+  @media (max-width: 899.98px) {
+    .featured-work__header {
+      grid-column: 1 / -1;
+    }
+
+    .featured-work__list {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 539.98px) {
+    .featured-work__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

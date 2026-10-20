@@ -3,18 +3,183 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getUi } from '../i18n/ui';
 import { routeHref } from '../i18n/routes';
 import { site } from '../lib/site';
+import { cvEs } from '../data/cv.es';
+import { profileCopy } from '../data/profile-copy';
+import SkillTiers from '../components/profile/SkillTiers.astro';
+import ContactLinks from '../components/profile/ContactLinks.astro';
 
 const locale = 'es' as const;
 const ui = getUi(locale);
+const copy = profileCopy[locale].about;
 const title = `${ui.pages.about.heading} — ${site.name}`;
 ---
 
 <BaseLayout locale={locale} title={title} description={ui.pages.about.description}>
-  <h1>{ui.pages.about.heading}</h1>
-  <p>{ui.pages.about.description}</p>
-  <p>{ui.profile.role} · {ui.profile.location}</p>
-  <p>
-    <a href={routeHref(locale, { name: 'work' })}>{ui.actions.viewAllWork}</a>
-    <a href={`mailto:${site.email}`}>{ui.profile.contact}</a>
-  </p>
+  <article class="about-page">
+    <header class="about-page__intro">
+      <h1>{ui.pages.about.heading}</h1>
+      <p>{copy.intro}</p>
+      <a href={routeHref(locale, { name: 'work' })}>{ui.actions.viewAllWork}</a>
+    </header>
+
+    <section class="about-page__background" aria-labelledby="about-background-title">
+      <h2 id="about-background-title">{copy.backgroundTitle}</h2>
+      <p>{copy.background}</p>
+    </section>
+
+    <SkillTiers locale={locale} />
+
+    <section class="about-page__experience" aria-labelledby="about-experience-title" data-experience-count={cvEs.experience.length}>
+      <h2 id="about-experience-title">{copy.experienceTitle}</h2>
+      <ol>
+        {cvEs.experience.map((entry) => (
+          <li data-experience-role>
+            <div class="about-page__role-meta">
+              <p>{entry.dates}</p>
+              <p>{entry.location}</p>
+            </div>
+            <div>
+              <h3>{entry.position}</h3>
+              <p class="about-page__organisation">{entry.organisation}</p>
+              <p class="about-page__description">{entry.bullets[0]}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <ContactLinks locale={locale} />
+  </article>
 </BaseLayout>
+
+<style>
+  .about-page {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-12) var(--grid-gutter);
+  }
+
+  .about-page__intro,
+  .about-page__experience {
+    grid-column: 1 / -1;
+  }
+
+  .about-page__intro {
+    max-inline-size: 56rem;
+    padding-block: var(--space-4) var(--space-8);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .about-page h1 {
+    margin: 0;
+    font-family: var(--font-family-sans);
+    font-size: var(--type-display-size);
+    letter-spacing: var(--type-display-tracking);
+    line-height: var(--type-display-leading);
+    text-wrap: balance;
+  }
+
+  .about-page__intro > p,
+  .about-page__background > p {
+    max-inline-size: var(--measure-prose);
+    margin: var(--space-6) 0 var(--space-4);
+    font-family: var(--font-family-serif);
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-leading);
+    text-wrap: pretty;
+  }
+
+  .about-page a {
+    color: var(--signal);
+    font-weight: 650;
+    text-underline-offset: 0.2em;
+  }
+
+  .about-page a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .about-page h2 {
+    margin: 0;
+    font-size: var(--type-h2-size);
+    line-height: var(--type-h2-leading);
+    text-wrap: balance;
+  }
+
+  .about-page__background {
+    grid-column: 2 / span 8;
+    padding-inline-start: var(--space-6);
+    border-inline-start: 2px solid var(--signal);
+  }
+
+  .about-page__background > p {
+    margin-block-end: 0;
+  }
+
+  .about-page__experience > h2 {
+    padding-block-end: var(--space-6);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .about-page__experience ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .about-page__experience li {
+    display: grid;
+    grid-template-columns: minmax(10rem, 3fr) minmax(0, 9fr);
+    gap: var(--space-4) var(--grid-gutter);
+    padding-block: var(--space-6);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .about-page__role-meta p,
+  .about-page__organisation,
+  .about-page__description {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .about-page__role-meta p:first-child {
+    color: var(--signal);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-variant-numeric: tabular-nums;
+    font-weight: 650;
+  }
+
+  .about-page__role-meta p + p,
+  .about-page__organisation {
+    margin-block-start: var(--space-1);
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  .about-page__experience h3 {
+    margin: 0;
+    font-family: var(--font-family-sans);
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .about-page__description {
+    max-inline-size: var(--measure-prose);
+    margin-block-start: var(--space-3);
+    font-family: var(--font-family-serif);
+    font-size: 1.0625rem;
+  }
+
+  @media (max-width: 639.98px) {
+    .about-page__background {
+      grid-column: 1 / -1;
+    }
+
+    .about-page__experience li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-3);
+    }
+  }
+</style>

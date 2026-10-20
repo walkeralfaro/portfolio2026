@@ -1,0 +1,145 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { routeHref } from '../../i18n/routes';
+import { getUi } from '../../i18n/ui';
+import { site } from '../../lib/site';
+import { profileCopy } from '../../data/profile-copy';
+import ButtonLink from '../primitives/ButtonLink.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = profileCopy[locale].intro;
+const ui = getUi(locale);
+---
+
+<section class="profile-intro" aria-labelledby="profile-intro-title">
+  <div class="profile-intro__main">
+    <p class="profile-intro__role">{ui.profile.role}</p>
+    <h1 id="profile-intro-title">{site.name}</h1>
+    <p class="profile-intro__value">{copy.value}</p>
+    <div class="profile-intro__actions">
+      <ButtonLink href={routeHref(locale, { name: 'work' })}>{ui.actions.viewAllWork}</ButtonLink>
+      <ButtonLink href={site.cvUrl} variant="secondary" external>{ui.actions.readCv}</ButtonLink>
+    </div>
+  </div>
+
+  <div class="profile-intro__context">
+    <p class="profile-intro__location">{ui.profile.location}</p>
+    <p class="profile-intro__availability">{copy.availability}</p>
+    <h2>{copy.stackLabel}</h2>
+    <ul>
+      {site.coreStack.map((item) => <li translate="no">{item}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .profile-intro {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 7fr) minmax(14rem, 4fr);
+    gap: var(--space-8) var(--grid-gutter);
+    align-items: end;
+    padding-block: var(--space-6) var(--space-16);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .profile-intro__main,
+  .profile-intro__context {
+    min-inline-size: 0;
+  }
+
+  .profile-intro__role {
+    margin: 0 0 var(--space-3);
+    color: var(--signal);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-h3-size);
+    font-weight: 600;
+    line-height: var(--type-h3-leading);
+  }
+
+  h1 {
+    max-inline-size: 14ch;
+    margin: 0;
+    font-family: var(--font-family-sans);
+    font-size: var(--type-display-size);
+    font-weight: 650;
+    letter-spacing: var(--type-display-tracking);
+    line-height: var(--type-display-leading);
+    text-wrap: balance;
+  }
+
+  .profile-intro__value {
+    max-inline-size: 50ch;
+    margin: var(--space-6) 0 0;
+    font-family: var(--font-family-serif);
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-leading);
+    text-wrap: pretty;
+  }
+
+  .profile-intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+
+  .profile-intro__context {
+    padding: var(--space-6);
+    border-inline-start: 2px solid var(--signal);
+    background: var(--surface);
+  }
+
+  .profile-intro__location,
+  .profile-intro__availability {
+    margin: 0;
+    font-family: var(--font-family-sans);
+    line-height: 1.5;
+  }
+
+  .profile-intro__location {
+    font-weight: 650;
+  }
+
+  .profile-intro__availability {
+    margin-block-start: var(--space-2);
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  .profile-intro__context h2 {
+    margin: var(--space-6) 0 var(--space-2);
+    font-size: var(--type-meta-size);
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .profile-intro__context ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin: 0;
+    padding: 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: 0.9375rem;
+    list-style: none;
+  }
+
+  @media (max-width: 899.98px) {
+    .profile-intro {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-8);
+      padding-block-end: var(--space-12);
+    }
+
+    .profile-intro__context {
+      max-inline-size: 36rem;
+    }
+  }
+</style>

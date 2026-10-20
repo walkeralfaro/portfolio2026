@@ -49,10 +49,12 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
               class="screenshot-gallery__trigger"
               data-lightbox-open={`gallery-${data.slug}-${index}`}
               aria-haspopup="dialog"
-              aria-label={ui.caseStudy.openImage
-                .replace('{title}', copy.title)
-                .replace('{alt}', image.alt)}
             >
+              <span class="visually-hidden">
+                {ui.caseStudy.openImage
+                  .replace('{title}', copy.title)
+                  .replace('{alt}', image.alt)}
+              </span>
               <span class="screenshot-gallery__thumb">
                 <img
                   src={image.src}
@@ -76,8 +78,8 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
             class="screenshot-gallery__trigger"
             data-lightbox-open={`gallery-${data.slug}-cover`}
             aria-haspopup="dialog"
-            aria-label={openCoverLabel}
           >
+            <span class="visually-hidden">{openCoverLabel}</span>
             <span class="screenshot-gallery__thumb">
               <PlaceholderCover
                 slug={data.slug}
@@ -89,7 +91,7 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
             </span>
             <span class="screenshot-gallery__hint">
               <Icon name="expand" />
-              <span aria-hidden="true">{ui.caseStudy.coverLabel}</span>
+              <span>{ui.caseStudy.coverLabel}</span>
             </span>
           </button>
         </li>

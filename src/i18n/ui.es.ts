@@ -20,12 +20,6 @@ export const uiEs = {
       description:
         'Perfil profesional, capacidades, trayectoria y contexto de trabajo de Walker Rómulo Alfaro Trelles.',
     },
-    cv: {
-      heading: 'Currículum',
-      description:
-        'Experiencia, formación, habilidades y cursos de Walker Rómulo Alfaro Trelles.',
-      pending: 'El currículum completo estará disponible próximamente.',
-    },
     notFound: {
       code: '404',
       heading: 'Página no encontrada',

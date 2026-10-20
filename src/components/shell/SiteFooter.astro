@@ -31,7 +31,7 @@ const ui = getUi(locale);
             </a>
           ))
         }
-        <a href={routeHref(locale, { name: 'cv' })}>{ui.actions.readCv}</a>
+        <a href={site.cvUrl} target="_blank" rel="noopener noreferrer">{ui.actions.readCv}</a>
         <a href={routeHref(locale, { name: 'colophon' })}>{ui.footer.colophon}</a>
       </nav>
     </div>

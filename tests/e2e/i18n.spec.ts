@@ -5,7 +5,6 @@ const routePairs = [
   { es: '/work/', en: '/en/work/', status: 200 },
   { es: '/work/todo-mcp/', en: '/en/work/todo-mcp/', status: 200 },
   { es: '/about/', en: '/en/about/', status: 200 },
-  { es: '/cv/', en: '/en/cv/', status: 200 },
   { es: '/colophon/', en: '/en/colophon/', status: 200 },
   { es: '/404', en: '/en/404', status: 404 },
 ];
@@ -26,7 +25,7 @@ test('switching language on a project page preserves the project', async ({ page
   await page.goto('/work/todo-mcp/');
 
   await expect(page.locator('h1')).toHaveText('TODO-mcp');
-  await page.getByRole('link', { name: 'Cambiar idioma a inglés' }).click();
+  await page.getByRole('link', { name: /English — Cambiar idioma a inglés/ }).click();
 
   await expect(page).toHaveURL('/en/work/todo-mcp/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
@@ -59,21 +58,21 @@ test('both locales expose reciprocal metadata and localized social fields', asyn
     await expect(page.locator('html')).toHaveAttribute('lang', 'es');
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute(
       'href',
-      `https://example.com${pair.es}`,
+      `https://walkeralfaro.com${pair.es}`,
     );
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute(
       'href',
-      `https://example.com${pair.en}`,
+      `https://walkeralfaro.com${pair.en}`,
     );
     await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute(
       'href',
-      `https://example.com${pair.es}`,
+      `https://walkeralfaro.com${pair.es}`,
     );
     await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute(
       'content',
       'es_PE',
     );
-    expect(spanishCanonical).toBe(`https://example.com${pair.es}`);
+    expect(spanishCanonical).toBe(`https://walkeralfaro.com${pair.es}`);
     expect(spanishDescription?.length).toBeGreaterThan(0);
 
     await page.goto(pair.en);
@@ -88,17 +87,17 @@ test('both locales expose reciprocal metadata and localized social fields', asyn
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute(
       'href',
-      `https://example.com${pair.es}`,
+      `https://walkeralfaro.com${pair.es}`,
     );
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute(
       'href',
-      `https://example.com${pair.en}`,
+      `https://walkeralfaro.com${pair.en}`,
     );
     await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute(
       'content',
       'en_US',
     );
-    expect(englishCanonical).toBe(`https://example.com${pair.en}`);
+    expect(englishCanonical).toBe(`https://walkeralfaro.com${pair.en}`);
     expect(englishDescription?.length).toBeGreaterThan(0);
     expect(englishDescription).not.toBe(spanishDescription);
   }

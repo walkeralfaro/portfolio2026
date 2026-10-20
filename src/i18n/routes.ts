@@ -11,7 +11,6 @@ export type LocalizedRoute =
   | { name: 'work'; category?: ProjectCategory }
   | { name: 'project'; slug: ProjectSlug }
   | { name: 'about' }
-  | { name: 'cv' }
   | { name: 'colophon' }
   | { name: 'not-found' };
 
@@ -46,8 +45,6 @@ export function routeHref(locale: Locale, route: LocalizedRoute): string {
       return `${prefix}/work/${route.slug}/`;
     case 'about':
       return `${prefix}/about/`;
-    case 'cv':
-      return `${prefix}/cv/`;
     case 'colophon':
       return `${prefix}/colophon/`;
     case 'not-found':
@@ -69,7 +66,6 @@ export function parseLocalizedUrl(pathname: string, search = ''): LocalizedRoute
     return isProjectSlug(slug) ? { name: 'project', slug } : null;
   }
   if (normalized === '/about') return { name: 'about' };
-  if (normalized === '/cv') return { name: 'cv' };
   if (normalized === '/colophon') return { name: 'colophon' };
   if (normalized === '/404') return { name: 'not-found' };
 

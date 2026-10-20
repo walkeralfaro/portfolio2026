@@ -18,7 +18,8 @@
     "validate:theme": "node scripts/validate-theme.ts",
     "test:unit": "node --test tests/unit/*.test.ts",
     "test:e2e": "playwright test",
-    "cv:pdf": "node scripts/generate-cv-pdf.ts",
+    "audit:performance": "node scripts/audit-performance.ts",
+    "audit:site": "node scripts/audit-site.ts",
     "astro": "astro"
   },
   "dependencies": {
@@ -31,6 +32,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.11",
+    "@astrojs/sitemap": "^3.7.4",
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.5",
     "typescript": "^6.0.3"

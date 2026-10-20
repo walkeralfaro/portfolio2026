@@ -8,11 +8,11 @@ Defines the cross-cutting experience of the portfolio: bilingual routing, light/
 
 ### Requirement: Locale routing
 
-Spanish SHALL be the default locale at the root, and English SHALL be available under `/en`. Every public page SHALL have an equivalent route in both locales, the language switcher SHALL preserve the current page, and an unknown locale prefix SHALL return a not-found response.
+Spanish SHALL be the default locale at the root, and English SHALL be available under `/en`. Every site-owned public page SHALL have an equivalent route in both locales, the language switcher SHALL preserve the current site page, and an unknown locale prefix SHALL return a not-found response. External destinations, including the CV site, are not localized site routes.
 
 #### Scenario: Switch language on a project page
 
-- **WHEN** a visitor switches language while viewing a project detail page
+- **WHEN** a visitor switches language while viewing a site-owned project detail page
 - **THEN** the equivalent project page opens in the other locale
 
 #### Scenario: Unknown locale

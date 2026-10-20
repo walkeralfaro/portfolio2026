@@ -1,0 +1,72 @@
+---
+import { getUi } from '../../i18n/ui';
+import { routeHref } from '../../i18n/routes';
+import type { Locale } from '../../i18n/locales';
+import type { ProjectEntry } from '../../lib/projects';
+import { profileCopy } from '../../data/profile-copy';
+import ProjectRow from '../catalog/ProjectRow.astro';
+import ButtonLink from '../primitives/ButtonLink.astro';
+
+interface Props {
+  locale: Locale;
+  projects: ProjectEntry[];
+}
+
+const { locale, projects } = Astro.props;
+const ui = getUi(locale);
+const copy = profileCopy[locale].excerpt;
+const excerpt = projects.slice(0, 8);
+---
+
+<section class="index-excerpt" aria-labelledby="index-excerpt-title" data-home-index-excerpt data-excerpt-count={excerpt.length}>
+  <header class="index-excerpt__header">
+    <div>
+      <h2 id="index-excerpt-title">{copy.title}</h2>
+      <p>{excerpt.length} {excerpt.length === 1 ? ui.filters.countOne : ui.filters.countMany}</p>
+    </div>
+    <ButtonLink href={routeHref(locale, { name: 'work' })} variant="secondary">{copy.action}</ButtonLink>
+  </header>
+  <ul class="index-excerpt__list">
+    {excerpt.map((project, index) => <ProjectRow project={project} locale={locale} position={index + 1} headingLevel="h3" />)}
+  </ul>
+</section>
+
+<style>
+  .index-excerpt {
+    display: grid;
+    grid-column: 1 / -1;
+    padding-block: var(--space-12);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .index-excerpt__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--space-4);
+    padding-block-end: var(--space-6);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .index-excerpt__header h2 {
+    margin: 0;
+    font-size: var(--type-h2-size);
+    letter-spacing: -0.02em;
+    line-height: var(--type-h2-leading);
+  }
+
+  .index-excerpt__header p {
+    margin: var(--space-2) 0 0;
+    color: var(--muted);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .index-excerpt__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

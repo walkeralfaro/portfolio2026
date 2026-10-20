@@ -1,0 +1,72 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { site } from '../../lib/site';
+import { profileCopy } from '../../data/profile-copy';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = profileCopy[locale].contact;
+---
+
+<section class="contact-links" aria-labelledby="contact-links-title" data-contact-links>
+  <h2 id="contact-links-title">{copy.title}</h2>
+  <ul>
+    <li><a href={`mailto:${site.email}`}>{copy.email}</a></li>
+    {site.socials.map(({ name, url }) => (
+      <li><a href={url} target="_blank" rel="noopener noreferrer" translate="no">{name}</a></li>
+    ))}
+    <li><a href={site.cvUrl} target="_blank" rel="noopener noreferrer">{copy.cv}</a></li>
+  </ul>
+</section>
+
+<style>
+  .contact-links {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-6) var(--grid-gutter);
+    padding-block: var(--space-8);
+    border-block-start: 1px solid var(--line);
+  }
+
+  .contact-links h2 {
+    grid-column: span 3;
+    margin: 0;
+    font-size: var(--type-h2-size);
+    line-height: var(--type-h2-leading);
+  }
+
+  .contact-links ul {
+    display: flex;
+    grid-column: span 9;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-links a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--control-min-size);
+    color: var(--signal);
+    font-family: var(--font-family-sans);
+    font-weight: 650;
+    text-underline-offset: 0.2em;
+  }
+
+  .contact-links a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  @media (max-width: 639.98px) {
+    .contact-links h2,
+    .contact-links ul {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -1,0 +1,131 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { routeHref } from '../../i18n/routes';
+import { profileCopy } from '../../data/profile-copy';
+import { getProjectCopy, type ProjectEntry } from '../../lib/projects';
+
+interface Props {
+  locale: Locale;
+  projects: ProjectEntry[];
+}
+
+const { locale, projects } = Astro.props;
+const copy = profileCopy[locale].capabilities;
+const items = copy.items.map((item) => {
+  const project = projects.find((entry) => entry.data.slug === item.slug);
+  if (!project) throw new Error(`Capability evidence project "${item.slug}" is missing.`);
+  return { ...item, project, projectCopy: getProjectCopy(project, locale) };
+});
+---
+
+<section class="capability-grid" aria-labelledby="capability-grid-title" data-capability-grid>
+  <header class="capability-grid__header">
+    <h2 id="capability-grid-title">{copy.title}</h2>
+  </header>
+  <ul>
+    {items.map((item) => (
+      <li>
+        <a href={routeHref(locale, { name: 'project', slug: item.project.data.slug })} data-capability-project={item.project.data.slug}>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+          <span class="capability-grid__evidence">{item.projectCopy.title}<span aria-hidden="true"> ↗</span></span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .capability-grid {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-8) var(--grid-gutter);
+    padding-block: var(--space-12);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .capability-grid__header {
+    grid-column: span 4;
+  }
+
+  .capability-grid__header h2 {
+    max-inline-size: 12ch;
+    margin: 0;
+    font-size: var(--type-h2-size);
+    line-height: var(--type-h2-leading);
+    text-wrap: balance;
+  }
+
+  .capability-grid ul {
+    display: grid;
+    grid-column: span 8;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--grid-gutter);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .capability-grid li {
+    min-inline-size: 0;
+    border-block-start: 1px solid var(--line);
+  }
+
+  .capability-grid li a {
+    display: block;
+    min-block-size: 100%;
+    padding: var(--space-4) 0 var(--space-6);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .capability-grid li a:hover h3 {
+    color: var(--signal);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .capability-grid li a:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .capability-grid h3 {
+    margin: 0;
+    font-family: var(--font-family-sans);
+    font-size: 1.125rem;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  .capability-grid li p {
+    margin: var(--space-2) 0 var(--space-4);
+    color: var(--muted);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .capability-grid__evidence {
+    color: var(--signal);
+    font-family: var(--font-family-sans);
+    font-size: var(--type-meta-size);
+    font-weight: 650;
+  }
+
+  @media (max-width: 899.98px) {
+    .capability-grid__header,
+    .capability-grid ul {
+      grid-column: 1 / -1;
+    }
+
+    .capability-grid__header h2 {
+      max-inline-size: none;
+    }
+  }
+
+  @media (max-width: 539.98px) {
+    .capability-grid ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
