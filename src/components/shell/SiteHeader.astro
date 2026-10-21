@@ -86,6 +86,7 @@ const navigation = [
     const menu = document.querySelector('[data-site-menu]');
     if (!(menu instanceof HTMLDetailsElement)) return;
 
+    const toggle = menu.querySelector('summary');
     const desktop = window.matchMedia('(min-width: 900px)');
     const sync = () => {
       menu.open = desktop.matches;
@@ -93,28 +94,24 @@ const navigation = [
 
     sync();
     desktop.addEventListener('change', sync);
-  })();
-</script>
-
-<script>
-  const menu = document.querySelector<HTMLDetailsElement>('[data-site-menu]');
-
-  if (menu) {
-    const toggle = menu.querySelector('summary');
 
     document.addEventListener('click', (event) => {
+      // On desktop the navigation is always visible. Closing the details there
+      // would collapse the whole menu with no toggle to reopen it.
+      if (desktop.matches) return;
+
       if (menu.open && event.target instanceof Node && !menu.contains(event.target)) {
         menu.open = false;
       }
     });
 
     menu.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && menu.open) {
-        menu.open = false;
-        toggle?.focus();
-      }
+      if (event.key !== 'Escape' || !menu.open || desktop.matches) return;
+
+      menu.open = false;
+      toggle?.focus();
     });
-  }
+  })();
 </script>
 
 <style>

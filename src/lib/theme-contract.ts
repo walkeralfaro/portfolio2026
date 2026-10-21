@@ -37,3 +37,23 @@ export function createThemeInitScript(): string {
   root.style.colorScheme = theme;
 })();`;
 }
+
+/**
+ * This script is embedded inline right after the theme control markup so the
+ * stored preference is already selected before the first paint. The deferred
+ * theme script keeps the control in sync afterwards.
+ */
+export function createThemeControlSyncScript(): string {
+  return `(() => {
+  const preference = document.documentElement.getAttribute(${JSON.stringify(THEME_PREFERENCE_ATTRIBUTE)});
+  if (!preference) return;
+
+  for (const control of document.querySelectorAll('[data-theme-control]')) {
+    for (const input of control.querySelectorAll('input[name="theme"]')) {
+      if (input instanceof HTMLInputElement) {
+        input.checked = input.value === preference;
+      }
+    }
+  }
+})();`;
+}

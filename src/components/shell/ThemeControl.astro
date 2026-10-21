@@ -1,6 +1,7 @@
 ---
 import Icon from '../icons/Icon.astro';
 import type { IconName } from '../icons/icon-paths';
+import { createThemeControlSyncScript } from '../../lib/theme-contract';
 import type { ThemeMode } from '../../lib/theme-contract';
 
 interface Props {
@@ -17,6 +18,8 @@ const options: Array<{ value: ThemeMode; label: string; icon: IconName }> = [
   { value: 'light', label: lightLabel, icon: 'light' },
   { value: 'dark', label: darkLabel, icon: 'dark' },
 ];
+
+const themeControlSyncScript = createThemeControlSyncScript();
 ---
 
 <fieldset class="theme-control" data-theme-control>
@@ -39,6 +42,8 @@ const options: Array<{ value: ThemeMode; label: string; icon: IconName }> = [
     }
   </div>
 </fieldset>
+
+<script is:inline set:html={themeControlSyncScript} />
 
 <script>
   import { initThemeControl } from '../../scripts/theme';

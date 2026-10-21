@@ -312,6 +312,58 @@ test('the mobile catalog is a single-column thumbnail list without a preview pan
   }
 });
 
+test('project rows inset their content on a full-width navigation surface', async ({ page }) => {
+  for (const width of [375, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/work/');
+    await waitForCatalog(page);
+
+    const rows = await page.locator('[data-project-row]').evaluateAll((elements) =>
+      elements.map((row) => {
+        const inner = row.querySelector<HTMLElement>('.project-row__inner');
+        const title = row.querySelector<HTMLElement>('.project-row__title');
+        const thumb = row.querySelector<HTMLElement>('.project-row__thumb');
+
+        if (!inner || !title) {
+          throw new Error('Project row is missing its inner surface or title');
+        }
+
+        const rowBox = row.getBoundingClientRect();
+        const innerBox = inner.getBoundingClientRect();
+        const lead = thumb && getComputedStyle(thumb).display !== 'none' ? thumb : title;
+        const leadBox = lead.getBoundingClientRect();
+        const innerStyle = getComputedStyle(inner);
+
+        return {
+          rowX: rowBox.x,
+          rowWidth: rowBox.width,
+          innerX: innerBox.x,
+          innerWidth: innerBox.width,
+          contentInset: leadBox.x - rowBox.x,
+          paddingStart: Number.parseFloat(innerStyle.paddingInlineStart),
+          paddingEnd: Number.parseFloat(innerStyle.paddingInlineEnd),
+        };
+      }),
+    );
+
+    expect(rows).toHaveLength(14);
+
+    for (const entry of rows) {
+      expect(entry.innerX).toBeCloseTo(entry.rowX, 0);
+      expect(entry.innerWidth).toBeCloseTo(entry.rowWidth, 0);
+      expect(entry.contentInset).toBeGreaterThanOrEqual(12);
+      expect(entry.paddingStart).toBeGreaterThanOrEqual(12);
+      expect(entry.paddingEnd).toBeGreaterThanOrEqual(12);
+    }
+
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+      ),
+    ).toBe(true);
+  }
+});
+
 test('without JavaScript all 14 projects remain visible and navigable', async ({ browser }) => {
   const context = await browser.newContext({
     javaScriptEnabled: false,

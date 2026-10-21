@@ -44,6 +44,28 @@ test('the desktop header exposes navigation, theme, and language controls', asyn
   await expect(header.locator('.site-menu__toggle')).toBeHidden();
 });
 
+test('clicking outside the desktop header keeps the navigation visible', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/');
+
+  const header = page.locator('header');
+  const navigation = header.getByRole('navigation', { name: 'Navegación principal' });
+
+  await expect(navigation).toBeVisible();
+
+  await page.locator('#main h1').click();
+
+  await expect(navigation).toBeVisible();
+  await expect(header.getByRole('group', { name: 'Tema' })).toBeVisible();
+  await expect(header.locator('.language-switcher')).toBeVisible();
+
+  await header.getByRole('link', { name: 'Trabajo' }).focus();
+  await page.keyboard.press('Escape');
+
+  await expect(navigation).toBeVisible();
+  await expect(header.locator('.site-menu__toggle')).toBeHidden();
+});
+
 test('the mobile menu is keyboard operable and fits at 320 px', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto('/');

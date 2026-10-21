@@ -1,4 +1,4 @@
-# .opencode/
+.opencode/
 
 # Astro build output and generated files
 dist/
@@ -18,3 +18,4 @@ pnpm-debug.log*
 # Local OS and IDE files
 .DS_Store
 .idea/
+projects/

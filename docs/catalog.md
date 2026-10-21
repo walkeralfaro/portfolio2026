@@ -50,7 +50,7 @@ Every project row is one navigation target:
 - Tier 3 rows link to their real external destination when one exists.
 - A tier 3 row with no live or code URL is not a link. It shows a pending state and the localized availability note instead.
 
-Rows expose the year (or the localized pending label), title, one-line summary, primary category, 3–5 stack items, and status. The mobile thumbnail is decorative because the row already names the project; the placeholder cover still carries a descriptive label for assistive technology when the full cover is shown.
+Rows expose the year (or the localized pending label), title, one-line summary, primary category, 3–5 stack items, and status. Row content is inset by `1rem` on both sides at every breakpoint, while the dividers, hover background, and link surface remain full width. The mobile thumbnail is decorative because the row already names the project; the placeholder cover still carries a descriptive label for assistive technology when the full cover is shown.
 
 ## Preview behavior
 

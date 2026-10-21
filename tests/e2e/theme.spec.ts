@@ -61,6 +61,23 @@ test('a manual theme selection persists across reloads', async ({ page }) => {
   await expect(page.getByRole('radio', { name: 'Sistema' })).toBeChecked();
 });
 
+test('the stored preference is selected before deferred scripts run', async ({ page }) => {
+  await page.addInitScript((key) => {
+    localStorage.setItem(key, 'dark');
+  }, THEME_STORAGE_KEY);
+
+  // Only network scripts are blocked; inline scripts still run while parsing.
+  await page.route('**/*', (route) =>
+    route.request().resourceType() === 'script' ? route.abort() : route.continue(),
+  );
+
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+  await expect(page.locator('html')).toHaveAttribute(THEME_ATTRIBUTE, 'dark');
+  await expect(page.getByRole('radio', { name: 'Oscuro' })).toBeChecked();
+  await expect(page.getByRole('radio', { name: 'Sistema' })).not.toBeChecked();
+});
+
 test('system mode follows operating-system changes without a reload', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/');
