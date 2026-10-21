@@ -5,7 +5,6 @@ import ProfileIntro from '../../components/profile/ProfileIntro.astro';
 import FeaturedWork from '../../components/profile/FeaturedWork.astro';
 import IndexExcerpt from '../../components/profile/IndexExcerpt.astro';
 import CapabilityGrid from '../../components/profile/CapabilityGrid.astro';
-import Trajectory from '../../components/profile/Trajectory.astro';
 import { getUi } from '../../i18n/ui';
 import { routeHref } from '../../i18n/routes';
 import { site } from '../../lib/site';
@@ -23,14 +22,4 @@ const title = `${site.name} — ${ui.profile.role}`;
   <FeaturedWork locale={locale} projects={projects} />
   <IndexExcerpt locale={locale} projects={projects} />
   <CapabilityGrid locale={locale} projects={projects} />
-  <Trajectory locale={locale} />
-  <p class="home-page__links">
-    <a href={routeHref(locale, { name: 'about' })}>{ui.nav.about}</a>
-  </p>
 </BaseLayout>
-
-<style>
-  .home-page__links {
-    margin-block-start: var(--space-6);
-  }
-</style>

@@ -18,7 +18,7 @@ export const uiEs = {
     about: {
       heading: 'Sobre mí',
       description:
-        'Perfil profesional, capacidades, trayectoria y contexto de trabajo de Walker Rómulo Alfaro Trelles.',
+        'Perfil profesional, capacidades, tecnologías y contexto de trabajo de Walker Rómulo Alfaro Trelles.',
     },
     notFound: {
       code: '404',

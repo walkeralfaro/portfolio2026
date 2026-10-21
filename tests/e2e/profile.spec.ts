@@ -75,20 +75,7 @@ test('each home capability links to project evidence', async ({ page, request })
   }
 });
 
-test('the home trajectory has the three required eras in order', async ({ page }) => {
-  for (const entry of locales) {
-    await page.goto(entry.path);
-    const eras = page.locator('[data-trajectory] li');
-    await expect(eras).toHaveCount(3);
-    expect(await eras.locator('.trajectory__dates').allTextContents()).toEqual([
-      '2006–2019',
-      '2023–2024',
-      entry.locale === 'es' ? '2025–actualidad' : '2025–present',
-    ]);
-  }
-});
-
-test('about groups every skill in one tier and preserves the full role history', async ({ page }) => {
+test('about groups every skill in one tier', async ({ page }) => {
   for (const entry of locales) {
     await page.goto(entry.locale === 'es' ? '/about/' : '/en/about/');
     await expect(page.locator('main h1')).toBeVisible();
@@ -105,11 +92,6 @@ test('about groups every skill in one tier and preserves the full role history',
     const skills = await page.locator('[data-skill]').evaluateAll((elements) => elements.map((element) => element.getAttribute('data-skill')));
     expect(skills.length).toBeGreaterThan(0);
     expect(new Set(skills).size).toBe(skills.length);
-
-    const experience = page.locator('[data-experience-count]');
-    const expectedCount = Number(await experience.getAttribute('data-experience-count'));
-    await expect(experience.locator('[data-experience-role]')).toHaveCount(expectedCount);
-    expect(expectedCount).toBeGreaterThan(0);
   }
 });
 

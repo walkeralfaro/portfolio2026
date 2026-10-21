@@ -15,7 +15,7 @@ interface Props {
 const { locale, projects } = Astro.props;
 const ui = getUi(locale);
 const copy = profileCopy[locale].excerpt;
-const excerpt = projects.slice(0, 8);
+const excerpt = projects.slice(0, 4);
 ---
 
 <section class="index-excerpt" aria-labelledby="index-excerpt-title" data-home-index-excerpt data-excerpt-count={excerpt.length}>
@@ -36,7 +36,7 @@ const excerpt = projects.slice(0, 8);
     display: grid;
     grid-column: 1 / -1;
     padding-block: var(--space-12);
-    border-block-end: 1px solid var(--line);
+
   }
 
   .index-excerpt__header {
@@ -46,7 +46,7 @@ const excerpt = projects.slice(0, 8);
     align-items: end;
     gap: var(--space-4);
     padding-block-end: var(--space-6);
-    border-block-end: 1px solid var(--line);
+
   }
 
   .index-excerpt__header h2 {

@@ -20,7 +20,7 @@ export const uiEn = {
     about: {
       heading: 'About',
       description:
-        'Professional profile, capabilities, trajectory, and working context for Walker Rómulo Alfaro Trelles.',
+        'Professional profile, capabilities, technologies, and working context for Walker Rómulo Alfaro Trelles.',
     },
     notFound: {
       code: '404',
