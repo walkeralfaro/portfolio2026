@@ -183,15 +183,17 @@ const navigation = [
     background: var(--surface);
   }
 
-  .site-menu__icon--close {
+  /* The icons are rendered by Icon.astro, so they only carry that component's
+     scope attribute. :global() is required to reach them from here. */
+  .site-menu__toggle :global(.site-menu__icon--close) {
     display: none;
   }
 
-  .site-menu[open] .site-menu__icon--open {
+  .site-menu[open] .site-menu__toggle :global(.site-menu__icon--open) {
     display: none;
   }
 
-  .site-menu[open] .site-menu__icon--close {
+  .site-menu[open] .site-menu__toggle :global(.site-menu__icon--close) {
     display: block;
   }
 

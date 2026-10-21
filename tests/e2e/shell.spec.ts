@@ -73,13 +73,20 @@ test('the mobile menu is keyboard operable and fits at 320 px', async ({ page })
   const toggle = page.locator('.site-menu__toggle');
   const navigation = page.getByRole('navigation', { name: 'Navegación principal' });
 
+  const openIcon = toggle.locator('.site-menu__icon--open');
+  const closeIcon = toggle.locator('.site-menu__icon--close');
+
   await expect(toggle).toBeVisible();
   await expect(navigation).toBeHidden();
+  await expect(openIcon).toBeVisible();
+  await expect(closeIcon).toBeHidden();
 
   await toggle.focus();
   await page.keyboard.press('Enter');
 
   await expect(navigation).toBeVisible();
+  await expect(openIcon).toBeHidden();
+  await expect(closeIcon).toBeVisible();
   await expect(page.getByRole('group', { name: 'Tema' })).toBeVisible();
   await expect(page.getByRole('link', { name: /English — Cambiar idioma a inglés/ })).toBeVisible();
 
@@ -91,6 +98,8 @@ test('the mobile menu is keyboard operable and fits at 320 px', async ({ page })
 
   await page.keyboard.press('Escape');
   await expect(navigation).toBeHidden();
+  await expect(openIcon).toBeVisible();
+  await expect(closeIcon).toBeHidden();
   await expect(toggle).toBeFocused();
 });
 

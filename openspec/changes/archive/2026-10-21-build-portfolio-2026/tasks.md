@@ -106,5 +106,5 @@
 - [x] 10.5 Audit the sitemap, robots, canonical URLs, `hreflang`, Open Graph images, and 404 pages. Verify: the sitemap lists both locales and excludes Puja Inmobiliaria.
 - [x] 10.6 Audit all copy for invented claims, mixed languages, unlabeled placeholders, and missing project actions. Verify: every claim maps to a source and every placeholder is explicit.
 - [x] 10.7 Run the full production build and preview locally. Verify: no broken internal links, no console errors, and no missing assets.
-- [ ] 10.8 Deploy a preview build to the chosen static host and verify the production URL, canonical host, and redirects. Verify: the preview is reachable and the old site remains live until cutover.
+- [x] 10.8 Deploy a preview build to the chosen static host and verify the production URL, canonical host, and redirects. Verify: the preview is reachable and the old site remains live until cutover.
 - [x] 10.9 Complete the final QA checklist across 320, 768, 1024, and 1440 px in both themes and locales. Verify: all checks pass and the change is ready for review.
