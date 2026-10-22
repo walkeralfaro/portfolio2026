@@ -1,6 +1,8 @@
-# Importing a project README
+# Project README intake template
 
-This document is the contract for an AI assistant turning `projects/<slug>/README.md` into `projects/<slug>/content.yaml`. The assistant performs the interpretation; the importer performs validation and deterministic rendering.
+This document is the project-agnostic contract for an AI assistant turning `projects/<slug>/README.md` into `projects/<slug>/content.yaml`. The assistant performs the interpretation; the importer performs validation and deterministic rendering.
+
+Placeholders such as `<slug>` and angle-bracketed descriptions show the shape of the intake. Replace them with values from the README, the catalog, or the user; never publish the placeholders themselves.
 
 ## Rules for the assistant
 
@@ -12,6 +14,7 @@ This document is the contract for an AI assistant turning `projects/<slug>/READM
 - Do not edit `src/content/projects/*.yaml`, `src/content/cases/*.mdx`, or `.import-manifest.json` by hand.
 - Put the stack and gallery only in the intake. The case narrative never declares a Stack or Gallery section.
 - If a narrative cannot be supported in both languages, omit `narrative` from both locales.
+- Take curated values from the catalog and the content schema. Do not copy values from this template or infer them from the README alone.
 
 ## Extraction guidance
 
@@ -19,11 +22,11 @@ This document is the contract for an AI assistant turning `projects/<slug>/READM
 | --- | --- | --- |
 | `slug` | Project folder / catalog inventory | Kebab-case folder name; must match `projects/<slug>/`. |
 | `year` | README date, repository metadata, or user | Integer or `pending`; never guess. |
-| `category` | User or existing catalog | One of `ia`, `producto`, `frontend`, `juegos`. |
+| `category` | Catalog schema or user | Use a category allowed by the catalog; do not infer it from the README alone. |
 | `tags` | README technology and feature notes | One or more editorial retrieval labels. |
-| `status` | README links and verified deployment state | `live`, `in-development`, or `archived`. |
-| `featured` | User/catalog curation | Boolean; exactly four projects are featured site-wide. |
-| `order` | Catalog curation | Positive unique integer. |
+| `status` | README links and verified deployment state | Use a status allowed by the content schema. |
+| `featured` | Catalog curation or user | Boolean; follow the catalog's featured-project policy. |
+| `order` | Catalog curation or user | Positive unique integer. |
 | `stack` | “Built with”, “Tech stack”, or equivalent | Three to five normalized items; strip links and descriptions. |
 | `links.live` | “Live Site URL” or verified deployment | Real URL or `null`; placeholders are not links. |
 | `links.code` | “Solution URL”, repository, or source link | Real URL or `null`. |
@@ -39,32 +42,32 @@ This document is the contract for an AI assistant turning `projects/<slug>/READM
 ## Intake schema
 
 ```yaml
-slug: pokedex
-year: pending
-category: frontend
-tags: [pokeapi, react, zustand]
-status: in-development
-featured: false
-order: 6
-stack: [React 19, TypeScript, Vite, Zustand, React Router 7]
+slug: <slug>
+year: <integer or pending>
+category: <category>
+tags: [<tag>, <tag>]
+status: <status>
+featured: <true or false>
+order: <positive integer>
+stack: [<technology>, <technology>, <technology>]
 links:
-  live: null
-  code: null
-cover: null
+  live: <url or null>
+  code: <url or null>
+cover: <asset key or null>
 locales:
   es:
-    title: Pokedex
-    summary: Explorador de los primeros 151 Pokémon con tipos, peso, movimientos y cadena de evolución.
-    role: Desarrollo individual como proyecto personal, incluyendo el consumo de PokeAPI, el estado global y las vistas.
-    result: Lista en cuadrícula, detalle por Pokémon, badges de tipo, cadena de evolución recursiva y estados de carga y error.
-    availability: Demo y código pendientes.
+    title: <Spanish title>
+    summary: <one sentence in Spanish>
+    role: <short role in Spanish>
+    result: <short result in Spanish>
+    availability: <truthful availability note in Spanish>
     gallery: []
   en:
-    title: Pokedex
-    summary: Explorer of the first 151 Pokémon with types, weight, moves, and evolution chains.
-    role: Individual development as a personal project, covering PokeAPI integration, global state, and views.
-    result: A grid list, per-Pokémon detail, type badges, a recursive evolution chain, and loading and error states.
-    availability: Demo and code pending.
+    title: <English title>
+    summary: <one sentence in English>
+    role: <short role in English>
+    result: <short result in English>
+    availability: <truthful availability note in English>
     gallery: []
 ```
 
@@ -75,27 +78,27 @@ locales:
   es:
     narrative:
       problem: |
-        The problem in Spanish.
+        <problem statement in Spanish>
       role: |
-        The role in Spanish.
+        <role statement in Spanish>
       decisions:
-        - "**Decision one.** Explanation."
-        - "**Decision two.** Explanation."
-        - "**Decision three.** Explanation."
+        - "**<decision title>.** <explanation in Spanish>"
+        - "**<decision title>.** <explanation in Spanish>"
+        - "**<decision title>.** <explanation in Spanish>"
       result: |
-        The result in Spanish.
+        <result statement in Spanish>
   en:
     narrative:
       problem: |
-        The problem in English.
+        <problem statement in English>
       role: |
-        The role in English.
+        <role statement in English>
       decisions:
-        - "**Decision one.** Explanation."
-        - "**Decision two.** Explanation."
-        - "**Decision three.** Explanation."
+        - "**<decision title>.** <explanation in English>"
+        - "**<decision title>.** <explanation in English>"
+        - "**<decision title>.** <explanation in English>"
       result: |
-        The result in English.
+        <result statement in English>
 ```
 
 `narrative.decisions` must contain three or four items. The generated case bodies use exactly Problem, Role, Decisions, and Result headings. The importer adds the locale-appropriate headings and numbering.
