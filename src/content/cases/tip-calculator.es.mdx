@@ -1,0 +1,25 @@
+---
+# Generated from projects/tip-calculator/README.md.
+# Edit projects/tip-calculator/content.yaml and run npm run content:import instead.
+project: tip-calculator
+locale: es
+order: 9
+---
+
+## Problema
+
+El reto de Frontend Mentor pedía una calculadora que repartiera la propina y el total por persona según el porcentaje y el número de personas. La interfaz debía adaptarse a distintos tamaños de pantalla y mantener el botón de reinicio bloqueado cuando no hubiera una propina que calcular.
+
+## Rol
+
+Desarrollo individual del reto con HTML5, SCSS y JavaScript Vanilla. Implementé la lógica de cálculo, el estado del botón de reinicio y la adaptación responsive.
+
+## Decisiones
+
+1. **Lógica de cálculo con JavaScript Vanilla.** Los eventListeners leen el porcentaje, el importe y el número de personas, y actualizan la propina y el total por persona sin depender de un framework.
+2. **Reinicio condicionado.** El botón se habilita o deshabilita combinando JavaScript y CSS, de modo que permanece bloqueado mientras no haya una propina que calcular.
+3. **Estructura HTML y estilos SCSS.** Definí primero la estructura del HTML con una herramienta de layout y después resolví la presentación y la adaptación responsive con SCSS.
+
+## Resultado
+
+La calculadora obtiene la propina según el porcentaje y el número de personas, mantiene el reinicio bloqueado cuando no corresponde y se adapta a móvil y escritorio. La solución está publicada en Netlify y su código está disponible en GitHub.

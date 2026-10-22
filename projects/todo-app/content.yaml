@@ -1,0 +1,25 @@
+slug: todo-app
+year: pending
+category: frontend
+tags: [frontend-mentor, react, drag-and-drop]
+status: live
+featured: false
+order: 7
+stack: [React, Sass, Vite, '@hello-pangea/dnd', Context API]
+links:
+  live: https://walker-alfaro-todo-app.netlify.app
+  code: https://github.com/WalkerAlfaro/FrontendMentor_Todo_App
+cover: todo-app
+locales:
+  es:
+    title: Todo App
+    summary: Solución del reto Todo app de Frontend Mentor con tema claro/oscuro y reordenamiento por arrastre.
+    role: Desarrollo individual del reto, incluyendo la lógica de tareas, el estado global del tema y los estilos.
+    result: Altas, marcado de completadas, eliminación, filtros por estado, limpieza de completadas y arrastre, con un flujo mobile-first.
+    gallery: []
+  en:
+    title: Todo App
+    summary: Frontend Mentor Todo app solution with light/dark themes and drag-and-drop reordering.
+    role: Individual development of the challenge, including task logic, global theme state, and styling.
+    result: Adding, completing, deleting, status filters, clearing completed items, and drag-and-drop, with a mobile-first workflow.
+    gallery: []

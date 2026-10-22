@@ -1,11 +1,21 @@
+# Generated from projects/tetris/README.md.
+# Edit projects/tetris/content.yaml and run npm run content:import instead.
 slug: tetris
 year: pending
 category: juegos
-tags: [canvas, vanilla-js, juego]
+tags:
+  - canvas
+  - vanilla-js
+  - juego
 status: live
 featured: true
 order: 12
-stack: [HTML, CSS, JavaScript, Canvas, Web Audio API]
+stack:
+  - HTML
+  - CSS
+  - JavaScript
+  - Canvas
+  - Web Audio API
 links:
   live: https://tetris.walkeralfaro.com
   code: https://github.com/walkeralfaro/tetris_game_js

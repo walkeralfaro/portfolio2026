@@ -1,0 +1,59 @@
+slug: tetris
+year: pending
+category: juegos
+tags: [canvas, vanilla-js, juego]
+status: live
+featured: true
+order: 12
+stack: [HTML, CSS, JavaScript, Canvas, Web Audio API]
+links:
+  live: https://tetris.walkeralfaro.com
+  code: https://github.com/walkeralfaro/tetris_game_js
+cover: null
+locales:
+  es:
+    title: Tetris
+    summary: Tetris desarrollado íntegramente con JavaScript, sin bibliotecas externas, con controles táctiles y audio.
+    role: Desarrollo individual a partir del código de Midudev, incluyendo el bucle de juego, los controles, el audio y el despliegue.
+    result: Juego disponible en línea con bucle requestAnimationFrame, efectos y música con Web Audio API, y gestos táctiles para mover y rotar piezas.
+    gallery:
+      - src: start-screen
+        alt: Pantalla de inicio del juego, con el logotipo de Tetris y el botón de inicio.
+      - src: play-screen
+        alt: Partida en curso, con las piezas de colores apiladas en el tablero y el marcador.
+      - src: game-over-screen
+        alt: Pantalla de fin de partida, con el mensaje de game over sobre el tablero y la puntuación final.
+    narrative:
+      problem: |
+        El objetivo era construir Tetris íntegramente con JavaScript, sin bibliotecas externas, y resolver el bucle de juego, el audio y los controles táctiles con APIs nativas del navegador.
+      role: |
+        Desarrollo individual a partir del código de Midudev. Implementé el bucle, los controles, la administración de audio y el despliegue.
+      decisions:
+        - "**Un bucle de estados sobre canvas.** `requestAnimationFrame` sincroniza el dibujo con el refresco de pantalla y alterna entre pantalla de inicio, partida y fin del juego."
+        - "**Audio nativo con Web Audio API.** Los efectos y la música de fondo se cargan como objetos de audio; cada reproducción clona el nodo para ajustar volumen, bucle y detención sin compartir la misma instancia."
+        - "**Controles táctiles por gestos.** Los eventos `touchstart`, `touchmove` y `touchend` distinguen desplazamientos laterales y hacia abajo; un toque sin desplazamiento rota la pieza."
+      result: |
+        El juego está disponible en línea y mantiene un bucle de renderizado a 60 cuadros por segundo. Incluye efectos y música, además de gestos táctiles para mover y rotar las piezas. La nota de origen documenta las pantallas de inicio, partida y fin del juego.
+  en:
+    title: Tetris
+    summary: Tetris built entirely in JavaScript without external libraries, with touch controls and audio.
+    role: Individual development based on Midudev's code, including the game loop, controls, audio, and deployment.
+    result: An online game with a requestAnimationFrame loop, sound effects and music through the Web Audio API, and touch gestures for moving and rotating pieces.
+    gallery:
+      - src: start-screen
+        alt: Game start screen, with the Tetris logo and the start button.
+      - src: play-screen
+        alt: A game in progress, with the coloured pieces stacked on the board and the score panel.
+      - src: game-over-screen
+        alt: Game over screen, with the game over message over the board and the final score.
+    narrative:
+      problem: |
+        The goal was to build Tetris entirely in JavaScript, without external libraries, and solve the game loop, audio, and touch controls using native browser APIs.
+      role: |
+        Individual development based on Midudev's code. I implemented the loop, controls, audio management, and deployment.
+      decisions:
+        - "**A state-based loop on canvas.** `requestAnimationFrame` synchronizes drawing with the display refresh and switches between the start screen, gameplay, and game over."
+        - "**Native audio with the Web Audio API.** Sound effects and background music load as audio objects; each playback clones the node so volume, looping, and stopping do not share the same instance."
+        - "**Touch controls through gestures.** The `touchstart`, `touchmove`, and `touchend` events distinguish sideways and downward movement; a tap without movement rotates the piece."
+      result: |
+        The game is available online and keeps a render loop at 60 frames per second. It includes effects and music, plus touch gestures for moving and rotating pieces. The source note documents the start, play, and game-over screens.

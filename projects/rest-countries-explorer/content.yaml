@@ -1,0 +1,27 @@
+slug: rest-countries-explorer
+year: 2023
+category: frontend
+tags: [api-rest, nextjs, frontend]
+status: archived
+featured: false
+order: 11
+stack: [React, Next.js, TypeScript, Tailwind CSS, API REST]
+links:
+  live: null
+  code: null
+cover: null
+locales:
+  es:
+    title: REST Countries Explorer
+    summary: Aplicación responsive para buscar y filtrar países por nombre o región usando la API REST Countries.
+    role: Desarrollo individual como proyecto personal.
+    result: Búsqueda y filtro por nombre o región, tema claro/oscuro, vistas de detalle y una interfaz accesible.
+    availability: Demo y código específicos pendientes.
+    gallery: []
+  en:
+    title: REST Countries Explorer
+    summary: Responsive app for searching and filtering countries by name or region using the REST Countries API.
+    role: Individual development as a personal project.
+    result: Search and filtering by name or region, light/dark themes, detail views, and an accessible interface.
+    availability: Project-specific demo and code pending.
+    gallery: []

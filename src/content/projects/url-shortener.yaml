@@ -1,11 +1,21 @@
+# Generated from projects/url-shortener/README.md.
+# Edit projects/url-shortener/content.yaml and run npm run content:import instead.
 slug: url-shortener
 year: pending
 category: producto
-tags: [full-stack, mongodb, nextjs]
+tags:
+  - full-stack
+  - mongodb
+  - nextjs
 status: live
 featured: true
 order: 4
-stack: [Next.js, React, Zod, Mongoose, MongoDB Atlas]
+stack:
+  - Next.js
+  - React
+  - Zod
+  - Mongoose
+  - MongoDB Atlas
 links:
   live: https://urlshortener.walkeralfaro.com/
   code: https://github.com/walkeralfaro/url-shortener.git
@@ -16,8 +26,10 @@ locales:
     summary: Acortador de enlaces con backend propio, persistencia en MongoDB y validación compartida con Zod.
     role: Desarrollo individual para el reto de Frontend Mentor, incluyendo frontend, backend y persistencia.
     result: Backend que resuelve códigos en rutas /r/:code, lista de enlaces que se conserva al refrescar, copia al portapapeles y validación con Zod en cliente y servidor.
+    gallery: []
   en:
     title: URL Shortener
     summary: Link shortener with its own backend, MongoDB persistence, and shared Zod validation.
     role: Individual development for the Frontend Mentor challenge, including frontend, backend, and persistence.
     result: A backend that resolves codes at /r/:code, a link list that survives refreshes, clipboard copying, and Zod validation on both client and server.
+    gallery: []
