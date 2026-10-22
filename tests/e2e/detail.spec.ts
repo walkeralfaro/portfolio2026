@@ -56,7 +56,9 @@ test('tier 1 case pages render the fixed sequence in both locales', async ({ pag
     expect(decisions).toBeGreaterThanOrEqual(3);
     expect(decisions).toBeLessThanOrEqual(4);
     await expect(page.locator('[data-gallery]')).toBeVisible();
-    await expect(page.locator('[data-gallery] [data-lightbox-open]')).toHaveCount(1);
+    await expect(page.locator('[data-gallery] [data-lightbox-open]')).toHaveCount(
+      project.slug === 'tetris' ? 3 : 1,
+    );
   }
 
   for (const project of tierOne) {
@@ -238,6 +240,103 @@ test('detail pages expose canonical and reciprocal language alternates', async (
   await expect(page.locator('link[hreflang="es"]')).toHaveAttribute(
     'href',
     'https://walkeralfaro.com/work/todo-mcp/',
+  );
+});
+
+test('a project with a cover shows it in the case header', async ({ page }) => {
+  await openCase(page, '/work/todo-app/');
+
+  const cover = page.locator('[data-case-header] .case-header__cover img');
+
+  await expect(cover).toHaveCount(1);
+  await expect(cover).toHaveAttribute('alt', 'Portada de Todo App, categoría Frontend');
+  await expect(cover).toHaveAttribute('src', /todo-app/);
+
+  await openCase(page, '/en/work/todo-app/');
+
+  await expect(page.locator('[data-case-header] .case-header__cover img')).toHaveAttribute(
+    'alt',
+    'Cover of Todo App, category Frontend',
+  );
+});
+
+test('a project without a cover keeps the designed placeholder in the case header', async ({
+  page,
+}) => {
+  await openCase(page, '/work/todo-mcp/');
+
+  await expect(page.locator('[data-case-header] .case-header__cover .placeholder-cover')).toHaveCount(
+    1,
+  );
+  await expect(page.locator('[data-case-header] .case-header__cover img')).toHaveCount(0);
+});
+
+test('a declared gallery renders its screenshots with localized alternative text', async ({
+  page,
+}) => {
+  await openCase(page, '/work/tetris/');
+
+  const spanish = page.locator('[data-gallery] .screenshot-gallery__thumb img');
+
+  await expect(spanish).toHaveCount(3);
+  await expect(spanish.nth(0)).toHaveAttribute(
+    'alt',
+    'Pantalla de inicio del juego, con el logotipo de Tetris y el botón de inicio.',
+  );
+  await expect(spanish.nth(1)).toHaveAttribute(
+    'alt',
+    'Partida en curso, con las piezas de colores apiladas en el tablero y el marcador.',
+  );
+  await expect(spanish.nth(2)).toHaveAttribute(
+    'alt',
+    'Pantalla de fin de partida, con el mensaje de game over sobre el tablero y la puntuación final.',
+  );
+
+  await openCase(page, '/en/work/tetris/');
+
+  const english = page.locator('[data-gallery] .screenshot-gallery__thumb img');
+
+  await expect(english).toHaveCount(3);
+  await expect(english.nth(0)).toHaveAttribute(
+    'alt',
+    'Game start screen, with the Tetris logo and the start button.',
+  );
+  await expect(english.nth(2)).toHaveAttribute(
+    'alt',
+    'Game over screen, with the game over message over the board and the final score.',
+  );
+});
+
+test('a gallery screenshot opens in the lightbox', async ({ page }) => {
+  await openCase(page, '/work/tetris/');
+
+  const trigger = page.locator('[data-gallery] [data-lightbox-open="gallery-tetris-1"]');
+  const dialog = page.locator('dialog#gallery-tetris-1');
+
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click();
+
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator('img')).toHaveAttribute(
+    'alt',
+    'Partida en curso, con las piezas de colores apiladas en el tablero y el marcador.',
+  );
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+});
+
+test('a tier 1 case without a gallery keeps the cover and the pending note', async ({
+  page,
+}) => {
+  await openCase(page, '/work/todo-mcp/');
+
+  await expect(page.locator('[data-gallery] [data-lightbox-open]')).toHaveCount(1);
+  await expect(
+    page.locator('[data-gallery] .screenshot-gallery__thumb .placeholder-cover'),
+  ).toHaveCount(1);
+  await expect(page.locator('.screenshot-gallery__caption')).toContainText(
+    'No hay capturas verificadas de este proyecto',
   );
 });
 

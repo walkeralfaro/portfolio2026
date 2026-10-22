@@ -20,6 +20,39 @@ function readFilter(root: HTMLElement): CatalogFilter | null {
   return validFilters.has(value) ? value : null;
 }
 
+/**
+ * Move a deferred cover into its panel the first time the panel is shown.
+ * The cover travels inside an inert template, so the browser does not request
+ * the image until the panel is actually seen.
+ */
+function activateCover(panel: HTMLElement): void {
+  if (panel.dataset.coverActivated === 'true') return;
+
+  const template = panel.querySelector<HTMLTemplateElement>('[data-cover-template]');
+  const target = panel.querySelector<HTMLElement>('[data-cover-target]');
+
+  if (!template || !target) return;
+
+  panel.dataset.coverActivated = 'true';
+
+  const fragment = template.content.cloneNode(true) as DocumentFragment;
+  const image = fragment.querySelector('img');
+
+  target.replaceChildren(fragment);
+
+  if (!image) return;
+
+  const reveal = (): void => {
+    target.dataset.coverLoaded = 'true';
+  };
+
+  image.addEventListener('load', reveal, { once: true });
+
+  if (image.complete) {
+    reveal();
+  }
+}
+
 function initCatalog(root: HTMLElement): void {
   const rows = Array.from(root.querySelectorAll<HTMLElement>('[data-project-row]'));
   const filterLinks = Array.from(
@@ -59,6 +92,7 @@ function initCatalog(root: HTMLElement): void {
       if (isActive) {
         panel.removeAttribute('inert');
         panel.removeAttribute('aria-hidden');
+        activateCover(panel);
       } else {
         panel.setAttribute('inert', '');
         panel.setAttribute('aria-hidden', 'true');

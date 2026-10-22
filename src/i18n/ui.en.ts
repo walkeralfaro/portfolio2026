@@ -130,7 +130,7 @@ export const uiEn = {
     galleryLabel: 'Project gallery',
     coverLabel: 'Cover',
     coverCaption:
-      'Cover generated from the project metadata. There are no verified screenshots.',
+      'There are no verified screenshots of this project; the image shows its cover.',
     openCover: 'Enlarge cover of {title}',
     openImage: 'Enlarge image of {title}: {alt}',
     lightboxLabel: 'Enlarged view of {title}',

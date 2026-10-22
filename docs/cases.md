@@ -129,13 +129,13 @@ For tier 2, the page renders the localized `summary`, `role`, and `result` direc
 
 ## Gallery and lightbox
 
-All current projects use generated placeholder covers; there are no verified screenshots. The storage and link audit is recorded in `docs/content-sources.md`.
+Covers come from the project record and screenshots from the case body, both as asset keys resolved against `src/assets/`. The published assets and their provenance are recorded in `docs/content-sources.md`; the authoring contract is in `docs/content.md`.
 
 `src/components/case/ScreenshotGallery.astro` renders:
 
-- A thumbnail list when real screenshots are supplied.
-- A single **Portada / Cover** item when no screenshots exist. This is the generated cover, not a fake screenshot.
-- A caption that states the cover is generated from project metadata and that no screenshots are verified.
+- A thumbnail list when the case declares `gallery` entries. Each entry renders a responsive thumbnail and its own dialog, and the dialog opens the original file.
+- A single **Portada / Cover** item when the case declares none: the project's real cover when the record references one, or the designed placeholder when it does not.
+- A caption stating that there are no verified screenshots of the project.
 
 The gallery's only client behavior is `src/scripts/lightbox.ts`. It uses native `<dialog>` elements from `Lightbox.astro`:
 
@@ -150,7 +150,7 @@ The gallery's only client behavior is `src/scripts/lightbox.ts`. It uses native 
 
 The dialog has an accessible label, the close control has a text label for assistive technology, and the close control is the first focusable element inside the dialog. The gallery trigger is a real `<button>` with `aria-haspopup="dialog"`, not a clickable `div`.
 
-To add real screenshots later, pass an `images` array to `ScreenshotGallery.astro` with `src`, `alt`, `width`, and `height`. Each image renders as a thumbnail and its own dialog. No placeholder image is generated for a project with no asset.
+To publish screenshots, add the files under `src/assets/gallery/<project-slug>/` and declare them in the case body frontmatter as `gallery: [{ src, alt }]`, one list per locale. Each entry renders as a thumbnail and its own dialog. A case with no gallery renders its project cover, or the placeholder when the project has no cover either. The full contract is in `docs/content.md`.
 
 ## Previous and next
 

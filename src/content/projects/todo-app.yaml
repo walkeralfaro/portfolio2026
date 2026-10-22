@@ -10,7 +10,7 @@ stack: [React, Sass, Vite, '@hello-pangea/dnd', Context API]
 links:
   live: https://walker-alfaro-todo-app.netlify.app
   code: https://github.com/WalkerAlfaro/FrontendMentor_Todo_App
-cover: null
+cover: todo-app
 locales:
   es:
     title: Todo App

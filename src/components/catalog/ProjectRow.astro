@@ -4,7 +4,7 @@ import { getProjectCopy } from '../../lib/projects';
 import { routeHref } from '../../i18n/routes';
 import { getUi } from '../../i18n/ui';
 import type { Locale } from '../../i18n/locales';
-import PlaceholderCover from './PlaceholderCover.astro';
+import ProjectCover from './ProjectCover.astro';
 import MetaLabel from '../primitives/MetaLabel.astro';
 import StackList from '../primitives/StackList.astro';
 import StatusBadge from '../primitives/StatusBadge.astro';
@@ -31,9 +31,6 @@ const isExternal = href !== null && detailHref === null;
 const hasDestination = href !== null;
 const RowTag = hasDestination ? 'a' : 'div';
 const TitleTag = headingLevel;
-const coverLabel = ui.catalog.coverAlt
-  .replace('{title}', copy.title)
-  .replace('{category}', categoryLabel);
 ---
 
 <li
@@ -50,12 +47,11 @@ const coverLabel = ui.catalog.coverAlt
     data-row-destination={hasDestination ? (isExternal ? 'external' : 'internal') : 'pending'}
   >
     <span class="project-row__thumb" aria-hidden="true">
-      <PlaceholderCover
-        slug={data.slug}
-        name={copy.title}
-        category={data.category}
-        categoryLabel={categoryLabel}
-        label={coverLabel}
+      <ProjectCover
+        project={project}
+        locale={locale}
+        widths={[120, 180, 240]}
+        sizes="104px"
       />
     </span>
 

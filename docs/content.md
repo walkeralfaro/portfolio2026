@@ -40,6 +40,7 @@ Frontmatter:
 | `locale` | `es` \| `en` | One body per locale. |
 | `order` | positive integer | Uses the project order. |
 | `updated` | date | Optional. |
+| `gallery` | `{ src, alt }[]` | Optional, empty by default. `src` is an asset key, `alt` is written in this file's language. See [Image assets](#image-assets). |
 
 Files use `<slug>.<locale>.mdx`, for example `todo-mcp.es.mdx` and `todo-mcp.en.mdx`.
 
@@ -55,6 +56,57 @@ Every case body must use this exact section sequence:
 | Galería | Gallery |
 
 The Decisions section must contain three or four numbered decisions. Every section must contain text. The validator also rejects Spanish fragments in English bodies.
+
+## Image assets
+
+Project images live inside the repository and are processed by the build. They are never hotlinked.
+
+| Kind | Location | Key |
+| --- | --- | --- |
+| Cover | `src/assets/covers/<project-slug>.<ext>` | File name without extension, for example `tetris` |
+| Gallery screenshot | `src/assets/gallery/<project-slug>/<shot>.<ext>` | File name without extension, for example `start-screen` |
+
+Content references an image by **key**, never by path. The key is resolved against the files in the directory it belongs to.
+
+### Covers
+
+A project record sets `cover` to the key of its cover file, or leaves it `null`:
+
+```yaml
+# src/content/projects/tetris.yaml
+cover: tetris
+```
+
+| Rule | Value |
+| --- | --- |
+| Formats | `.webp` (preferred) or `.png` |
+| Aspect ratio | 16:10, matching `--cover-aspect` |
+| Minimum width | 1600 px |
+
+The file is rendered with `object-fit: cover` inside the 16:10 cover box, so an off-ratio source is cropped rather than letterboxed. A project without a cover renders `PlaceholderCover`.
+
+### Gallery screenshots
+
+A tier 1 case body declares its screenshots in its own frontmatter, because the alternative text is written per locale:
+
+```yaml
+# src/content/cases/tetris.es.mdx
+gallery:
+  - src: start-screen
+    alt: Pantalla de inicio del juego, con el tablero vacío.
+```
+
+| Rule | Value |
+| --- | --- |
+| Formats | `.webp` (preferred) or `.png` |
+| Minimum width | 1200 px |
+
+A case with no `gallery` renders the cover of its project, or the placeholder when the project has no cover either.
+
+### Validation
+
+- A reference to a key with no file is an error: `npm run validate:content` fails and the build fails with the record and the key in the message. A broken image is never published.
+- A file that no record references is reported as a notice and does not fail the run, so a file can be added before it is referenced.
 
 ## Inventory
 
@@ -129,7 +181,7 @@ npm run check
 npm run build
 ```
 
-`validate:content` checks the 14 YAML records and the 12 tier 1 case bodies. `validate:cv` checks both profile data adapters, the section counts, the schema, and the absence of the mobile phone and excluded client data. `check` runs Astro's TypeScript and content diagnostics. `build` runs the CV validation again through `prebuild` and produces the static site.
+`validate:content` checks the 14 YAML records, the 12 tier 1 case bodies, and that every cover and gallery reference resolves to an image file. `validate:cv` checks both profile data adapters, the section counts, the schema, and the absence of the mobile phone and excluded client data. `check` runs Astro's TypeScript and content diagnostics. `build` runs the CV validation again through `prebuild` and produces the static site.
 
 Expected validation summaries:
 

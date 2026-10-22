@@ -1,40 +1,102 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import type { Locale } from '../../i18n/locales';
+import { getUi } from '../../i18n/ui';
+import { getProjectCopy, type ProjectEntry } from '../../lib/projects';
+import { getProjectCover } from '../../lib/project-images';
+import PlaceholderCover from './PlaceholderCover.astro';
 
 interface Props {
-  src: ImageMetadata;
-  alt: string;
+  project: ProjectEntry;
+  locale: Locale;
   priority?: boolean;
   widths?: number[];
   sizes?: string;
   class?: string;
+  /**
+   * Keep the real cover inside an inert template, so the browser does not
+   * request it until the surface activates it.
+   */
+  defer?: boolean;
 }
 
 const {
-  src,
-  alt,
+  project,
+  locale,
   priority = false,
   widths = [480, 720, 960, 1320],
   sizes = '(min-width: 900px) 42vw, 100vw',
   class: className,
+  defer = false,
 } = Astro.props;
 
-const candidates = [...new Set([...widths.filter((width) => width < src.width), src.width])].sort(
-  (first, second) => first - second,
-);
+const ui = getUi(locale);
+const data = project.data;
+const copy = getProjectCopy(project, locale);
+const categoryLabel = ui.categories[data.category];
+const label = ui.catalog.coverAlt
+  .replace('{title}', copy.title)
+  .replace('{category}', categoryLabel);
+
+const image: ImageMetadata | null = getProjectCover(project);
+
+const candidates = image
+  ? [
+      ...new Set([...widths.filter((width) => width < image.width), image.width]),
+    ].sort((first, second) => first - second)
+  : [];
 ---
 
-<figure class:list={['project-cover', className]}>
-  <Image
-    src={src}
-    alt={alt}
-    widths={candidates}
-    sizes={sizes}
-    priority={priority}
-    class="project-cover__image"
-  />
-</figure>
+{
+  image ? (
+    defer ? (
+      <div
+        class:list={['project-cover', 'project-cover--deferred', className]}
+        data-cover-deferred
+      >
+        <PlaceholderCover
+          class="project-cover__backdrop"
+          slug={data.slug}
+          name={copy.title}
+          category={data.category}
+          categoryLabel={categoryLabel}
+          label={label}
+        />
+        <div class="project-cover__target" data-cover-target></div>
+        <template data-cover-template>
+          <Image
+            src={image}
+            alt={label}
+            widths={candidates}
+            sizes={sizes}
+            class="project-cover__image"
+          />
+        </template>
+      </div>
+    ) : (
+      <figure class:list={['project-cover', className]}>
+        <Image
+          src={image}
+          alt={label}
+          widths={candidates}
+          sizes={sizes}
+          priority={priority}
+          class="project-cover__image"
+        />
+      </figure>
+    )
+  ) : (
+    <PlaceholderCover
+      class={className}
+      slug={data.slug}
+      name={copy.title}
+      category={data.category}
+      categoryLabel={categoryLabel}
+      label={label}
+    />
+  )
+}
 
 <style>
   .project-cover {
@@ -50,5 +112,32 @@ const candidates = [...new Set([...widths.filter((width) => width < src.width), 
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .project-cover--deferred {
+    position: relative;
+    display: block;
+  }
+
+  .project-cover--deferred :global(.placeholder-cover) {
+    border: 0;
+    block-size: 100%;
+  }
+
+  .project-cover__target {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 140ms ease;
+  }
+
+  .project-cover__target[data-cover-loaded='true'] {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-cover__target {
+      transition: none;
+    }
   }
 </style>

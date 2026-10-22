@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { basename, join, resolve } from 'node:path';
+import { basename, extname, join, resolve } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 import {
@@ -8,6 +8,11 @@ import {
   PROJECT_STATUSES,
   type ProjectSlug,
 } from '../src/content/project-slugs.ts';
+import {
+  COVER_ASSET_DIRECTORY,
+  GALLERY_ASSET_DIRECTORY,
+  resolveAssetKey,
+} from '../src/lib/project-assets.ts';
 
 const projectSchema = z.object({
   slug: z.enum(PROJECT_SLUGS),
@@ -49,6 +54,14 @@ const projectCaseSchema = z.object({
   locale: z.enum(['es', 'en']),
   order: z.number().int().positive(),
   updated: z.coerce.date().optional(),
+  gallery: z
+    .array(
+      z.object({
+        src: z.string().min(1),
+        alt: z.string().min(1),
+      }),
+    )
+    .default([]),
 });
 
 const TIER_COUNTS = { 1: 6, 2: 4, 3: 4 } as const;
@@ -83,11 +96,48 @@ type CaseRecord = {
   order: number;
   file: string;
   body: string;
+  gallery: { src: string; alt: string }[];
 };
 
 const errors: string[] = [];
+const notices: string[] = [];
 const projectsDir = resolve(process.argv[2] ?? 'src/content/projects');
 const casesDir = resolve(process.argv[3] ?? 'src/content/cases');
+const assetsDir = resolve(process.argv[4] ?? 'src/assets');
+const coversDir = join(assetsDir, 'covers');
+const galleryDir = join(assetsDir, 'gallery');
+
+const IMAGE_EXTENSIONS = new Set(['webp', 'png', 'jpg', 'jpeg', 'avif']);
+
+/** The asset keys available in a directory, the file name without extension. */
+function readImageKeys(directory: string): string[] {
+  if (!existsSync(directory)) {
+    return [];
+  }
+
+  return readdirSync(directory, { withFileTypes: true })
+    .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+    .filter((name) => IMAGE_EXTENSIONS.has(extname(name).slice(1).toLowerCase()))
+    .map((name) => basename(name, extname(name)))
+    .sort();
+}
+
+function readGalleryKeys(): Map<string, string[]> {
+  const keys = new Map<string, string[]>();
+
+  if (!existsSync(galleryDir)) {
+    return keys;
+  }
+
+  for (const entry of readdirSync(galleryDir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      keys.set(entry.name, readImageKeys(join(galleryDir, entry.name)));
+    }
+  }
+
+  return keys;
+}
 
 function readYamlFile(path: string): unknown {
   try {
@@ -121,6 +171,10 @@ function requireDirectory(path: string, label: string): boolean {
 }
 
 const projects = new Map<string, ProjectRecord>();
+const coverKeys = readImageKeys(coversDir);
+const galleryKeys = readGalleryKeys();
+const usedCoverKeys = new Set<string>();
+const usedGalleryKeys = new Map<string, Set<string>>();
 
 if (requireDirectory(projectsDir, 'Projects')) {
   const files = readdirSync(projectsDir)
@@ -154,6 +208,16 @@ if (requireDirectory(projectsDir, 'Projects')) {
     }
     if (JSON.stringify(project).match(/puja/i)) {
       errors.push(`${file}: excluded "Puja" reference found.`);
+    }
+
+    if (project.cover) {
+      const resolution = resolveAssetKey(project.cover, coverKeys);
+
+      if (resolution.ok) {
+        usedCoverKeys.add(project.cover);
+      } else {
+        errors.push(`${file}: cover: ${resolution.message}`);
+      }
     }
 
     projects.set(project.slug, project);
@@ -290,12 +354,27 @@ if (requireDirectory(casesDir, 'Cases')) {
         errors.push(`${file}: cases are only allowed for tier 1 projects.`);
       }
 
+      const availableGalleryKeys = galleryKeys.get(result.data.project) ?? [];
+
+      for (const entry of result.data.gallery) {
+        const resolution = resolveAssetKey(entry.src, availableGalleryKeys);
+
+        if (resolution.ok) {
+          const used = usedGalleryKeys.get(result.data.project) ?? new Set<string>();
+          used.add(entry.src);
+          usedGalleryKeys.set(result.data.project, used);
+        } else {
+          errors.push(`${file}: gallery: ${resolution.message}`);
+        }
+      }
+
       cases.push({
         project: result.data.project,
         locale: result.data.locale,
         order: result.data.order,
         file,
         body: split.body,
+        gallery: result.data.gallery,
       });
     }
 
@@ -321,6 +400,22 @@ if (requireDirectory(casesDir, 'Cases')) {
   }
 }
 
+for (const key of coverKeys) {
+  if (!usedCoverKeys.has(key)) {
+    notices.push(`Unused cover asset "${key}" in ${COVER_ASSET_DIRECTORY}.`);
+  }
+}
+
+for (const [slug, keys] of galleryKeys) {
+  const used = usedGalleryKeys.get(slug) ?? new Set<string>();
+
+  for (const key of keys) {
+    if (!used.has(key)) {
+      notices.push(`Unused gallery asset "${key}" in ${GALLERY_ASSET_DIRECTORY}/${slug}.`);
+    }
+  }
+}
+
 if (errors.length > 0) {
   console.error(`Content validation failed with ${errors.length} error(s):`);
   for (const error of errors) {
@@ -337,4 +432,8 @@ if (errors.length > 0) {
   console.log(
     `Content validation passed: ${projects.size} projects (${tierCounts}), ${cases.length} tier 1 case bodies.`,
   );
+}
+
+for (const notice of notices) {
+  console.log(`- ${notice}`);
 }

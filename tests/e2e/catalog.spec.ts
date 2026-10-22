@@ -431,6 +431,73 @@ test('project actions only render real destinations and state pending availabili
   await expect(page.locator('button:disabled')).toHaveCount(0);
 });
 
+test('the preview defers the cover of an inactive panel until the panel is shown', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+
+  const requested: string[] = [];
+
+  page.on('request', (request) => {
+    if (request.url().includes('todo-app')) {
+      requested.push(request.url());
+    }
+  });
+
+  await page.goto('/work/');
+  await waitForCatalog(page);
+
+  const panel = page.locator('[data-preview-panel][data-project="todo-app"]');
+
+  await expect(panel).toHaveAttribute('data-active', 'false');
+  await expect(panel.locator('img')).toHaveCount(0);
+  expect(
+    await panel
+      .locator('template[data-cover-template]')
+      .evaluate((template) => (template as HTMLTemplateElement).content.querySelectorAll('img').length),
+  ).toBe(1);
+  expect(requested).toHaveLength(0);
+
+  await page.locator('[data-project-row][data-project="todo-app"]').hover();
+
+  const active = page.locator('[data-preview-panel][data-active="true"]');
+  await expect(active).toHaveAttribute('data-project', 'todo-app');
+  await expect(active.locator('[data-cover-target] img')).toHaveCount(1);
+  await expect(active.locator('[data-cover-target]')).toHaveAttribute(
+    'data-cover-loaded',
+    'true',
+  );
+  await expect.poll(() => requested.length).toBeGreaterThan(0);
+});
+
+test('a project without a cover keeps the designed placeholder', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/work/');
+  await waitForCatalog(page);
+
+  const panel = page.locator('[data-preview-panel][data-project="todo-mcp"]');
+
+  await expect(panel.locator('.placeholder-cover')).toHaveCount(1);
+  await expect(panel.locator('img')).toHaveCount(0);
+});
+
+test('the mobile catalog renders the cover of a project that has one', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 900 });
+  await page.goto('/work/');
+  await waitForCatalog(page);
+
+  const thumb = page.locator('[data-project-row][data-project="todo-app"] .project-row__thumb');
+
+  await expect(thumb).toBeVisible();
+  await expect(thumb.locator('img')).toHaveCount(1);
+  await expect(thumb.locator('img')).toHaveAttribute('src', /todo-app/);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
+});
+
 test('the English catalog mirrors the inventory, filters, and metadata', async ({ page }) => {
   await page.goto('/en/work/');
   await waitForCatalog(page);

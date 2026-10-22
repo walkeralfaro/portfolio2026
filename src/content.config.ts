@@ -43,6 +43,13 @@ const projects = defineCollection({
   }),
 });
 
+const gallerySchema = z.array(
+  z.object({
+    src: z.string().min(1),
+    alt: z.string().min(1),
+  }),
+);
+
 const cases = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/cases' }),
   schema: z.object({
@@ -50,6 +57,7 @@ const cases = defineCollection({
     locale: z.enum(['es', 'en']),
     order: z.number().int().positive(),
     updated: z.coerce.date().optional(),
+    gallery: gallerySchema.default([]),
   }),
 });
 

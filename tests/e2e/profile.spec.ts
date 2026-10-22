@@ -47,13 +47,16 @@ test('the featured set contains exactly the four required projects with working 
   }
 });
 
-test('the home excerpt count matches its eight rows and links to the catalog', async ({ page }) => {
+test('the home excerpt shows the first four catalog entries and links to the catalog', async ({ page }) => {
+  const expected = ['todo-mcp', 'image-prompt', 'cheatsheet-editor', 'url-shortener'];
+
   for (const entry of locales) {
     await page.goto(entry.path);
     const excerpt = page.locator('[data-home-index-excerpt]');
     const rows = excerpt.locator('[data-project-row]');
-    await expect(rows).toHaveCount(8);
-    await expect(excerpt).toHaveAttribute('data-excerpt-count', '8');
+    await expect(rows).toHaveCount(expected.length);
+    expect(await rows.evaluateAll((elements) => elements.map((element) => element.getAttribute('data-project')))).toEqual(expected);
+    await expect(excerpt).toHaveAttribute('data-excerpt-count', String(expected.length));
     await expect(excerpt.getByRole('link', { name: /explore all 14 projects|explorar los 14 proyectos/i })).toHaveAttribute('href', entry.workHref);
   }
 });
@@ -95,10 +98,17 @@ test('about groups every skill in one tier', async ({ page }) => {
   }
 });
 
-test('about exposes email, LinkedIn, GitHub, and CV without the phone number', async ({ page }) => {
-  for (const entry of locales) {
-    await page.goto(entry.locale === 'es' ? '/about/' : '/en/about/');
-    const contact = page.locator('[data-contact-links]');
+test('the footer exposes email, LinkedIn, GitHub, and CV without the phone number', async ({ page }) => {
+  const pages = [
+    { path: '/' },
+    { path: '/about/' },
+    { path: '/en/' },
+    { path: '/en/about/' },
+  ] as const;
+
+  for (const entry of pages) {
+    await page.goto(entry.path);
+    const contact = page.locator('footer');
     const links = contact.locator('a');
     const hrefs = await links.evaluateAll((elements) => elements.map((element) => element.getAttribute('href')));
 
@@ -112,5 +122,6 @@ test('about exposes email, LinkedIn, GitHub, and CV without the phone number', a
     }
     await expect(contact).not.toContainText('+51');
     await expect(contact).not.toContainText('986');
+    await expect(page.locator('[data-contact-links]')).toHaveCount(0);
   }
 });

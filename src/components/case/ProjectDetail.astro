@@ -8,6 +8,7 @@ import {
   getProjectCopy,
   type ProjectEntry,
 } from '../../lib/projects';
+import { getProjectGallery } from '../../lib/project-images';
 import Prose from '../primitives/Prose.astro';
 import CaseHeader from './CaseHeader.astro';
 import CaseSection from './CaseSection.astro';
@@ -28,6 +29,7 @@ const copy = getProjectCopy(project, locale);
 const adjacent = getAdjacentProjects(projects, data.slug);
 const caseEntry = data.tier === 1 ? await getCaseEntry(data.slug, locale) : null;
 const CaseBody = caseEntry ? (await render(caseEntry)).Content : null;
+const galleryImages = caseEntry ? getProjectGallery(project, caseEntry.data.gallery) : [];
 ---
 
 <article class="project-detail" data-project-detail={data.slug} data-tier={data.tier}>
@@ -59,7 +61,7 @@ const CaseBody = caseEntry ? (await render(caseEntry)).Content : null;
 
     {
       data.tier === 1 && (
-        <ScreenshotGallery project={project} locale={locale} />
+        <ScreenshotGallery project={project} locale={locale} images={galleryImages} />
       )
     }
   </div>

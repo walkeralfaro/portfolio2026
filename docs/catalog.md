@@ -35,6 +35,26 @@ Category counts are computed from the same array used to render the rows:
 
 Puja Inmobiliaria is excluded from the catalog, navigation, metadata, sitemap, and search surface. Do not add it to the project inventory.
 
+## Covers
+
+Every surface that shows a cover goes through `ProjectCover.astro`, which renders the project's real cover when the record references one and the designed placeholder when it does not. Both branches keep the same 16:10 box, the same border, and the same descriptive alternative text, so the grid never shifts when a cover arrives.
+
+| Surface | Size | Loading |
+| --- | --- | --- |
+| Case header on a detail page | 4 of 12 columns | Eager, it is the largest element above the fold |
+| Sticky preview pane | 5 of 12 columns | The active panel only, see below |
+| Row thumbnail, mobile | 104 px | Lazy |
+
+A project without a cover asset keeps `cover: null` in its record and renders `PlaceholderCover`. The asset contract, the file locations, and the authoring rules live in `docs/content.md`.
+
+### The preview loads one cover, not fourteen
+
+The preview stacks all 14 panels in the same grid area. A hidden panel still has a layout box, so a lazy image inside it is still requested: rendering every cover would download fourteen images of about 960 px on the catalog page.
+
+Instead, the panel that is active at build time renders its cover in the document, and every other panel keeps its cover inside an inert `<template>`. `src/scripts/catalog.ts` clones the template into the panel the first time that panel becomes active, and the image fades in over the placeholder backdrop. Each panel is cloned at most once.
+
+Without JavaScript the preview behaves as before: the first project shows its cover, the rest show placeholders.
+
 ## Layout
 
 | Viewport | Behavior |
@@ -89,6 +109,16 @@ The empty states are explicit:
 
 The language switcher preserves a valid `c` query, so `/work/?c=ia` switches to `/en/work/?c=ia`.
 
+## Gallery
+
+A tier 1 project page ends with a gallery. The screenshots come from the `gallery` frontmatter of the case body, one list per locale, so the alternative text is written in the language of the page.
+
+- A case that declares screenshots renders one thumbnail per entry, in the declared order, and each one opens the lightbox with the full frame.
+- A case that declares none renders the cover of its project, or the designed placeholder when the project has no cover either, plus the note that there are no verified screenshots.
+- The thumbnail keeps the whole frame: the box follows the ratio of the screenshot, and the lightbox shows the original file at its own size.
+
+The asset contract for the gallery files is in `docs/content.md`.
+
 ## Progressive enhancement
 
 `WorkIndex.astro` server-renders all 14 rows and all 14 preview panels. JavaScript only hides rows that do not match the current filter. It does not fetch project data or create rows.
@@ -122,10 +152,12 @@ The catalog preview uses the component for the selected project. Project detail 
 | `src/components/catalog/ProjectRow.astro` | Row metadata, whole-row link, mobile thumbnail, and pending state. |
 | `src/components/catalog/ProjectPreview.astro` | Sticky preview panels with cover, metadata, title, summary, stack, status, and actions. |
 | `src/components/catalog/CategoryFilter.astro` | Four category links plus All, real counts, and active state. |
-| `src/components/catalog/ProjectCover.astro` | Real responsive cover rendering. |
+| `src/components/catalog/ProjectCover.astro` | The single cover entry point: the real responsive cover, or the placeholder when the project has none. |
 | `src/components/catalog/PlaceholderCover.astro` | Deterministic 16:10 cover for projects without screenshots. |
 | `src/components/case/ProjectActions.astro` | Conditional live/code actions and availability notes. |
-| `src/scripts/catalog.ts` | 90 ms pointer preview, immediate focus preview, 140 ms crossfade, filtering, URL state, count updates, and empty state. |
+| `src/lib/project-assets.ts` | Pure asset key rules shared by the build and the content validator. |
+| `src/lib/project-images.ts` | Resolves cover and gallery references into image metadata. |
+| `src/scripts/catalog.ts` | 90 ms pointer preview, immediate focus preview, 140 ms crossfade, deferred cover activation, filtering, URL state, count updates, and empty state. |
 
 ## Test coverage
 
@@ -141,5 +173,7 @@ The catalog preview uses the component for the selected project. Project detail 
 - No-JavaScript visibility and navigation.
 - Conditional live/code actions and pending availability.
 - The English catalog, filters, and localized summaries.
+- The deferred preview cover: no request for an inactive panel's cover on load, and the cover appears when its panel is shown.
+- The placeholder cover for a project without a cover asset, and the real cover in the mobile row thumbnail.
 
 `tests/e2e/i18n.spec.ts` additionally verifies that switching locales preserves `/work/?c=ia`.

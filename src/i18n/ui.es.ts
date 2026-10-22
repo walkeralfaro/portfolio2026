@@ -128,7 +128,7 @@ export const uiEs = {
     galleryLabel: 'Galería del proyecto',
     coverLabel: 'Portada',
     coverCaption:
-      'Portada generada a partir de los metadatos del proyecto. No hay capturas verificadas.',
+      'No hay capturas verificadas de este proyecto; la imagen muestra su portada.',
     openCover: 'Ampliar portada de {title}',
     openImage: 'Ampliar imagen de {title}: {alt}',
     lightboxLabel: 'Vista ampliada de {title}',

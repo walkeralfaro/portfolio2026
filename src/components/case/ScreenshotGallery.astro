@@ -1,22 +1,18 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { Locale } from '../../i18n/locales';
 import { getUi } from '../../i18n/ui';
 import { getProjectCopy, type ProjectEntry } from '../../lib/projects';
+import type { ResolvedGalleryImage } from '../../lib/project-images';
 import Icon from '../icons/Icon.astro';
-import PlaceholderCover from '../catalog/PlaceholderCover.astro';
+import ProjectCover from '../catalog/ProjectCover.astro';
 import Lightbox from './Lightbox.astro';
-
-interface GalleryImage {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-}
 
 interface Props {
   project: ProjectEntry;
   locale: Locale;
-  images?: GalleryImage[];
+  images?: ResolvedGalleryImage[];
   class?: string;
 }
 
@@ -24,13 +20,15 @@ const { project, locale, images = [], class: className } = Astro.props;
 const ui = getUi(locale);
 const data = project.data;
 const copy = getProjectCopy(project, locale);
-const categoryLabel = ui.categories[data.category];
-const coverLabel = ui.catalog.coverAlt
-  .replace('{title}', copy.title)
-  .replace('{category}', categoryLabel);
 const hasImages = images.length > 0;
 const openCoverLabel = ui.caseStudy.openCover.replace('{title}', copy.title);
 const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
+
+const candidatesFor = (image: ImageMetadata): number[] => {
+  const widths = [288, 432, 576].filter((candidate) => candidate < image.width);
+
+  return [...new Set([...widths, image.width])].sort((first, second) => first - second);
+};
 ---
 
 <div
@@ -42,7 +40,7 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
   <ul class="screenshot-gallery__list">
     {
       hasImages ? (
-        images.map((image, index) => (
+        images.map((entry, index) => (
           <li class="screenshot-gallery__item">
             <button
               type="button"
@@ -53,14 +51,17 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
               <span class="visually-hidden">
                 {ui.caseStudy.openImage
                   .replace('{title}', copy.title)
-                  .replace('{alt}', image.alt)}
+                  .replace('{alt}', entry.alt)}
               </span>
-              <span class="screenshot-gallery__thumb">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  width={image.width}
-                  height={image.height}
+              <span
+                class="screenshot-gallery__thumb"
+                style={`--thumb-aspect: ${entry.image.width} / ${entry.image.height}`}
+              >
+                <Image
+                  src={entry.image}
+                  alt={entry.alt}
+                  widths={candidatesFor(entry.image)}
+                  sizes="(min-width: 900px) 20rem, 100vw"
                   loading="lazy"
                   decoding="async"
                 />
@@ -81,13 +82,7 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
           >
             <span class="visually-hidden">{openCoverLabel}</span>
             <span class="screenshot-gallery__thumb">
-              <PlaceholderCover
-                slug={data.slug}
-                name={copy.title}
-                category={data.category}
-                categoryLabel={categoryLabel}
-                label={coverLabel}
-              />
+              <ProjectCover project={project} locale={locale} />
             </span>
             <span class="screenshot-gallery__hint">
               <Icon name="expand" />
@@ -113,30 +108,24 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
         closeLabel={ui.caseStudy.closeLightbox}
         caption={ui.caseStudy.coverCaption}
       >
-        <PlaceholderCover
-          slug={data.slug}
-          name={copy.title}
-          category={data.category}
-          categoryLabel={categoryLabel}
-          label={coverLabel}
-        />
+        <ProjectCover project={project} locale={locale} />
       </Lightbox>
     )
   }
 
   {
     hasImages &&
-      images.map((image, index) => (
+      images.map((entry, index) => (
         <Lightbox
           id={`gallery-${data.slug}-${index}`}
           label={lightboxLabel}
           closeLabel={ui.caseStudy.closeLightbox}
         >
           <img
-            src={image.src}
-            alt={image.alt}
-            width={image.width}
-            height={image.height}
+            src={entry.image.src}
+            alt={entry.alt}
+            width={entry.image.width}
+            height={entry.image.height}
             loading="lazy"
             decoding="async"
           />
@@ -155,6 +144,7 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
   .screenshot-gallery__list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    align-items: start;
     gap: var(--space-4);
     margin: 0;
     padding: 0;
@@ -185,7 +175,7 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
 
   .screenshot-gallery__thumb {
     display: block;
-    aspect-ratio: var(--cover-aspect);
+    aspect-ratio: var(--thumb-aspect, var(--cover-aspect));
     overflow: hidden;
   }
 
@@ -194,11 +184,16 @@ const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
     block-size: 100%;
   }
 
+  .screenshot-gallery__thumb :global(.project-cover) {
+    border: 0;
+    block-size: 100%;
+  }
+
   .screenshot-gallery__thumb :global(img) {
     display: block;
     inline-size: 100%;
     block-size: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .screenshot-gallery__hint {
