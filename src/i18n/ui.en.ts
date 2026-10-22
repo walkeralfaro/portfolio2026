@@ -128,10 +128,6 @@ export const uiEn = {
   caseStudy: {
     navigation: 'Project navigation',
     galleryLabel: 'Project gallery',
-    coverLabel: 'Cover',
-    coverCaption:
-      'There are no verified screenshots of this project; the image shows its cover.',
-    openCover: 'Enlarge cover of {title}',
     openImage: 'Enlarge image of {title}: {alt}',
     lightboxLabel: 'Enlarged view of {title}',
     closeLightbox: 'Close image',

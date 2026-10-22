@@ -6,22 +6,22 @@ The work catalog is the primary browsing surface of the portfolio. It renders th
 
 The catalog reads `src/content/projects/*.yaml` and renders projects in ascending `order`. The inventory is fixed at 14 projects:
 
-| Order | Project | Tier | Category |
-| ---: | --- | ---: | --- |
-| 1 | TODO-mcp | 1 | `ia` |
-| 2 | Image Prompt | 1 | `ia` |
-| 3 | Cheatsheet Editor | 1 | `producto` |
-| 4 | URL Shortener | 1 | `producto` |
-| 5 | Multi-step Form | 1 | `frontend` |
-| 6 | Pokedex | 2 | `frontend` |
-| 7 | Todo App | 2 | `frontend` |
-| 8 | Tic Tac Toe | 2 | `juegos` |
-| 9 | Tip Calculator | 3 | `frontend` |
-| 10 | Weather App | 3 | `frontend` |
-| 11 | REST Countries Explorer | 3 | `frontend` |
-| 12 | Tetris | 1 | `juegos` |
-| 13 | Portfolio Profesional | 3 | `producto` |
-| 14 | Portfolio 2026 | 2 | `producto` |
+| Order | Project | Category |
+| ---: | --- | --- |
+| 1 | TODO-mcp | `ia` |
+| 2 | Image Prompt | `ia` |
+| 3 | Cheatsheet Editor | `producto` |
+| 4 | URL Shortener | `producto` |
+| 5 | Multi-step Form | `frontend` |
+| 6 | Pokedex | `frontend` |
+| 7 | Todo App | `frontend` |
+| 8 | Tic Tac Toe | `juegos` |
+| 9 | Tip Calculator | `frontend` |
+| 10 | Weather App | `frontend` |
+| 11 | REST Countries Explorer | `frontend` |
+| 12 | Tetris | `juegos` |
+| 13 | Portfolio Profesional | `producto` |
+| 14 | Portfolio 2026 | `producto` |
 
 Category counts are computed from the same array used to render the rows:
 
@@ -64,11 +64,7 @@ Without JavaScript the preview behaves as before: the first project shows its co
 
 The desktop preview is `position: sticky` with a `2rem` top offset. It sits in its own grid column, so changing previews does not move or resize the list. The list remains the scrolling element the visitor reads.
 
-Every project row is one navigation target:
-
-- Tier 1 and 2 rows link to the localized detail route, such as `/work/todo-mcp/` or `/en/work/todo-mcp/`.
-- Tier 3 rows link to their real external destination when one exists.
-- A tier 3 row with no live or code URL is not a link. It shows a pending state and the localized availability note instead.
+Every project row is one navigation target and always opens the localized internal detail route, such as `/work/todo-mcp/` or `/en/work/todo-mcp/`. Live and code URLs are actions on the detail page, not row destinations, so a project without a live URL still has a page.
 
 Rows expose the year (or the localized pending label), title, one-line summary, primary category, 3–5 stack items, and status. Row content is inset by `1rem` on both sides at every breakpoint, while the dividers, hover background, and link surface remain full width. The mobile thumbnail is decorative because the row already names the project; the placeholder cover still carries a descriptive label for assistive technology when the full cover is shown.
 
@@ -111,11 +107,11 @@ The language switcher preserves a valid `c` query, so `/work/?c=ia` switches to 
 
 ## Gallery
 
-A tier 1 project page ends with a gallery. The screenshots come from the `gallery` frontmatter of the case body, one list per locale, so the alternative text is written in the language of the page.
+Any project page can end with a gallery. Screenshots are declared in the project record under the active locale, so the alternative text is written in the language of the page.
 
-- A case that declares screenshots renders one thumbnail per entry, in the declared order, and each one opens the lightbox with the full frame.
-- A case that declares none renders the cover of its project, or the designed placeholder when the project has no cover either, plus the note that there are no verified screenshots.
-- The thumbnail keeps the whole frame: the box follows the ratio of the screenshot, and the lightbox shows the original file at its own size.
+- A locale that declares screenshots renders one thumbnail per entry, in the declared order, and each one opens the lightbox with the full frame.
+- A locale that declares none renders no gallery section at all. The project cover still appears in the page header and the catalog.
+- The thumbnail keeps the whole frame: the box follows the ratio of the screenshot, and the lightbox fits the original inside the viewport without internal scrolling.
 
 The asset contract for the gallery files is in `docs/content.md`.
 
@@ -126,7 +122,7 @@ The asset contract for the gallery files is in `docs/content.md`.
 With JavaScript disabled:
 
 - All 14 rows remain in the document and visible.
-- Every internal and external row link still works.
+- Every internal row link still works.
 - Filter links still resolve to their query URLs, but the browser reloads the page; no rows are hidden.
 - The first preview panel is still displayed on desktop.
 

@@ -19,14 +19,16 @@ const { id, label, closeLabel, caption, class: className } = Astro.props;
   data-lightbox
 >
   <div class="lightbox__frame">
-    <button
-      type="button"
-      class="lightbox__close"
-      aria-label={closeLabel}
-      data-lightbox-close
-    >
-      <Icon name="close" />
-    </button>
+    <div class="lightbox__toolbar">
+      <button
+        type="button"
+        class="lightbox__close"
+        aria-label={closeLabel}
+        data-lightbox-close
+      >
+        <Icon name="close" />
+      </button>
+    </div>
 
     <div class="lightbox__body">
       <slot />
@@ -38,11 +40,18 @@ const { id, label, closeLabel, caption, class: className } = Astro.props;
 
 <style>
   .lightbox {
+    --lightbox-block-limit: 90dvh;
+    --lightbox-pad: clamp(var(--space-4), 3vw, var(--space-8));
+    --lightbox-gap: var(--space-2);
+    --lightbox-caption-space: 0px;
+
     width: min(94vw, 72rem);
+    max-width: 94vw;
     max-height: 90vh;
+    max-height: var(--lightbox-block-limit);
     margin: auto;
     padding: 0;
-    overflow: auto;
+    overflow: hidden;
     overscroll-behavior: contain;
     border: 1px solid var(--line);
     background: var(--surface);
@@ -50,22 +59,33 @@ const { id, label, closeLabel, caption, class: className } = Astro.props;
     box-shadow: 0 30px 90px rgb(0 0 0 / 0.35);
   }
 
+  .lightbox[open] {
+    display: grid;
+  }
+
+  .lightbox:has(.lightbox__caption) {
+    --lightbox-caption-space: 1.75rem;
+  }
+
   .lightbox::backdrop {
     background: rgb(0 0 0 / 0.62);
   }
 
   .lightbox__frame {
-    position: relative;
     display: grid;
-    gap: var(--space-3);
-    padding: clamp(var(--space-4), 3vw, var(--space-8));
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: var(--lightbox-gap);
+    max-height: calc(var(--lightbox-block-limit) - 2px);
+    min-block-size: 0;
+    padding: var(--lightbox-pad);
+  }
+
+  .lightbox__toolbar {
+    display: flex;
+    justify-content: flex-end;
   }
 
   .lightbox__close {
-    position: absolute;
-    inset-block-start: var(--space-3);
-    inset-inline-end: var(--space-3);
-    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -84,13 +104,25 @@ const { id, label, closeLabel, caption, class: className } = Astro.props;
 
   .lightbox__body {
     display: grid;
-    justify-items: center;
+    place-items: center;
     min-inline-size: 0;
+    min-block-size: 0;
+    overflow: hidden;
   }
 
   .lightbox__body :global(img) {
-    inline-size: 100%;
+    display: block;
+    inline-size: auto;
     block-size: auto;
+    max-inline-size: 100%;
+    max-block-size: calc(
+      var(--lightbox-block-limit) -
+      (2 * var(--lightbox-pad)) -
+      var(--control-min-size) -
+      (2 * var(--lightbox-gap)) -
+      var(--lightbox-caption-space) - 4px
+    );
+    object-fit: contain;
   }
 
   .lightbox__caption {

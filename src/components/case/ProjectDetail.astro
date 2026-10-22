@@ -27,25 +27,21 @@ const ui = getUi(locale);
 const data = project.data;
 const copy = getProjectCopy(project, locale);
 const adjacent = getAdjacentProjects(projects, data.slug);
-const caseEntry = data.tier === 1 ? await getCaseEntry(data.slug, locale) : null;
+const caseEntry = await getCaseEntry(data.slug, locale);
 const CaseBody = caseEntry ? (await render(caseEntry)).Content : null;
-const galleryImages = caseEntry ? getProjectGallery(project, caseEntry.data.gallery) : [];
+const galleryImages = getProjectGallery(project, locale);
 ---
 
-<article class="project-detail" data-project-detail={data.slug} data-tier={data.tier}>
+<article class="project-detail" data-project-detail={data.slug}>
   <CaseHeader project={project} locale={locale} />
 
   <div class="project-detail__body" data-case-body>
     {
-      data.tier === 1 && CaseBody && (
+      CaseBody ? (
         <Prose class="case-body">
           <CaseBody components={{ h2: CaseSection, ol: DecisionList }} />
         </Prose>
-      )
-    }
-
-    {
-      data.tier === 2 && (
+      ) : (
         <Prose class="case-body">
           <CaseSection>{ui.project.what}</CaseSection>
           <p>{copy.summary}</p>
@@ -60,7 +56,7 @@ const galleryImages = caseEntry ? getProjectGallery(project, caseEntry.data.gall
     }
 
     {
-      data.tier === 1 && (
+      galleryImages.length > 0 && (
         <ScreenshotGallery project={project} locale={locale} images={galleryImages} />
       )
     }

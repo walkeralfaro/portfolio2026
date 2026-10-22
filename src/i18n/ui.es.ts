@@ -126,10 +126,6 @@ export const uiEs = {
   caseStudy: {
     navigation: 'Navegación entre proyectos',
     galleryLabel: 'Galería del proyecto',
-    coverLabel: 'Portada',
-    coverCaption:
-      'No hay capturas verificadas de este proyecto; la imagen muestra su portada.',
-    openCover: 'Ampliar portada de {title}',
     openImage: 'Ampliar imagen de {title}: {alt}',
     lightboxLabel: 'Vista ampliada de {title}',
     closeLightbox: 'Cerrar imagen',

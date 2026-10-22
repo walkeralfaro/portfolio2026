@@ -89,13 +89,10 @@ test('every row exposes its metadata and the whole row is the navigation target'
     expect(entry.stackItems).toBeGreaterThanOrEqual(3);
     expect(entry.stackItems).toBeLessThanOrEqual(5);
 
-    if (entry.destination === 'pending') {
-      expect(entry.href).toBeNull();
-    } else {
-      expect(entry.href).not.toBeNull();
-      expect(entry.href).not.toBe('#');
-      expect(entry.linkWidth).toBeCloseTo(entry.rowWidth, 0);
-    }
+    expect(entry.destination).toBe('internal');
+    expect(entry.href).toMatch(/^\/work\/[a-z0-9-]+\/$/);
+    expect(entry.href).not.toBe('#');
+    expect(entry.linkWidth).toBeCloseTo(entry.rowWidth, 0);
   }
 
   await expect(
@@ -103,9 +100,13 @@ test('every row exposes its metadata and the whole row is the navigation target'
   ).toHaveAttribute('href', '/work/todo-mcp/');
   await expect(
     page.locator('[data-project="portfolio-profesional"] a.project-row__inner'),
-  ).toHaveAttribute('href', 'https://walkeralfaro.com/');
-  await expect(page.locator('[data-project="weather-app"] a')).toHaveCount(0);
-  await expect(page.locator('[data-project="rest-countries-explorer"] a')).toHaveCount(0);
+  ).toHaveAttribute('href', '/work/portfolio-profesional/');
+  await expect(
+    page.locator('[data-project="weather-app"] a.project-row__inner'),
+  ).toHaveAttribute('href', '/work/weather-app/');
+  await expect(
+    page.locator('[data-project="rest-countries-explorer"] a.project-row__inner'),
+  ).toHaveAttribute('href', '/work/rest-countries-explorer/');
 });
 
 test('the desktop catalog uses a stable 7/5 master-detail layout', async ({ page }) => {
@@ -381,7 +382,8 @@ test('without JavaScript all 14 projects remain visible and navigable', async ({
   );
 
   expect(hrefs).toContain('/work/todo-mcp/');
-  expect(hrefs).toContain('https://walkeralfaro.com/');
+  expect(hrefs).toContain('/work/weather-app/');
+  expect(hrefs.every((href) => href.startsWith('/work/'))).toBe(true);
   expect(hrefs).not.toContain('#');
 
   await page.locator('[data-project-row][data-project="todo-mcp"] a.project-row__inner').click();

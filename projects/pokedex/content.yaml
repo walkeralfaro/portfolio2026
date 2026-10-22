@@ -1,0 +1,27 @@
+slug: pokedex
+year: pending
+category: frontend
+tags: [pokeapi, react, zustand]
+status: in-development
+featured: false
+order: 6
+stack: [React 19, TypeScript, Vite, Zustand, React Router 7]
+links:
+  live: null
+  code: null
+cover: null
+locales:
+  es:
+    title: Pokedex
+    summary: Explorador de los primeros 151 Pokémon con tipos, peso, movimientos y cadena de evolución.
+    role: Desarrollo individual como proyecto personal, incluyendo el consumo de PokeAPI, el estado global y las vistas.
+    result: Lista en cuadrícula, detalle por Pokémon, badges de tipo, cadena de evolución recursiva y estados de carga y error.
+    availability: Demo y código pendientes.
+    gallery: []
+  en:
+    title: Pokedex
+    summary: Explorer of the first 151 Pokémon with types, weight, moves, and evolution chains.
+    role: Individual development as a personal project, covering PokeAPI integration, global state, and views.
+    result: A grid list, per-Pokémon detail, type badges, a recursive evolution chain, and loading and error states.
+    availability: Demo and code pending.
+    gallery: []

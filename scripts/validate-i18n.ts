@@ -13,6 +13,22 @@ const projectFiles = readdirSync(projectsDir)
   .sort();
 const failures: string[] = [];
 
+/**
+ * Gallery entries are locale-specific by design: a project can publish
+ * screenshots in one language while the other has none yet. The remaining
+ * localized fields must stay symmetric.
+ */
+function withoutGallery(locale: unknown): unknown {
+  if (locale === null || typeof locale !== 'object' || Array.isArray(locale)) {
+    return locale;
+  }
+
+  const copy = { ...(locale as Record<string, unknown>) };
+  delete copy.gallery;
+
+  return copy;
+}
+
 const uiComparison = compareKeys(uiEs, uiEn);
 if (!isComplete(uiComparison)) {
   if (uiComparison.onlyLeft.length > 0) {
@@ -34,7 +50,10 @@ for (const file of projectFiles) {
     continue;
   }
 
-  const comparison = compareKeys(project.locales.es, project.locales.en);
+  const comparison = compareKeys(
+    withoutGallery(project.locales.es),
+    withoutGallery(project.locales.en),
+  );
   if (!isComplete(comparison)) {
     if (comparison.onlyLeft.length > 0) {
       failures.push(

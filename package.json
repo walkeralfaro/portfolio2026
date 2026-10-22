@@ -12,6 +12,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "validate:content": "node scripts/validate-content.ts",
+    "content:import": "node scripts/content-import/cli.ts",
+    "content:status": "node scripts/content-import/cli.ts status",
     "validate:contrast": "node scripts/validate-theme.ts",
     "validate:cv": "node scripts/validate-cv.ts",
     "validate:i18n": "node scripts/validate-i18n.ts",

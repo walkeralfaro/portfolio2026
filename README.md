@@ -15,9 +15,15 @@ npm run build
 Project covers and screenshots live in the repository and are processed at build time:
 
 - `src/assets/covers/<project-slug>.webp` — the cover of a project, referenced by `cover: <key>` in its record.
-- `src/assets/gallery/<project-slug>/<shot>.webp` — the screenshots of a tier 1 project, referenced by `gallery` in its case body.
+- `src/assets/gallery/<project-slug>/<shot>.webp` — the screenshots of a project, referenced by `gallery` under each locale in its record.
 
 The authoring rules, the key format, and the validation rules are in `docs/content.md`. A reference to a file that does not exist fails the build and `npm run validate:content`.
+
+## Project READMEs
+
+New project sources live at `projects/<slug>/README.md`. An AI assistant turns each README into `projects/<slug>/content.yaml`, and the importer generates the Astro YAML and MDX files. Do not edit the generated files by hand.
+
+See [docs/project-readme-import.md](docs/project-readme-import.md) for the intake schema and the AI contract, and [projects/README.md](projects/README.md) for the short workflow. Use `npm run content:status` to check import state.
 
 ## Site and locale configuration
 

@@ -2,7 +2,6 @@ slug: url-shortener
 year: pending
 category: producto
 tags: [full-stack, mongodb, nextjs]
-tier: 1
 status: live
 featured: true
 order: 4

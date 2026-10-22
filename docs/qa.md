@@ -12,7 +12,7 @@ Recorded on 2026-10-20 for `build-portfolio-2026`, section 10.
 
 Command: `npx playwright test tests/e2e/quality.spec.ts`
 
-- Automated axe audit covered home, work, a tier 1 case, and about in Spanish and English, in both light and dark themes (16 page/theme combinations).
+- Automated axe audit covered home, work, a project detail page, and about in Spanish and English, in both light and dark themes (16 page/theme combinations).
 - Result: no critical or serious WCAG 2.1 A/AA violations.
 - Fixes made during the audit:
   - The language switcher accessible name now includes its visible text.
@@ -63,7 +63,7 @@ Command: `npm run build && npm run audit:site`
 
 ## Content audit
 
-- All 14 projects and 12 tier 1 case bodies are present; Puja Inmobiliaria and the mobile phone number are absent.
+- All 14 projects and 12 case bodies are present; Puja Inmobiliaria and the mobile phone number are absent.
 - Product claims remain mapped to `data.js`, `projects/*.md`, or the planning artifacts in `docs/content-sources.md`.
 - Pending years, links, and galleries remain explicitly labeled; no invented screenshots or destinations were added.
 - The Portfolio 2026 copy was corrected to describe an external CV link instead of a print-ready CV.
@@ -76,7 +76,7 @@ Command: `npx playwright test tests/e2e/quality.spec.ts`
 - Viewports: 320, 768, 1024, and 1440 px.
 - Locales: Spanish and English.
 - Themes: light and dark.
-- Routes: home, work, a tier 1 case, and about in each locale.
+- Routes: home, work, a project detail page, and about in each locale.
 - Result: no horizontal overflow and exactly one `h1` per page.
 
 ## Deployment

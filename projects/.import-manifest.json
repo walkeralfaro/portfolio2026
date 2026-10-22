@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "projects": {
+    "pokedex": {
+      "source": "projects/pokedex/README.md",
+      "sourceHash": "bb1eb9f04223bc98a8bfcaffbfdfe6af6a02ad0c728ec3e8a3d17ccfa8e270c1",
+      "generated": [
+        {
+          "path": "src/content/projects/pokedex.yaml",
+          "hash": "3d0d6c16bc5826e8235dfc820cf8ed78756a85a842ca615dd8a2763ec4176fe8"
+        }
+      ]
+    }
+  }
+}

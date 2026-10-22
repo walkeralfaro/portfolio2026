@@ -1,94 +1,35 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { basename, extname, join, resolve } from 'node:path';
 import { parse as parseYaml } from 'yaml';
-import { z } from 'zod';
 import {
-  PROJECT_CATEGORIES,
   PROJECT_SLUGS,
-  PROJECT_STATUSES,
   type ProjectSlug,
 } from '../src/content/project-slugs.ts';
+import {
+  projectCaseSchema,
+  projectSchema,
+  type ProjectRecord,
+} from '../src/content/schemas.ts';
 import {
   COVER_ASSET_DIRECTORY,
   GALLERY_ASSET_DIRECTORY,
   resolveAssetKey,
 } from '../src/lib/project-assets.ts';
 
-const projectSchema = z.object({
-  slug: z.enum(PROJECT_SLUGS),
-  year: z.union([z.number().int().min(2000).max(2100), z.literal('pending')]),
-  category: z.enum(PROJECT_CATEGORIES),
-  tags: z.array(z.string().min(1)).min(1),
-  tier: z.number().int().min(1).max(3),
-  status: z.enum(PROJECT_STATUSES),
-  featured: z.boolean(),
-  order: z.number().int().positive(),
-  stack: z.array(z.string().min(1)).min(3).max(5),
-  links: z
-    .object({
-      live: z.url().nullable().default(null),
-      code: z.url().nullable().default(null),
-    })
-    .default({ live: null, code: null }),
-  cover: z.string().min(1).nullable().default(null),
-  locales: z.object({
-    es: z.object({
-      title: z.string().min(1),
-      summary: z.string().min(1),
-      role: z.string().min(1),
-      result: z.string().min(1),
-      availability: z.string().min(1).optional(),
-    }),
-    en: z.object({
-      title: z.string().min(1),
-      summary: z.string().min(1),
-      role: z.string().min(1),
-      result: z.string().min(1),
-      availability: z.string().min(1).optional(),
-    }),
-  }),
-});
-
-const projectCaseSchema = z.object({
-  project: z.enum(PROJECT_SLUGS),
-  locale: z.enum(['es', 'en']),
-  order: z.number().int().positive(),
-  updated: z.coerce.date().optional(),
-  gallery: z
-    .array(
-      z.object({
-        src: z.string().min(1),
-        alt: z.string().min(1),
-      }),
-    )
-    .default([]),
-});
-
-const TIER_COUNTS = { 1: 6, 2: 4, 3: 4 } as const;
 const FEATURED_PROJECTS = new Set<ProjectSlug>([
   'todo-mcp',
   'image-prompt',
   'url-shortener',
   'tetris',
 ]);
-const TIER_1_PROJECTS = new Set<ProjectSlug>([
-  'todo-mcp',
-  'image-prompt',
-  'url-shortener',
-  'tetris',
-  'multi-step-form',
-  'cheatsheet-editor',
-]);
 
 const CASE_HEADINGS = {
-  es: ['Problema', 'Rol', 'Decisiones', 'Resultado', 'Stack', 'Galería'],
-  en: ['Problem', 'Role', 'Decisions', 'Result', 'Stack', 'Gallery'],
+  es: ['Problema', 'Rol', 'Decisiones', 'Resultado'],
+  en: ['Problem', 'Role', 'Decisions', 'Result'],
 } as const;
 
 const SPANISH_FRAGMENT_PATTERN =
   /\b(Problema|Rol|Decisiones|Resultado|Galería|Desarrollo individual|Proyecto personal)\b/;
-
-type ProjectRecord = z.infer<typeof projectSchema>;
 
 type CaseRecord = {
   project: ProjectSlug;
@@ -96,7 +37,6 @@ type CaseRecord = {
   order: number;
   file: string;
   body: string;
-  gallery: { src: string; alt: string }[];
 };
 
 const errors: string[] = [];
@@ -220,6 +160,22 @@ if (requireDirectory(projectsDir, 'Projects')) {
       }
     }
 
+    for (const locale of ['es', 'en'] as const) {
+      const availableGalleryKeys = galleryKeys.get(project.slug) ?? [];
+
+      for (const entry of project.locales[locale].gallery) {
+        const resolution = resolveAssetKey(entry.src, availableGalleryKeys);
+
+        if (resolution.ok) {
+          const used = usedGalleryKeys.get(project.slug) ?? new Set<string>();
+          used.add(entry.src);
+          usedGalleryKeys.set(project.slug, used);
+        } else {
+          errors.push(`${file}: locales.${locale}.gallery: ${resolution.message}`);
+        }
+      }
+    }
+
     projects.set(project.slug, project);
   }
 
@@ -245,13 +201,6 @@ if (requireDirectory(projectsDir, 'Projects')) {
     orders.add(project.order);
   }
 
-  for (const tier of [1, 2, 3] as const) {
-    const count = [...projects.values()].filter((project) => project.tier === tier).length;
-    if (count !== TIER_COUNTS[tier]) {
-      errors.push(`Tier ${tier} must contain ${TIER_COUNTS[tier]} projects; found ${count}.`);
-    }
-  }
-
   const featured = [...projects.values()]
     .filter((project) => project.featured)
     .map((project) => project.slug);
@@ -270,17 +219,16 @@ if (requireDirectory(projectsDir, 'Projects')) {
   }
 
   for (const project of projects.values()) {
-    if (project.tier === 1 && !TIER_1_PROJECTS.has(project.slug)) {
-      errors.push(`Tier 1 contains unexpected project "${project.slug}".`);
-    }
-    if (project.tier === 3 && project.featured) {
-      errors.push(`Tier 3 project "${project.slug}" cannot be featured.`);
-    }
-    if (project.tier === 2 && !project.links.live && !project.links.code && !project.locales.es.availability) {
-      errors.push(`Tier 2 project "${project.slug}" needs an action or an availability label.`);
-    }
-    if (project.tier === 3 && !project.links.live && !project.links.code && !project.locales.es.availability) {
-      errors.push(`Tier 3 project "${project.slug}" needs an external destination or an availability label.`);
+    for (const locale of ['es', 'en'] as const) {
+      if (
+        !project.links.live &&
+        !project.links.code &&
+        !project.locales[locale].availability
+      ) {
+        errors.push(
+          `Project "${project.slug}" needs a link or an availability label in ${locale}.`,
+        );
+      }
     }
   }
 }
@@ -349,53 +297,24 @@ if (requireDirectory(casesDir, 'Cases')) {
         errors.push(`${file}: untranslated Spanish fragment found in English body.`);
       }
 
-      const project = projects.get(result.data.project);
-      if (project && project.tier !== 1) {
-        errors.push(`${file}: cases are only allowed for tier 1 projects.`);
-      }
-
-      const availableGalleryKeys = galleryKeys.get(result.data.project) ?? [];
-
-      for (const entry of result.data.gallery) {
-        const resolution = resolveAssetKey(entry.src, availableGalleryKeys);
-
-        if (resolution.ok) {
-          const used = usedGalleryKeys.get(result.data.project) ?? new Set<string>();
-          used.add(entry.src);
-          usedGalleryKeys.set(result.data.project, used);
-        } else {
-          errors.push(`${file}: gallery: ${resolution.message}`);
-        }
-      }
-
       cases.push({
         project: result.data.project,
         locale: result.data.locale,
         order: result.data.order,
         file,
         body: split.body,
-        gallery: result.data.gallery,
       });
     }
 
-    const expectedCases = new Set(
-      [...TIER_1_PROJECTS].flatMap((slug) => [`${slug}.es`, `${slug}.en`]),
-    );
-    const actualCases = new Set(cases.map((entry) => `${entry.project}.${entry.locale}`));
+    const seenCases = new Set<string>();
 
-    for (const expected of expectedCases) {
-      if (!actualCases.has(expected)) {
-        errors.push(`Missing case body for "${expected}".`);
-      }
-    }
-    for (const actual of actualCases) {
-      if (!expectedCases.has(actual)) {
-        errors.push(`Unexpected case body for "${actual}".`);
-      }
-    }
+    for (const entry of cases) {
+      const key = `${entry.project}.${entry.locale}`;
 
-    if (cases.length !== expectedCases.size) {
-      errors.push(`Expected ${expectedCases.size} tier 1 case bodies; found ${cases.length}.`);
+      if (seenCases.has(key)) {
+        errors.push(`Duplicate case body for "${key}".`);
+      }
+      seenCases.add(key);
     }
   }
 }
@@ -423,14 +342,8 @@ if (errors.length > 0) {
   }
   process.exitCode = 1;
 } else {
-  const tierCounts = [1, 2, 3]
-    .map(
-      (tier) =>
-        `tier ${tier}: ${[...projects.values()].filter((project) => project.tier === tier).length}`,
-    )
-    .join(', ');
   console.log(
-    `Content validation passed: ${projects.size} projects (${tierCounts}), ${cases.length} tier 1 case bodies.`,
+    `Content validation passed: ${projects.size} projects, ${cases.length} case bodies.`,
   );
 }
 

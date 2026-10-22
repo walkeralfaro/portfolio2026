@@ -52,7 +52,7 @@ On viewports 900 pixels and wider, the work page SHALL show a project list and a
 #### Scenario: Row navigation
 
 - **WHEN** a visitor activates a project row
-- **THEN** the browser navigates to that project's detail page or external destination
+- **THEN** the browser navigates to that project's internal detail page
 
 ### Requirement: Mobile catalog
 
@@ -91,24 +91,109 @@ Each catalog entry SHALL display the project title, a one-line summary, the year
 - **WHEN** a catalog row is rendered
 - **THEN** title, summary, year, category, stack, and status are all present
 
-### Requirement: Three project depths
+### Requirement: Unified project detail pages
 
-The catalog SHALL support three depths: a full case study with problem, role, decisions, result, stack, gallery, and actions; a short case study with what it is, role, result, and actions; and an archive entry with no detail page. Tier 3 projects SHALL link to their external destinations.
+Every project in the catalog SHALL have a dedicated Spanish and English detail page at its slug route. Page availability SHALL NOT depend on project tier, external links, cover assets, gallery images, or the presence of supplemental case narrative.
 
-#### Scenario: Full case study
+#### Scenario: Every catalog project has a detail page
 
-- **WHEN** a visitor opens a tier 1 project
-- **THEN** the page includes problem, role, decisions, result, stack, gallery, and available actions
+- **WHEN** a visitor opens any project row or its localized slug URL
+- **THEN** the project's own detail page loads in Spanish and English, including for projects without external links or images
 
-#### Scenario: Short case study
+#### Scenario: Same page structure for every project
 
-- **WHEN** a visitor opens a tier 2 project
-- **THEN** the page includes what it is, role, result, and available actions without a full gallery
+- **WHEN** any project detail page is rendered
+- **THEN** it uses the shared project header and common localized project information, and any supplemental narrative does not determine whether the page or its shared sections exist
 
-#### Scenario: Archive entry
+#### Scenario: External destinations remain actions
 
-- **WHEN** a visitor selects a tier 3 project
-- **THEN** the browser opens its external destination and no empty internal detail page is created
+- **WHEN** a project has a live or repository URL
+- **THEN** the URL is offered as a conditional action on its detail page and does not replace the internal page
+
+### Requirement: Single-source project facts
+
+Every project detail page SHALL render its stack once, from the project record in the shared header. A case narrative SHALL NOT declare a Stack section or a Gallery section. Gallery images SHALL come only from the active locale's project-record gallery list; when that list is empty, no gallery heading, caption, pending message, cover substitute, or dialog SHALL be rendered.
+
+#### Scenario: Narrative keeps the shared stack
+
+- **WHEN** a visitor opens a project with a case narrative
+- **THEN** the stack appears in the shared header and the narrative contains only Problem, Role, Decisions, and Result headings
+
+#### Scenario: Locale has no screenshots
+
+- **WHEN** the active locale has an empty gallery list
+- **THEN** the detail page renders no gallery element, caption, pending text, or dialog
+
+#### Scenario: Locale has screenshots
+
+- **WHEN** the active locale declares at least one valid screenshot
+- **THEN** the gallery renders those images in the declared order below the narrative
+
+### Requirement: Optional project galleries
+
+Every project SHALL support an ordered gallery list with localized alternative text. A gallery SHALL appear only when the current locale has at least one valid screenshot entry.
+
+#### Scenario: Project has gallery screenshots
+
+- **WHEN** a project's localized content declares one or more gallery screenshots
+- **THEN** the detail page renders those screenshots in the declared order with their localized alternative text
+
+#### Scenario: Project has no gallery screenshots
+
+- **WHEN** a project's localized gallery list is empty or absent
+- **THEN** no gallery section, gallery caption, cover substitute, or gallery dialog is rendered
+
+#### Scenario: Gallery differs by locale
+
+- **WHEN** the same project detail is opened in Spanish and English
+- **THEN** each page uses its own gallery list and alternative text
+
+### Requirement: Project image references
+
+Project records SHALL support an optional cover and locale-specific gallery references by asset key. A reference without a matching local image SHALL fail validation and the production build with the project and key identified.
+
+#### Scenario: Cover is absent
+
+- **WHEN** a project has no cover asset reference
+- **THEN** all cover surfaces render the designed placeholder with the same cover dimensions and descriptive alternative text
+
+#### Scenario: Cover is present
+
+- **WHEN** a project references an existing cover asset
+- **THEN** all cover surfaces render that asset responsively instead of the placeholder
+
+#### Scenario: Image key is invalid
+
+- **WHEN** a cover or gallery entry names an asset key with no matching file
+- **THEN** content validation and the production build fail with the project and missing key in the error
+
+### Requirement: Project asset references
+
+Project images SHALL be added under `src/assets/covers/<project-slug>.<ext>` for covers and `src/assets/gallery/<project-slug>/<shot>.<ext>` for screenshots. Content SHALL reference them by asset key, never by file path. An image file that no project record references SHALL be reported as unused without failing the build.
+
+#### Scenario: Reference by asset key
+
+- **WHEN** a cover file is added under the covers directory and the project record references its key
+- **THEN** the build succeeds and the image is published with responsive sources
+
+#### Scenario: Unused asset is reported
+
+- **WHEN** an image file exists that no project record references
+- **THEN** validation reports it as unused without failing the build
+
+### Requirement: Project cover assets
+
+A project record MAY reference one cover image. When a cover is referenced, every cover surface — the detail-page case header, the catalog row thumbnail, and the sticky preview — SHALL render that image at the catalog aspect ratio with descriptive alternative text, and SHALL NOT render the placeholder. When no cover is referenced, those surfaces SHALL render the placeholder cover.
+
+#### Scenario: Real cover on the detail page
+
+- **WHEN** a visitor opens a project detail page whose record references a cover
+- **THEN** the case header renders the referenced image at the catalog aspect ratio with descriptive alternative text instead of the placeholder
+
+#### Scenario: Real cover across the catalog
+
+- **WHEN** the work catalog renders a project whose record references a cover
+- **THEN** the row thumbnail and the sticky preview show that same image rather than the placeholder
 
 ### Requirement: Conditional live and code actions
 
@@ -126,21 +211,55 @@ A project SHALL show a live action only when a real live URL exists and a code a
 
 ### Requirement: Placeholder covers
 
-A project without a screenshot SHALL use a local placeholder cover that includes the project name and category, preserves the catalog aspect ratio, and provides descriptive alternative text. A broken image SHALL NOT appear.
+A project without a cover asset SHALL use a local placeholder cover that includes the project name and category, preserves the catalog aspect ratio, and provides descriptive alternative text. The placeholder SHALL occupy the same position and dimensions as a real cover, and a broken image SHALL NOT appear.
 
 #### Scenario: Missing screenshot
 
 - **WHEN** a project's cover asset is absent
 - **THEN** the placeholder cover renders at the same dimensions as a real cover with descriptive alternative text
 
+#### Scenario: Placeholder in every cover surface
+
+- **WHEN** a project without a cover asset appears in the catalog, in the sticky preview, or on its detail page
+- **THEN** every one of those surfaces renders the placeholder at the catalog aspect ratio
+
+### Requirement: Catalog image delivery
+
+The work catalog SHALL NOT download a cover image for a preview panel that is not active. Row thumbnails SHALL be requested at the size they are rendered, and the active preview cover SHALL load eagerly. The catalog SHALL remain usable without JavaScript, showing the first project's cover and every project row.
+
+#### Scenario: Single cover on load
+
+- **WHEN** a visitor loads the work catalog
+- **THEN** only the active preview cover and the visible row thumbnails are requested
+
+#### Scenario: Cover on preview change
+
+- **WHEN** a visitor activates a different project row
+- **THEN** that project's cover is requested and rendered in the preview pane
+
+#### Scenario: No JavaScript
+
+- **WHEN** JavaScript is unavailable
+- **THEN** the catalog shows the first project's cover and all 14 project rows remain visible and navigable
+
 ### Requirement: Screenshot lightbox
 
-Project screenshots MAY open in a modal dialog for enlargement. The dialog SHALL be keyboard operable, close with Escape, return focus to the trigger, and prevent background scrolling while open.
+Project screenshots MAY open in a modal dialog for enlargement. The dialog SHALL fit the image within the available viewport while preserving the image's aspect ratio, SHALL NOT require internal scrolling to reveal the full image, SHALL be keyboard operable, SHALL close with Escape, SHALL return focus to the trigger, and SHALL prevent background scrolling while open.
 
 #### Scenario: Open and close a screenshot
 
 - **WHEN** a visitor opens a screenshot and presses Escape
 - **THEN** the dialog closes, focus returns to the thumbnail, and the page scroll position is preserved
+
+#### Scenario: Portrait image fits without dialog scroll
+
+- **WHEN** a visitor opens a portrait screenshot such as a 9:16 image
+- **THEN** the entire image fits within the dialog's available height and width, the image remains uncropped, and the dialog has no scrollable overflow
+
+#### Scenario: Landscape image fits without dialog scroll
+
+- **WHEN** a visitor opens a landscape screenshot
+- **THEN** the entire image fits within the dialog's available height and width, the image remains uncropped, and the dialog has no scrollable overflow
 
 ### Requirement: Details are pages, not modals
 

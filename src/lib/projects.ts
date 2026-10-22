@@ -10,11 +10,6 @@ export async function getProjects(): Promise<ProjectEntry[]> {
   return projects.sort((first, second) => first.data.order - second.data.order);
 }
 
-export async function getVisibleProjects(): Promise<ProjectEntry[]> {
-  const projects = await getProjects();
-  return projects.filter((project) => project.data.tier <= 2);
-}
-
 export function getProjectCopy(project: ProjectEntry, locale: Locale) {
   return project.data.locales[locale];
 }
@@ -32,9 +27,8 @@ export async function getCaseEntry(
 }
 
 /**
- * Previous and next detail pages in catalog order. Tier 3 has no internal page,
- * so it is already absent from `getVisibleProjects()` and cannot receive a dead
- * link here. The sequence wraps at both ends.
+ * Previous and next detail pages in catalog order. Every project has an
+ * internal page, and the sequence wraps at both ends.
  */
 export function getAdjacentProjects(
   projects: ProjectEntry[],

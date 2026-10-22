@@ -49,7 +49,7 @@ const yearLabel = data.year === 'pending' ? ui.project.pending : String(data.yea
       </div>
     </dl>
 
-    <div class="case-header__stack">
+    <div class="case-header__stack" data-case-stack>
       <MetaLabel as="p">{ui.project.stack}</MetaLabel>
       <StackList label={ui.project.technologies} items={data.stack} />
     </div>

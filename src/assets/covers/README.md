@@ -15,21 +15,21 @@ cover: tetris
 ```
 
 A cover is the single representative image of a project and belongs to the
-**project record**. A gallery is the set of product screenshots of a tier 1 case
-and belongs to the **case body**. They are independent: every project can have a
-cover, and only a tier 1 case can have a gallery. See
+**project record**. A gallery is the set of product screenshots of the same
+project, declared per locale in that record. They are independent: every project
+can have a cover and a gallery, either one, or neither. See
 [`src/assets/gallery/README.md`](../gallery/README.md).
 
 ## Where a cover appears
 
 | Surface | Size | Loading |
 | --- | --- | --- |
-| Case header on a project detail page (tiers 1 and 2) | 4 of 12 columns | Eager, with high fetch priority |
+| Case header on a project detail page | 4 of 12 columns | Eager, with high fetch priority |
 | Sticky preview on the catalog page | 5 of 12 columns | Only the active panel; the other 13 keep their cover in an inert `<template>` until their panel is shown |
 | Row thumbnail on the catalog page, mobile only | 104 px | Lazy |
 
-Tier 3 has no detail page, so its cover appears in the catalog row and the
-preview only.
+Every project has a detail page, so its cover appears in the catalog and in the
+page header.
 
 The catalog page therefore downloads one cover at a time, not fourteen.
 

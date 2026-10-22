@@ -1,4 +1,5 @@
 import type { ImageMetadata } from 'astro';
+import type { Locale } from '../i18n/locales';
 import { assetKeyFromPath, describeAvailableKeys } from './project-assets';
 import type { ProjectEntry } from './projects';
 
@@ -33,11 +34,6 @@ for (const [path, module] of Object.entries(galleryModules)) {
   const slug = segments[segments.length - 2] ?? '';
 
   gallery.set(`${slug}/${assetKeyFromPath(path)}`, module.default);
-}
-
-export interface GalleryReference {
-  src: string;
-  alt: string;
 }
 
 export interface ResolvedGalleryImage {
@@ -75,17 +71,17 @@ export function getProjectCover(project: ProjectEntry): ImageMetadata | null {
   return image;
 }
 
-/** The gallery screenshots of a project, in the order the case declares them. */
+/** The gallery screenshots of a project for a locale, in declared order. */
 export function getProjectGallery(
   project: ProjectEntry,
-  references: readonly GalleryReference[],
+  locale: Locale,
 ): ResolvedGalleryImage[] {
-  return references.map((reference) => {
+  return project.data.locales[locale].gallery.map((reference) => {
     const image = gallery.get(`${project.data.slug}/${reference.src}`);
 
     if (!image) {
       throw new Error(
-        `Case "${project.data.slug}" references the gallery asset "${reference.src}", which does not exist in src/assets/gallery/${project.data.slug}. Available keys: ${describeAvailableKeys(listGalleryKeys(project.data.slug))}.`,
+        `Project "${project.data.slug}" (${locale}) references the gallery asset "${reference.src}", which does not exist in src/assets/gallery/${project.data.slug}. Available keys: ${describeAvailableKeys(listGalleryKeys(project.data.slug))}.`,
       );
     }
 

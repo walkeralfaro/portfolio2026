@@ -6,7 +6,6 @@ import { getUi } from '../../i18n/ui';
 import { getProjectCopy, type ProjectEntry } from '../../lib/projects';
 import type { ResolvedGalleryImage } from '../../lib/project-images';
 import Icon from '../icons/Icon.astro';
-import ProjectCover from '../catalog/ProjectCover.astro';
 import Lightbox from './Lightbox.astro';
 
 interface Props {
@@ -21,7 +20,6 @@ const ui = getUi(locale);
 const data = project.data;
 const copy = getProjectCopy(project, locale);
 const hasImages = images.length > 0;
-const openCoverLabel = ui.caseStudy.openCover.replace('{title}', copy.title);
 const lightboxLabel = ui.caseStudy.lightboxLabel.replace('{title}', copy.title);
 
 const candidatesFor = (image: ImageMetadata): number[] => {
@@ -31,16 +29,16 @@ const candidatesFor = (image: ImageMetadata): number[] => {
 };
 ---
 
-<div
-  class:list={['screenshot-gallery', className]}
-  data-gallery
-  role="group"
-  aria-label={ui.caseStudy.galleryLabel}
->
-  <ul class="screenshot-gallery__list">
-    {
-      hasImages ? (
-        images.map((entry, index) => (
+{
+  hasImages && (
+    <div
+      class:list={['screenshot-gallery', className]}
+      data-gallery
+      role="group"
+      aria-label={ui.caseStudy.galleryLabel}
+    >
+      <ul class="screenshot-gallery__list">
+        {images.map((entry, index) => (
           <li class="screenshot-gallery__item">
             <button
               type="button"
@@ -71,51 +69,10 @@ const candidatesFor = (image: ImageMetadata): number[] => {
               </span>
             </button>
           </li>
-        ))
-      ) : (
-        <li class="screenshot-gallery__item">
-          <button
-            type="button"
-            class="screenshot-gallery__trigger"
-            data-lightbox-open={`gallery-${data.slug}-cover`}
-            aria-haspopup="dialog"
-          >
-            <span class="visually-hidden">{openCoverLabel}</span>
-            <span class="screenshot-gallery__thumb">
-              <ProjectCover project={project} locale={locale} />
-            </span>
-            <span class="screenshot-gallery__hint">
-              <Icon name="expand" />
-              <span>{ui.caseStudy.coverLabel}</span>
-            </span>
-          </button>
-        </li>
-      )
-    }
-  </ul>
+        ))}
+      </ul>
 
-  {
-    !hasImages && (
-      <p class="screenshot-gallery__caption">{ui.caseStudy.coverCaption}</p>
-    )
-  }
-
-  {
-    !hasImages && (
-      <Lightbox
-        id={`gallery-${data.slug}-cover`}
-        label={lightboxLabel}
-        closeLabel={ui.caseStudy.closeLightbox}
-        caption={ui.caseStudy.coverCaption}
-      >
-        <ProjectCover project={project} locale={locale} />
-      </Lightbox>
-    )
-  }
-
-  {
-    hasImages &&
-      images.map((entry, index) => (
+      {images.map((entry, index) => (
         <Lightbox
           id={`gallery-${data.slug}-${index}`}
           label={lightboxLabel}
@@ -130,9 +87,10 @@ const candidatesFor = (image: ImageMetadata): number[] => {
             decoding="async"
           />
         </Lightbox>
-      ))
-  }
-</div>
+      ))}
+    </div>
+  )
+}
 
 <style>
   .screenshot-gallery {
@@ -179,16 +137,6 @@ const candidatesFor = (image: ImageMetadata): number[] => {
     overflow: hidden;
   }
 
-  .screenshot-gallery__thumb :global(.placeholder-cover) {
-    border: 0;
-    block-size: 100%;
-  }
-
-  .screenshot-gallery__thumb :global(.project-cover) {
-    border: 0;
-    block-size: 100%;
-  }
-
   .screenshot-gallery__thumb :global(img) {
     display: block;
     inline-size: 100%;
@@ -211,15 +159,6 @@ const candidatesFor = (image: ImageMetadata): number[] => {
 
   .screenshot-gallery__trigger:hover .screenshot-gallery__hint {
     color: var(--ink);
-  }
-
-  .screenshot-gallery__caption {
-    max-inline-size: var(--measure-prose);
-    margin: 0;
-    color: var(--muted);
-    font-family: var(--font-family-sans);
-    font-size: var(--type-meta-size);
-    line-height: var(--type-meta-leading);
   }
 
   @media (prefers-reduced-motion: reduce) {

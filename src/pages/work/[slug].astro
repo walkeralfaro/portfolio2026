@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectDetail from '../../components/case/ProjectDetail.astro';
-import { getVisibleProjects, getProjectCopy, type ProjectEntry } from '../../lib/projects';
+import { getProjects, getProjectCopy, type ProjectEntry } from '../../lib/projects';
 import { site } from '../../lib/site';
 
 export async function getStaticPaths() {
-  const projects = await getVisibleProjects();
+  const projects = await getProjects();
 
   return projects.map((project) => ({
     params: { slug: project.data.slug },

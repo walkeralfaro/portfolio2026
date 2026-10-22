@@ -2,7 +2,6 @@ slug: tic-tac-toe
 year: pending
 category: juegos
 tags: [react, juego-local, nextjs]
-tier: 2
 status: in-development
 featured: false
 order: 8

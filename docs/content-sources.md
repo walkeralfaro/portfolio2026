@@ -9,6 +9,8 @@ This map records where each published project claim, metric, and editorial field
 
 `projects/contries.md` contains only the default `create-next-app` boilerplate, so it contributes no project claims. `projects/weather.md` is an unfinished challenge template, so its record uses an explicit pending state.
 
+New imports use `projects/<slug>/README.md` as the raw source and `projects/<slug>/content.yaml` as the normalized intake. The importer generates `src/content/projects/<slug>.yaml` and optional `src/content/cases/<slug>.<locale>.mdx`; those generated files do not add claims. The intake workflow is documented in `docs/project-readme-import.md`.
+
 All English fields are translations of the Spanish fields. Translation does not add claims.
 
 ## Metrics
@@ -17,7 +19,7 @@ All English fields are translations of the Spanish fields. Translation does not 
 | --- | --- | --- | --- |
 | Catalog size | 14 | Catalog | `proposal.md:10,34`; `specs/work-catalog/spec.md:11` |
 | Featured projects | 4 | Home | `design.md:171` |
-| Tier depths | 6 / 4 / 4 | Catalog | `tasks.md` 2.5 and 2.7; `design.md:190–191` |
+| Published galleries | 1 (Tetris, 3 screenshots) | Catalog | `src/content/projects/tetris.yaml`; `src/assets/gallery/README.md` |
 | Prompt length | 7 lines | Image Prompt | `data.js:151` |
 | Prompt styles | 17 | Image Prompt | `data.js:152` |
 | Anti-topic themes | 7 | Image Prompt | `data.js:152` |
@@ -25,15 +27,15 @@ All English fields are translations of the Spanish fields. Translation does not 
 | Token hash | SHA-256 | TODO-mcp | `data.js:139` |
 | Pokémon covered | 151 | Pokedex | `projects/pokedex.md:3` |
 | Render target | 60 fps | Tetris | `projects/tetris.md:54` |
-| PDF columns | 2 | Cheatsheet Editor | `data.js:166` |
-| Documented Tetris screens | 3 | Tetris | `projects/tetris.md:14–23` |
+| PDF columns | Cheatsheet Editor | `data.js:166` |
+| Documented Tetris screens | Tetris | `projects/tetris.md:14–23` |
 
 ## Editorial fields
 
 The following fields are curation, not factual claims from the project notes:
 
 - `slug` and `title`: required catalog inventory in `tasks.md` 2.2 and `specs/work-catalog/spec.md:11`.
-- `tier`: tier 1 set in `tasks.md` 2.5; tier 2 and tier 3 sets in `tasks.md` 2.7; depth definitions in `design.md:190–191,309–313`.
+- `gallery`: optional, locale-specific screenshot references under `locales.es.gallery` and `locales.en.gallery`, resolved against `src/assets/gallery/<slug>/`. Only local assets imported into the intake are referenced; remote README images are not hotlinked.
 - `category`: the four allowed filters come from `proposal.md:13`; assignment to a project is editorial.
 - `tags`: editorial retrieval labels drawn from the source technology and feature notes.
 - `featured`: fixed set from `design.md:171`.
@@ -41,22 +43,22 @@ The following fields are curation, not factual claims from the project notes:
 - `cover`: a key that points to a local asset under `src/assets/covers/`, or `null` when the project has no cover yet. The keys in use are `todo-app`; the other 13 records keep the designed placeholder.
 - `status`: an availability label, not a business outcome. `live` means a real live URL is documented; `in-development` means no live deployment is documented; `archived` means an archive-depth entry without a documented live implementation. Tip Calculator and Portfolio Profesional are archive-depth entries with live URLs, so they are marked `live`.
 
-| Project | Tier | Category | Featured | Order | Status | Year | Year origin |
-| --- | ---: | --- | --- | ---: | --- | --- | --- |
-| TODO-mcp | 1 | ia | yes | 1 | in-development | 2026 | `data.js:135` |
-| Image Prompt | 1 | ia | yes | 2 | in-development | 2026 | `data.js:149` |
-| Cheatsheet Editor | 1 | producto | no | 3 | in-development | 2026 | `data.js:162` |
-| URL Shortener | 1 | producto | yes | 4 | live | pending | no date in `projects/urlshortener.md` |
-| Multi-step Form | 1 | frontend | no | 5 | live | pending | no date in `projects/multistep.md` |
-| Pokedex | 2 | frontend | no | 6 | in-development | pending | no date in `projects/pokedex.md` |
-| Todo App | 2 | frontend | no | 7 | live | pending | no date in `projects/todoappdrag.md` |
-| Tic Tac Toe | 2 | juegos | no | 8 | in-development | pending | no date in `projects/tictactoe.md` |
-| Tip Calculator | 3 | frontend | no | 9 | live | pending | no date in `projects/tipcalculator.md` |
-| Weather App | 3 | frontend | no | 10 | archived | pending | no date in `projects/weather.md` |
-| REST Countries Explorer | 3 | frontend | no | 11 | archived | 2023 | `data.js:187` |
-| Tetris | 1 | juegos | yes | 12 | live | pending | no date in `projects/tetris.md` |
-| Portfolio Profesional | 3 | producto | no | 13 | live | 2023 | `data.js:175` |
-| Portfolio 2026 | 2 | producto | no | 14 | in-development | 2026 | Project scope and current year; `proposal.md:34` |
+| Project | Category | Featured | Order | Status | Year | Year origin |
+| --- | --- | --- | ---: | --- | --- | --- |
+| TODO-mcp | ia | yes | 1 | in-development | 2026 | `data.js:135` |
+| Image Prompt | ia | yes | 2 | in-development | 2026 | `data.js:149` |
+| Cheatsheet Editor | producto | no | 3 | in-development | 2026 | `data.js:162` |
+| URL Shortener | producto | yes | 4 | live | pending | no date in `projects/urlshortener.md` |
+| Multi-step Form | frontend | no | 5 | live | pending | no date in `projects/multistep.md` |
+| Pokedex | frontend | no | 6 | in-development | pending | no date in `projects/pokedex.md` |
+| Todo App | frontend | no | 7 | live | pending | no date in `projects/todoappdrag.md` |
+| Tic Tac Toe | juegos | no | 8 | in-development | pending | no date in `projects/tictactoe.md` |
+| Tip Calculator | frontend | no | 9 | live | pending | no date in `projects/tipcalculator.md` |
+| Weather App | frontend | no | 10 | archived | pending | no date in `projects/weather.md` |
+| REST Countries Explorer | frontend | no | 11 | archived | 2023 | `data.js:187` |
+| Tetris | juegos | yes | 12 | live | pending | no date in `projects/tetris.md` |
+| Portfolio Profesional | producto | no | 13 | live | 2023 | `data.js:175` |
+| Portfolio 2026 | producto | no | 14 | in-development | 2026 | Project scope and current year; `proposal.md:34` |
 
 ## Record and case provenance
 
@@ -161,7 +163,7 @@ Record source: `projects/todoappdrag.md`.
 | CSS modules combined with Sass; conditional classes with clsx | `projects/todoappdrag.md:67–76` |
 | Year pending | The note has no year or creation date |
 | Cover | `src/assets/covers/todo-app.webp`, converted from the desktop dark screenshot in the project repository, 1440×900 |
-| Gallery pending | Todo App is tier 2 and has no case body, so the three remaining screenshots in the repository are not published |
+| Gallery pending | No verified screenshots are declared for the published gallery |
 
 ### Tic Tac Toe
 
@@ -252,7 +254,7 @@ There is no project note. This entry is the current site, so its sources are the
 | Claim | Origin |
 | --- | --- |
 | Bilingual project catalog with light/dark themes and static output | `proposal.md:9,15,18`; `design.md:36,287,336–345` |
-| Fourteen projects and the 6/4/4 tier model | `proposal.md:10,34`; `design.md:190–191`; `tasks.md` 2.2, 2.5, 2.7 |
+| Fourteen projects and four featured projects | `proposal.md:10,34`; `design.md:171`; `tasks.md` 2.2 |
 | ES/EN routes, system theme, external CV link, performance budget | `design.md:287,312–322,324–334`; `tasks.md` sections 2 and 9 |
 | Design and development of the content model through E2E tests | `tasks.md` sections 1–10 (integration quality) |
 | Year 2026 | Project scope and current year |

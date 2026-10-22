@@ -22,14 +22,7 @@ const copy = getProjectCopy(project, locale);
 const data = project.data;
 const categoryLabel = ui.categories[data.category];
 const yearLabel = data.year === 'pending' ? ui.project.pending : String(data.year);
-const detailHref = data.tier <= 2
-  ? routeHref(locale, { name: 'project', slug: data.slug })
-  : null;
-const externalHref = data.tier === 3 ? (data.links.live ?? data.links.code) : null;
-const href = detailHref ?? externalHref;
-const isExternal = href !== null && detailHref === null;
-const hasDestination = href !== null;
-const RowTag = hasDestination ? 'a' : 'div';
+const href = routeHref(locale, { name: 'project', slug: data.slug });
 const TitleTag = headingLevel;
 ---
 
@@ -38,13 +31,12 @@ const TitleTag = headingLevel;
   data-project-row
   data-project={data.slug}
   data-category={data.category}
-  data-tier={data.tier}
   data-index={position}
 >
-  <RowTag
-    class:list={['project-row__inner', hasDestination && 'project-row__inner--link']}
-    {...(href ? { href } : {})}
-    data-row-destination={hasDestination ? (isExternal ? 'external' : 'internal') : 'pending'}
+  <a
+    class="project-row__inner project-row__inner--link"
+    href={href}
+    data-row-destination="internal"
   >
     <span class="project-row__thumb" aria-hidden="true">
       <ProjectCover
@@ -72,17 +64,9 @@ const TitleTag = headingLevel;
 
       <span class="project-row__footer">
         <StatusBadge status={data.status} label={ui.statuses[data.status]} />
-        {
-          !hasDestination && (
-            <span class="project-row__pending">
-              <MetaLabel>{ui.project.pending}</MetaLabel>
-              <span>{copy.availability ?? ui.actions.linksPending}</span>
-            </span>
-          )
-        }
       </span>
     </span>
-  </RowTag>
+  </a>
 </li>
 
 <style>
@@ -180,17 +164,6 @@ const TitleTag = headingLevel;
     align-items: center;
     gap: var(--space-2) var(--space-3);
     margin-block-start: var(--space-1);
-  }
-
-  .project-row__pending {
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-1);
-    color: var(--muted);
-    font-family: var(--font-family-sans);
-    font-size: var(--type-meta-size);
-    line-height: var(--type-meta-leading);
   }
 
   @media (max-width: 899.98px) {

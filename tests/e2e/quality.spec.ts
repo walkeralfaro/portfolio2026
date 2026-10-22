@@ -129,7 +129,7 @@ test('keyboard operation covers filters, catalog rows, lightbox, and CV links', 
   await firstRow.focus();
   await expect(page.locator('[data-preview-panel][data-active="true"]')).toHaveCount(1);
 
-  await page.goto('/work/todo-mcp/');
+  await page.goto('/work/tetris/');
   const trigger = page.locator('[data-lightbox-open]').first();
   await trigger.focus();
   await page.keyboard.press('Enter');
