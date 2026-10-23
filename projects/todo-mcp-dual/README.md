@@ -9,6 +9,10 @@ Una app moderna de gestión de tareas donde humanos y agentes de IA operan sobre
 - live: https://todo-mcp-dual.vercel.app/
 - codigo: https://github.com/walkeralfaro/todo-mcp-dual
 
+## Year
+
+2026
+
 ## Features
 
 - Lista de tareas con filtros por estado (`TODAS`, `PENDIENTE`, `EN_PROCESO`, `COMPLETADA`) y búsqueda `?q=`.

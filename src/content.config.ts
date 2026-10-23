@@ -1,15 +1,21 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { projectCaseSchema, projectSchema } from './content/schemas';
+import { projectSchema } from './lib/content/schema';
 
+/**
+ * Each project is a self-contained folder under `projects/`:
+ *
+ *   projects/<slug>/README.md
+ *   projects/<slug>/content.yaml
+ *   projects/<slug>/cover.webp
+ *   projects/<slug>/screenshots/<key>.webp
+ *
+ * The folder name is the slug, so adding a project never requires editing a
+ * central inventory file.
+ */
 const projects = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: './src/content/projects' }),
+  loader: glob({ pattern: '*/content.yaml', base: './projects' }),
   schema: projectSchema,
 });
 
-const cases = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/cases' }),
-  schema: projectCaseSchema,
-});
-
-export const collections = { projects, cases };
+export const collections = { projects };

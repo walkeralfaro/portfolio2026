@@ -1,4 +1,12 @@
-.opencode/
+# Local OpenCode state, except the project-specific skill and command.
+.opencode/*
+!.opencode/commands/
+.opencode/commands/*
+!.opencode/commands/add-project.md
+!.opencode/skills/
+.opencode/skills/*
+!.opencode/skills/add-project/
+!.opencode/skills/add-project/**
 
 # Astro build output and generated files
 dist/

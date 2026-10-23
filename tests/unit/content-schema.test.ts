@@ -1,25 +1,25 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { intakeSchema } from '../../src/content/schemas.ts';
+import { projectSchema } from '../../src/lib/content/schema.ts';
 
-function validIntake(): Record<string, any> {
+function validProject(): Record<string, any> {
   return {
     slug: 'pokedex',
     year: 'pending' as const,
     category: 'frontend' as const,
     tags: ['pokeapi'],
-    status: 'in-development' as const,
+    status: 'live' as const,
     featured: false,
     order: 6,
     stack: ['React 19', 'TypeScript', 'Vite'],
     links: { live: null, code: null },
-    cover: null,
     locales: {
       es: {
         title: 'Pokedex',
         summary: 'Explorador de Pokémon.',
         role: 'Desarrollo individual.',
         result: 'Lista y detalle de Pokémon.',
+        availability: 'Demo pública pendiente.',
         gallery: [],
       },
       en: {
@@ -27,6 +27,7 @@ function validIntake(): Record<string, any> {
         summary: 'Pokémon explorer.',
         role: 'Individual development.',
         result: 'Pokémon list and detail.',
+        availability: 'Public demo pending.',
         gallery: [],
       },
     },
@@ -37,20 +38,24 @@ function narrative() {
   return {
     problem: 'A problem.',
     role: 'A role.',
-    decisions: ['First decision.', 'Second decision.', 'Third decision.'],
+    decisions: [
+      { title: 'First', body: 'First decision.' },
+      { title: 'Second', body: 'Second decision.' },
+      { title: 'Third', body: 'Third decision.' },
+    ],
     result: 'A result.',
   };
 }
 
-test('a complete intake passes validation', () => {
-  assert.equal(intakeSchema.safeParse(validIntake()).success, true);
+test('a complete project passes validation', () => {
+  assert.equal(projectSchema.safeParse(validProject()).success, true);
 });
 
 test('a missing localized field is reported at its path', () => {
-  const intake = validIntake();
-  delete (intake.locales.en as { summary?: string }).summary;
+  const project = validProject();
+  delete (project.locales.en as { summary?: string }).summary;
 
-  const result = intakeSchema.safeParse(intake);
+  const result = projectSchema.safeParse(project);
 
   assert.equal(result.success, false);
   assert.match(
@@ -59,9 +64,9 @@ test('a missing localized field is reported at its path', () => {
   );
 });
 
-test('an unknown intake field is rejected', () => {
-  const intake = { ...validIntake(), unexpected: true };
-  const result = intakeSchema.safeParse(intake);
+test('an unknown project field is rejected', () => {
+  const project = { ...validProject(), unexpected: true };
+  const result = projectSchema.safeParse(project);
 
   assert.equal(result.success, false);
   assert.match(
@@ -71,21 +76,21 @@ test('an unknown intake field is rejected', () => {
 });
 
 test('the stack must contain three to five items', () => {
-  const tooShort = { ...validIntake(), stack: ['React', 'TypeScript'] };
+  const tooShort = { ...validProject(), stack: ['React', 'TypeScript'] };
   const tooLong = {
-    ...validIntake(),
+    ...validProject(),
     stack: ['One', 'Two', 'Three', 'Four', 'Five', 'Six'],
   };
 
-  assert.equal(intakeSchema.safeParse(tooShort).success, false);
-  assert.equal(intakeSchema.safeParse(tooLong).success, false);
+  assert.equal(projectSchema.safeParse(tooShort).success, false);
+  assert.equal(projectSchema.safeParse(tooLong).success, false);
 });
 
 test('a narrative must be present in both locales or neither', () => {
-  const intake = validIntake();
-  intake.locales.es.narrative = narrative();
+  const project = validProject();
+  project.locales.es.narrative = narrative();
 
-  const result = intakeSchema.safeParse(intake);
+  const result = projectSchema.safeParse(project);
 
   assert.equal(result.success, false);
   assert.match(
@@ -94,10 +99,44 @@ test('a narrative must be present in both locales or neither', () => {
   );
 });
 
-test('a balanced narrative passes validation', () => {
-  const intake = validIntake();
-  intake.locales.es.narrative = narrative();
-  intake.locales.en.narrative = narrative();
+test('availability must be present in both locales or neither', () => {
+  const project = validProject();
+  delete project.locales.en.availability;
 
-  assert.equal(intakeSchema.safeParse(intake).success, true);
+  const result = projectSchema.safeParse(project);
+
+  assert.equal(result.success, false);
+  assert.match(
+    result.success ? '' : result.error.issues.map((issue) => issue.message).join(' '),
+    /availability must be present in both locales or neither/,
+  );
+});
+
+test('a balanced narrative passes validation', () => {
+  const project = validProject();
+  project.locales.es.narrative = narrative();
+  project.locales.en.narrative = narrative();
+
+  assert.equal(projectSchema.safeParse(project).success, true);
+});
+
+test('a narrative requires three or four structured decisions', () => {
+  const project = validProject();
+  const short = narrative();
+  short.decisions = short.decisions.slice(0, 2);
+  project.locales.es.narrative = short;
+  project.locales.en.narrative = short;
+
+  assert.equal(projectSchema.safeParse(project).success, false);
+});
+
+test('the slug must be lowercase kebab-case', () => {
+  for (const slug of ['Pokedex', 'poke_dex', 'pokedex-', 'pokedex--app']) {
+    assert.equal(projectSchema.safeParse({ ...validProject(), slug }).success, false);
+  }
+
+  assert.equal(
+    projectSchema.safeParse({ ...validProject(), slug: 'rest-countries-explorer' }).success,
+    true,
+  );
 });

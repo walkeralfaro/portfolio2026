@@ -1,0 +1,96 @@
+slug: tic-tac-toe
+year: 2025
+category: juegos
+tags:
+  - tres en línea
+  - react
+  - historial
+  - local
+status: live
+featured: false
+order: 8
+stack:
+  - Next.js
+  - React
+  - TypeScript
+  - Tailwind CSS
+links:
+  live: https://tictactoe-walker.vercel.app/
+  code: https://github.com/walkeralfaro/tictactoe
+locales:
+  es:
+    title: Tres en línea
+    summary: Un tres en línea local con historial de tableros, viaje en el tiempo y notificaciones del resultado.
+    role: Desarrollo individual del juego.
+    result: Detecta victorias y empates, permite revisar cualquier jugada del historial y reiniciar la partida.
+    gallery: []
+    narrative:
+      problem: |
+        El proyecto implementa un tres en línea para dos jugadores en el mismo
+        dispositivo. La partida debía alternar turnos entre X y O, detectar una línea de
+        tres o un empate y permitir revisar las jugadas anteriores sin perder el estado.
+      role: |
+        Desarrollé el juego con React 19 y Next.js 16: la arquitectura de componentes, el
+        estado de la partida, el cálculo del ganador, el historial y los estilos
+        responsive.
+      decisions:
+        - title: Estado como historial de tableros
+          body: |
+            La partida se guarda como un arreglo history con el tablero de cada movimiento
+            y un índice currentMove. El tablero visible es history[currentMove], y el
+            turno, el ganador y el empate se derivan de ese estado en lugar de duplicarse.
+        - title: Tablero, celda y mini-tablero
+          body: |
+            Game concentra el estado; Board dibuja la cuadrícula y el estado actual; Square
+            representa cada celda; MiniBoard reutiliza el tablero en miniatura para el
+            historial.
+        - title: Ocho combinaciones ganadoras
+          body: |
+            calculateWinner revisa tres filas, tres columnas y dos diagonales. El empate se
+            declara cuando no hay ganador y todas las celdas están ocupadas.
+        - title: Historial accesible en móvil
+          body: |
+            El panel lateral se controla con isHistoryOpen en pantallas pequeñas. Al pulsar
+            un movimiento se recupera ese tablero, y sonner anuncia el resultado mientras
+            el botón de reinicio devuelve la partida al inicio.
+      result: |
+        El juego alterna turnos, detecta victorias y empates, muestra el resultado con
+        notificaciones, permite viajar por el historial y reiniciar, con un tablero
+        responsive y X en cyan frente a O en pink sobre fondo oscuro.
+  en:
+    title: Tic-Tac-Toe
+    summary: A local tic-tac-toe game with board history, time travel, and result notifications.
+    role: Individual development of the game.
+    result: It detects wins and draws, lets people review any move in the history, and restarts the game.
+    gallery: []
+    narrative:
+      problem: |
+        The project implements tic-tac-toe for two players on the same device. The game
+        had to alternate turns between X and O, detect three in a row or a draw, and let
+        people review previous moves without losing the state.
+      role: |
+        I developed the game with React 19 and Next.js 16: the component architecture,
+        game state, winner calculation, history, and responsive styles.
+      decisions:
+        - title: State as a history of boards
+          body: |
+            The game is stored as a history array with the board for each move and a
+            currentMove index. The visible board is history[currentMove], and the turn,
+            winner, and draw are derived from that state instead of being duplicated.
+        - title: Board, square, and mini-board
+          body: |
+            Game holds the state; Board draws the grid and the current status; Square
+            represents each cell; MiniBoard reuses the board in miniature for the history.
+        - title: Eight winning combinations
+          body: |
+            calculateWinner checks three rows, three columns, and two diagonals. A draw is
+            declared when there is no winner and every cell is occupied.
+        - title: History accessible on mobile
+          body: |
+            The side panel is controlled by isHistoryOpen on small screens. Selecting a
+            move restores that board, sonner announces the result, and the restart button
+            returns the game to the beginning.
+      result: |
+        The game alternates turns, detects wins and draws, shows the result with
+        notifications, lets people travel through the history and restart, with a
+        responsive board and cyan X against pink O on a dark background.

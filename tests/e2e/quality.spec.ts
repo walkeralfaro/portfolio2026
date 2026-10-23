@@ -4,17 +4,23 @@ import {
   THEME_ATTRIBUTE,
   THEME_STORAGE_KEY,
 } from '../../src/lib/theme-contract.ts';
+import { categoryCounts, hasProjects, projectPath, projects } from './projects';
 
 const auditPages = [
   { path: '/', name: 'home-es' },
   { path: '/en/', name: 'home-en' },
   { path: '/work/', name: 'work-es' },
   { path: '/en/work/', name: 'work-en' },
-  { path: '/work/todo-mcp/', name: 'case-es' },
-  { path: '/en/work/todo-mcp/', name: 'case-en' },
   { path: '/about/', name: 'about-es' },
   { path: '/en/about/', name: 'about-en' },
 ] as const;
+
+const projectAuditPages = hasProjects
+  ? [
+      { path: projectPath(projects[0].slug), name: 'case-es' },
+      { path: projectPath(projects[0].slug, 'en'), name: 'case-en' },
+    ]
+  : [];
 
 const themes = ['light', 'dark'] as const;
 
@@ -29,7 +35,7 @@ for (const theme of themes) {
   test(`automated accessibility audit passes in the ${theme} theme`, async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
 
-    for (const entry of auditPages) {
+  for (const entry of [...auditPages, ...projectAuditPages]) {
       await setTheme(page, theme);
       await page.goto(entry.path);
       await expect(page.locator('html')).toHaveAttribute(THEME_ATTRIBUTE, theme);
@@ -115,29 +121,42 @@ test('keyboard operation covers filters, catalog rows, lightbox, and CV links', 
   await page.goto('/work/');
   await page.waitForSelector('[data-catalog-ready="true"]');
 
-  const firstFilter = page.locator('[data-filter="ia"]');
-  await firstFilter.focus();
-  await page.keyboard.press('Enter');
-  await expect(firstFilter).toHaveAttribute('aria-current', 'page');
-  await expect(page.locator('[data-catalog-count]')).toHaveText('2');
+  const filterCategory = (['ia', 'producto', 'frontend', 'juegos'] as const).find(
+    (category) => categoryCounts[category] > 0,
+  );
+  if (filterCategory) {
+    const firstFilter = page.locator(`[data-filter="${filterCategory}"]`);
+    await firstFilter.focus();
+    await page.keyboard.press('Enter');
+    await expect(firstFilter).toHaveAttribute('aria-current', 'page');
+    await expect(page.locator('[data-catalog-count]')).toHaveText(
+      String(categoryCounts[filterCategory]),
+    );
+  }
 
   await page.locator('[data-filter="all"]').focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('[data-catalog-count]')).toHaveText('14');
+  await expect(page.locator('[data-catalog-count]')).toHaveText(String(categoryCounts.all));
 
-  const firstRow = page.locator('[data-project-row] a.project-row__inner').first();
-  await firstRow.focus();
-  await expect(page.locator('[data-preview-panel][data-active="true"]')).toHaveCount(1);
+  if (hasProjects) {
+    const firstRow = page.locator('[data-project-row] a.project-row__inner').first();
+    await firstRow.focus();
+    await expect(page.locator('[data-preview-panel][data-active="true"]')).toHaveCount(1);
+  }
 
-  await page.goto('/work/tetris/');
-  const trigger = page.locator('[data-lightbox-open]').first();
-  await trigger.focus();
-  await page.keyboard.press('Enter');
-  const dialog = page.locator('dialog[open]');
-  await expect(dialog).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(dialog).toBeHidden();
-  await expect(trigger).toBeFocused();
+  if (hasProjects) {
+    await page.goto(projectPath(projects[0].slug));
+    const trigger = page.locator('[data-lightbox-open]').first();
+    if (await trigger.count()) {
+      await trigger.focus();
+      await page.keyboard.press('Enter');
+      const dialog = page.locator('dialog[open]');
+      await expect(dialog).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(dialog).toBeHidden();
+      await expect(trigger).toBeFocused();
+    }
+  }
 
   await page.goto('/');
   const cvLinks = page.locator('a[href="https://resume.walkeralfaro.com/"]');
@@ -160,9 +179,9 @@ test('reduced motion removes non-essential transitions', async ({ page }) => {
       '.button-link',
     ];
 
-    return selectors.map((selector) => {
+    return selectors.flatMap((selector) => {
       const element = document.querySelector(selector);
-      if (!element) return { selector, duration: null };
+      if (!element) return [];
 
       const style = getComputedStyle(element);
       return {
@@ -172,17 +191,29 @@ test('reduced motion removes non-essential transitions', async ({ page }) => {
     });
   });
 
+  expect(durations.length).toBeGreaterThan(0);
   for (const entry of durations) {
-    expect(entry.duration, `${entry.selector} transition`).not.toBeNull();
-    expect(entry.duration!, `${entry.selector} should have no measurable transition`).toBeLessThanOrEqual(0.01);
+    expect(entry.duration, `${entry.selector} should have no measurable transition`).toBeLessThanOrEqual(0.01);
   }
 
-  await expect(page.locator('[data-project-row]').first()).toBeVisible();
+  if (hasProjects) {
+    await expect(page.locator('[data-project-row]').first()).toBeVisible();
+  } else {
+    await expect(page.locator('[data-project-row]')).toHaveCount(0);
+  }
 });
 
 test('the review matrix has no overflow and keeps one heading per page', async ({ page }) => {
   const widths = [320, 768, 1024, 1440];
-  const routes = ['/', '/en/', '/work/', '/en/work/', '/work/todo-mcp/', '/en/work/todo-mcp/', '/about/', '/en/about/'];
+  const routes = [
+    '/',
+    '/en/',
+    '/work/',
+    '/en/work/',
+    ...projectAuditPages.map((entry) => entry.path),
+    '/about/',
+    '/en/about/',
+  ];
 
   for (const width of widths) {
     await page.setViewportSize({ width, height: 900 });

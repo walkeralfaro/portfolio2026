@@ -1,0 +1,104 @@
+slug: image-prompt
+year: 2026
+category: ia
+tags:
+  - prompts
+  - imágenes
+  - generación
+  - ia
+status: live
+featured: true
+order: 3
+stack:
+  - React
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - Zustand
+links:
+  live: https://image-prompt-mauve.vercel.app/
+  code: https://github.com/walkeralfaro/image-prompt
+locales:
+  es:
+    title: Image Prompt
+    summary: Un cuestionario guiado que construye prompts de siete líneas para generadores de imágenes con IA.
+    role: Diseño y desarrollo individual de la aplicación.
+    result: Genera un prompt estructurado, detecta adjetivos vacíos, aplica filtros anti-tópicos y permite copiarlo o descargarlo en Markdown.
+    gallery: []
+    narrative:
+      problem: |
+        Los prompts improvisados para generadores de imágenes suelen producir
+        resultados genéricos: brochazos, pan de oro, destellos y lemas inventados.
+        El proyecto buscaba un método repetible para evitar esos lugares comunes y
+        obtener un texto listo para usar.
+
+        La herramienta debía servir tanto a quien conoce los generadores como a quien
+        empieza, sin exigir memorizar una plantilla.
+      role: |
+        Trabajé la aplicación completa: el flujo de cuestionario, el catálogo de
+        estilos, el motor de formato, la persistencia local y la exportación.
+      decisions:
+        - title: Un orden fijo de siete líneas
+          body: |
+            Cada prompt sigue la misma secuencia: formato, qué es, tema, estilo, texto
+            exacto, tipografía y paleta, y exclusiones. El orden convierte una decisión
+            abierta en un cuestionario que se puede completar paso a paso.
+        - title: Estilos con nombre propio
+          body: |
+            El motor rechaza adjetivos vacíos como bonito o moderno y pide un movimiento,
+            tradición o técnica identificable. El catálogo reúne diecisiete estilos para
+            elegir uno concreto.
+        - title: Cierre anti-texto basura
+          body: |
+            La línea de texto exacto añade automáticamente la condición de que no haya
+            ningún otro texto, y la línea final fija una guía anti-tópicos que se amplía
+            según la temática elegida.
+        - title: Borradores locales por proyecto
+          body: |
+            Zustand con persist guarda respuestas, historial y borradores en localStorage,
+            de modo que se pueden mantener varios proyectos sin backend.
+      result: |
+        La aplicación permite recorrer siete pasos, revisar el resumen y obtener un
+        prompt en español o inglés, listo para copiar o descargar como documento
+        Markdown con una guía de uso.
+  en:
+    title: Image Prompt
+    summary: A guided questionnaire that builds seven-line prompts for AI image generators.
+    role: Individual design and development of the application.
+    result: It generates a structured prompt, detects empty adjectives, applies anti-cliché filters, and lets people copy it or download it as Markdown.
+    gallery: []
+    narrative:
+      problem: |
+        Improvised prompts for image generators often produce generic results:
+        brushstrokes, gold leaf, sparkles, and invented slogans. The project aimed for
+        a repeatable method that avoids those clichés and produces text ready to use.
+
+        The tool had to work both for people who know the generators and for newcomers,
+        without requiring them to memorize a template.
+      role: |
+        I worked on the complete application: the questionnaire flow, the style
+        catalog, the formatting engine, local persistence, and export.
+      decisions:
+        - title: A fixed seven-line order
+          body: |
+            Every prompt follows the same sequence: format, what it is, subject, style,
+            exact text, typography and palette, and exclusions. The order turns an open
+            decision into a questionnaire that can be completed step by step.
+        - title: Styles with a proper name
+          body: |
+            The engine rejects empty adjectives such as pretty or modern and asks for an
+            identifiable movement, tradition, or technique. The catalog gathers
+            seventeen styles so people can choose a specific one.
+        - title: A closing anti-clutter rule
+          body: |
+            The exact-text line automatically adds the condition that there is no other
+            text, and the final line applies a fixed anti-cliché guide extended by the
+            selected topic.
+        - title: Local drafts per project
+          body: |
+            Zustand with persist stores answers, history, and drafts in localStorage, so
+            multiple projects can be kept without a backend.
+      result: |
+        The application lets people move through seven steps, review the summary, and
+        get a prompt in Spanish or English, ready to copy or download as a Markdown
+        document with a usage guide.

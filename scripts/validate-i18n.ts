@@ -1,16 +1,20 @@
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml } from 'yaml';
 import { compareKeys, isComplete, collectKeyPaths } from '../src/i18n/validate.ts';
 import { uiEn } from '../src/i18n/ui.en.ts';
 import { uiEs } from '../src/i18n/ui.es.ts';
 
-const defaultProjectsDir = fileURLToPath(new URL('../src/content/projects', import.meta.url));
+const defaultProjectsDir = fileURLToPath(new URL('../projects', import.meta.url));
 const projectsDir = process.env.I18N_PROJECTS_DIR ?? defaultProjectsDir;
-const projectFiles = readdirSync(projectsDir)
-  .filter((file) => file.endsWith('.yaml'))
-  .sort();
+const projectFiles = existsSync(projectsDir)
+  ? readdirSync(projectsDir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => join(projectsDir, entry.name, 'content.yaml'))
+      .filter((file) => existsSync(file))
+      .sort()
+  : [];
 const failures: string[] = [];
 
 /**
@@ -40,7 +44,7 @@ if (!isComplete(uiComparison)) {
 }
 
 for (const file of projectFiles) {
-  const project = parseYaml(readFileSync(join(projectsDir, file), 'utf8')) as {
+  const project = parseYaml(readFileSync(file, 'utf8')) as {
     slug?: string;
     locales?: { es?: unknown; en?: unknown };
   };
@@ -69,7 +73,7 @@ for (const file of projectFiles) {
 }
 
 const uiKeyCount = collectKeyPaths(uiEs).length;
-const i18nDoc = readFileSync(new URL('../docs/i18n.md', import.meta.url), 'utf8');
+const i18nDoc = readFileSync(new URL('../docs/arquitectura.md', import.meta.url), 'utf8');
 const documentedValues = [
   'src/i18n/ui.es.ts',
   'src/i18n/ui.en.ts',
@@ -80,7 +84,7 @@ const documentedValues = [
 
 for (const value of documentedValues) {
   if (!i18nDoc.includes(value)) {
-    failures.push(`docs/i18n.md does not document: ${value}`);
+    failures.push(`docs/arquitectura.md does not document: ${value}`);
   }
 }
 

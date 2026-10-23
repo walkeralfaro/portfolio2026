@@ -11,6 +11,10 @@ El jugador compite contra otro jugador (local) en un tablero de 3x3. Los jugador
 - live: https://tictactoe-walker.vercel.app/
 - codigo: https://github.com/walkeralfaro/tictactoe
 
+## Year
+
+2025
+
 ## Arquitectura
 
 ### Componentes

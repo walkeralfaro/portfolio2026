@@ -1,8 +1,8 @@
 # Walker Alfaro — portfolio
 
-Bilingual static portfolio built with Astro and Tailwind CSS.
+Portfolio estático bilingüe construido con Astro y Tailwind CSS. Cada proyecto es una carpeta autocontenida en `projects/`.
 
-## Development
+## Desarrollo
 
 ```sh
 npm install
@@ -10,23 +10,48 @@ npm run dev
 npm run build
 ```
 
-## Images
+El sitio se publica como HTML estático. Las rutas base son `/` para español y `/en/` para inglés.
 
-Project covers and screenshots live in the repository and are processed at build time:
+## Proyectos
 
-- `src/assets/covers/<project-slug>.webp` — the cover of a project, referenced by `cover: <key>` in its record.
-- `src/assets/gallery/<project-slug>/<shot>.webp` — the screenshots of a project, referenced by `gallery` under each locale in its record.
+```text
+projects/<slug>/
+  README.md              nota de origen
+  content.yaml           contenido publicado
+  cover.webp             portada opcional
+  screenshots/<clave>.webp capturas opcionales
+```
 
-The authoring rules, the key format, and the validation rules are in `docs/content.md`. A reference to a file that does not exist fails the build and `npm run validate:content`.
+- La carpeta es el slug; no hay una lista central de proyectos.
+- `content.yaml` es la única fuente de contenido publicado.
+- La portada se detecta automáticamente.
+- Añadir un proyecto no requiere tocar rutas ni configuración de Astro.
 
-## Project READMEs
+Para añadir un proyecto, usa la skill `add-project` o el comando `/add-project`, o crea el archivo base con:
 
-New project sources live at `projects/<slug>/README.md`. An AI assistant turns each README into `projects/<slug>/content.yaml`, and the importer generates the Astro YAML and MDX files. Do not edit the generated files by hand.
+```bash
+npm run project:new -- <slug>
+```
 
-See [docs/project-readme-import.md](docs/project-readme-import.md) for the intake schema and the AI contract, and [projects/README.md](projects/README.md) for the short workflow. Use `npm run content:status` to check import state.
+Después completa `content.yaml` y valida:
 
-## Site and locale configuration
+```bash
+npm run validate:content
+npm run content:status
+npm run check
+npm run build
+```
 
-`astro.config.mjs` sets `site` to `https://walkeralfaro.com` so generated canonical URLs and sitemap entries use the production domain.
+El contrato de contenido está en [docs/contenido.md](docs/contenido.md). El inventario se consulta con `npm run content:status`, no se mantiene escrito a mano.
 
-Spanish (`es`) is the default locale and uses unprefixed routes (`/`, `/work`). English (`en`) uses the `/en` prefix. Astro prefetching is enabled for internal links through `prefetch.prefetchAll`.
+## Documentación
+
+- [docs/contenido.md](docs/contenido.md): modelo de contenido, imágenes, skill y validación.
+- [docs/arquitectura.md](docs/arquitectura.md): rutas, i18n, catálogo, detalle y scripts.
+- [docs/diseno.md](docs/diseno.md): tokens, tipografía, layout y contrato de tema.
+- [docs/calidad.md](docs/calidad.md): pruebas, accesibilidad, rendimiento y despliegue.
+- [projects/README.md](projects/README.md): flujo corto para añadir proyectos.
+
+## Configuración
+
+`astro.config.mjs` fija `site` en `https://walkeralfaro.com` para canonical, sitemap y metadatos. El CV es externo en `https://resume.walkeralfaro.com/`.

@@ -3,6 +3,7 @@ import { parseCv } from './cv.schema.ts';
 
 const source = {
   ...resume,
+  projects: resume.projects.filter((entry) => entry.project !== 'Portfolio Profesional'),
   experience: resume.experience.map((entry) => ({
     ...entry,
     bullets: entry.bullets.map((bullet) =>

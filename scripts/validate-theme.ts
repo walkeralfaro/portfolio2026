@@ -94,7 +94,7 @@ for (const [theme, palette] of Object.entries(palettes)) {
   }
 }
 
-const themeDoc = readFileSync(new URL('../docs/theme.md', import.meta.url), 'utf8');
+const themeDoc = readFileSync(new URL('../docs/diseno.md', import.meta.url), 'utf8');
 const documentedValues = [
   THEME_STORAGE_KEY,
   THEME_ATTRIBUTE,
@@ -104,7 +104,7 @@ const documentedValues = [
 
 for (const value of documentedValues) {
   if (!themeDoc.includes(value)) {
-    failures.push(`docs/theme.md does not document: ${value}`);
+    failures.push(`docs/diseno.md does not document: ${value}`);
   }
 }
 
@@ -114,5 +114,5 @@ if (failures.length > 0) {
 
 console.log(
   `Theme validation passed: ${checks.length} contrast pairs in light and dark; ` +
-    `docs/theme.md matches ${THEME_STORAGE_KEY} and ${THEME_MODES.length} theme modes.`,
+    `docs/diseno.md matches ${THEME_STORAGE_KEY} and ${THEME_MODES.length} theme modes.`,
 );

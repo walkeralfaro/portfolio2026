@@ -1,0 +1,90 @@
+slug: weather-app
+year: 2025
+category: frontend
+tags:
+  - clima
+  - pronóstico
+  - api
+  - unidades
+status: live
+featured: false
+order: 13
+stack:
+  - Next.js
+  - React
+  - TypeScript
+  - Tailwind CSS
+  - Zustand
+links:
+  live: https://weather-app-walker.vercel.app/
+  code: https://github.com/walkeralfaro/frontendmentor-weather-app
+locales:
+  es:
+    title: Aplicación del clima
+    summary: Un panel del clima con búsqueda de ciudades, pronóstico horario y diario, y preferencias de unidades.
+    role: Desarrollo individual de la solución al reto de Frontend Mentor.
+    result: Detecta una ubicación aproximada, permite buscar ciudades y muestra condiciones, pronóstico y unidades configurables.
+    gallery: []
+    narrative:
+      problem: |
+        El reto pedía consultar el clima por ciudad y mostrar las condiciones actuales y
+        el pronóstico, con detección inicial de ubicación y preferencias de unidades.
+      role: |
+        Implementé la integración con Open-Meteo e ipapi, el estado de unidades y la
+        interfaz responsive.
+      decisions:
+        - title: Dos servicios de Open-Meteo
+          body: |
+            La geocodificación convierte la búsqueda de ciudades en coordenadas y la API
+            de pronóstico devuelve las condiciones actuales, horarias y diarias para esas
+            coordenadas.
+        - title: Debounce en el autocompletado
+          body: |
+            La búsqueda espera antes de llamar a la API de geocodificación para no enviar
+            una petición por cada tecla.
+        - title: Unidades en un store de Zustand
+          body: |
+            Temperatura, viento y precipitación comparten un estado de preferencias, y la
+            interfaz convierte los valores para mostrarlos en la unidad elegida.
+        - title: Fechas y zonas horarias
+          body: |
+            Agrupar el pronóstico horario por día exige tratar con cuidado las fechas y la
+            zona horaria de cada ubicación antes de renderizar los grupos.
+      result: |
+        La aplicación arranca con una ubicación aproximada, permite buscar ciudades y
+        presenta condiciones, pronóstico horario y diario, con unidades y tema
+        configurables.
+  en:
+    title: Weather App
+    summary: A weather dashboard with city search, hourly and daily forecasts, and unit preferences.
+    role: Individual development of the Frontend Mentor challenge solution.
+    result: It detects an approximate location, lets people search for cities, and shows current conditions, forecasts, and configurable units.
+    gallery: []
+    narrative:
+      problem: |
+        The challenge asked for a way to check the weather by city and show current
+        conditions and forecasts, with initial location detection and unit preferences.
+      role: |
+        I implemented the integration with Open-Meteo and ipapi, the unit state, and the
+        responsive interface.
+      decisions:
+        - title: Two Open-Meteo services
+          body: |
+            Geocoding turns the city search into coordinates, and the forecast API returns
+            current, hourly, and daily conditions for those coordinates.
+        - title: Debounced autocomplete
+          body: |
+            The search waits before calling the geocoding API so it does not send a
+            request for every keystroke.
+        - title: Units in a Zustand store
+          body: |
+            Temperature, wind, and precipitation share a preferences state, and the
+            interface converts values for display in the selected unit.
+        - title: Dates and time zones
+          body: |
+            Grouping the hourly forecast by day requires careful handling of dates and the
+            time zone of each location before rendering the groups.
+      result: |
+        The application starts with an approximate location, lets people search for
+        cities, and presents conditions plus hourly and daily forecasts with configurable
+        units and theme.

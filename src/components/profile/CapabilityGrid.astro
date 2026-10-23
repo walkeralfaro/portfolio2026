@@ -11,29 +11,34 @@ interface Props {
 
 const { locale, projects } = Astro.props;
 const copy = profileCopy[locale].capabilities;
-const items = copy.items.map((item) => {
+const items = copy.items.flatMap((item) => {
   const project = projects.find((entry) => entry.data.slug === item.slug);
-  if (!project) throw new Error(`Capability evidence project "${item.slug}" is missing.`);
-  return { ...item, project, projectCopy: getProjectCopy(project, locale) };
+  return project
+    ? [{ ...item, project, projectCopy: getProjectCopy(project, locale) }]
+    : [];
 });
 ---
 
-<section class="capability-grid" aria-labelledby="capability-grid-title" data-capability-grid>
-  <header class="capability-grid__header">
-    <h2 id="capability-grid-title">{copy.title}</h2>
-  </header>
-  <ul>
-    {items.map((item) => (
-      <li>
-        <a href={routeHref(locale, { name: 'project', slug: item.project.data.slug })} data-capability-project={item.project.data.slug}>
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-          <span class="capability-grid__evidence">{item.projectCopy.title}<span aria-hidden="true"> ↗</span></span>
-        </a>
-      </li>
-    ))}
-  </ul>
-</section>
+{
+  items.length > 0 && (
+    <section class="capability-grid" aria-labelledby="capability-grid-title" data-capability-grid>
+      <header class="capability-grid__header">
+        <h2 id="capability-grid-title">{copy.title}</h2>
+      </header>
+      <ul>
+        {items.map((item) => (
+          <li>
+            <a href={routeHref(locale, { name: 'project', slug: item.project.data.slug })} data-capability-project={item.project.data.slug}>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <span class="capability-grid__evidence">{item.projectCopy.title}<span aria-hidden="true"> ↗</span></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
 
 <style>
   .capability-grid {

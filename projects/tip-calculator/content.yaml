@@ -1,0 +1,81 @@
+slug: tip-calculator
+year: 2023
+category: frontend
+tags:
+  - calculadora
+  - propinas
+  - javascript
+  - responsive
+status: live
+featured: false
+order: 9
+stack:
+  - HTML5
+  - SCSS
+  - JavaScript
+links:
+  live: https://walker-alfaro-tip-calculator.netlify.app
+  code: https://github.com/WalkerAlfaro/tip-calculator-app-main
+locales:
+  es:
+    title: Calculadora de propinas
+    summary: Una calculadora de propinas que reparte el total según el porcentaje y el número de personas.
+    role: Desarrollo individual de la solución al reto de Frontend Mentor.
+    result: Calcula la propina y el total por persona, adapta el diseño a móvil y escritorio y bloquea el reinicio cuando no hay datos.
+    gallery: []
+    narrative:
+      problem: |
+        La calculadora debía repartir la propina según el porcentaje y el número de
+        personas, adaptarse a móvil y escritorio y bloquear el reinicio cuando no hubiera
+        datos que borrar.
+      role: |
+        Implementé la solución con HTML5, SCSS y JavaScript vanilla, incluyendo la lógica
+        de cálculo, el estado de los controles y el layout responsive.
+      decisions:
+        - title: Cálculo dirigido por eventListeners
+          body: |
+            Los campos de importe, porcentaje y personas disparan el cálculo, que actualiza
+            la propina y el total por persona en la interfaz.
+        - title: Reset habilitado solo con datos
+          body: |
+            El botón de reinicio se habilita y deshabilita combinando JavaScript y estilos,
+            de modo que no se puede usar cuando no hay una propina que calcular.
+        - title: Estructura HTML antes que estilos
+          body: |
+            Primero definí la estructura y la jerarquía de los bloques con una herramienta
+            de layout, y después apliqué SCSS y el comportamiento responsive sobre esa
+            base.
+      result: |
+        La calculadora obtiene la propina y el total por persona, reparte el importe entre
+        los comensales, mantiene el reinicio bloqueado sin datos y se adapta a móvil y
+        escritorio.
+  en:
+    title: Tip Calculator
+    summary: A tip calculator that splits the total according to the percentage and the number of people.
+    role: Individual development of the Frontend Mentor challenge solution.
+    result: It calculates the tip and the total per person, adapts the layout to mobile and desktop, and disables reset when there is no data.
+    gallery: []
+    narrative:
+      problem: |
+        The calculator had to split the tip according to the percentage and the number of
+        people, adapt to mobile and desktop, and disable reset when there was no data to
+        clear.
+      role: |
+        I implemented the solution with HTML5, SCSS, and vanilla JavaScript, including the
+        calculation logic, the control states, and the responsive layout.
+      decisions:
+        - title: Calculation driven by event listeners
+          body: |
+            The bill, percentage, and people fields trigger the calculation, which updates
+            the tip and the total per person in the interface.
+        - title: Reset enabled only with data
+          body: |
+            The reset button is enabled and disabled by combining JavaScript and styles, so
+            it cannot be used when there is no tip to calculate.
+        - title: HTML structure before styles
+          body: |
+            I first defined the structure and hierarchy of the blocks with a layout tool,
+            and then applied SCSS and the responsive behavior on top of that foundation.
+      result: |
+        The calculator produces the tip and the total per person, splits the amount among
+        the diners, keeps reset disabled without data, and adapts to mobile and desktop.

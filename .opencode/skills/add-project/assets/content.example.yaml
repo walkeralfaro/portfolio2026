@@ -1,0 +1,94 @@
+# Complete, valid reference for a project with a cover, a gallery, and a narrative.
+# This is an example only: do not copy its claims into a real project.
+
+slug: habit-tracker
+year: 2026
+category: producto
+tags:
+  - productividad
+  - hábitos
+  - accesibilidad
+status: live
+featured: false
+order: 99
+stack:
+  - Astro
+  - TypeScript
+  - SQLite
+  - Tailwind CSS
+links:
+  live: https://example.com/habit-tracker
+  code: https://github.com/example/habit-tracker
+locales:
+  es:
+    title: Habit Tracker
+    summary: Un registro de hábitos diarios con historial semanal y recordatorios locales.
+    role: Diseño y desarrollo individual del producto completo.
+    result: La aplicación permite crear hábitos, marcarlos cada día y revisar la racha semanal.
+    gallery:
+      - src: week-view
+        alt: Vista semanal con siete columnas y los hábitos marcados en verde.
+      - src: habit-form
+        alt: Formulario para crear un hábito con nombre, color y días de la semana.
+    narrative:
+      problem: |
+        Registrar hábitos en una libreta funciona al principio, pero la revisión semanal
+        exige contar marcas a mano y pierde el contexto de los días fallados.
+
+        La aplicación debía resolver ese seguimiento sin pedir una cuenta ni enviar los
+        datos a un servidor.
+      role: |
+        Trabajé en el producto completo: requisitos, modelo de datos, interfaz,
+        persistencia local y pruebas.
+      decisions:
+        - title: Persistencia local primero
+          body: |
+            Guardé el estado en SQLite a través de una capa de repositorio para que la
+            aplicación funcione sin conexión y sin registro.
+        - title: Una sola vista semanal
+          body: |
+            La pantalla principal muestra los siete días y todos los hábitos a la vez,
+            en lugar de esconder el historial detrás de otra ruta.
+        - title: Accesibilidad desde el modelo
+          body: |
+            Cada marca tiene un nombre accesible y un estado textual, de modo que el
+            color no sea la única forma de leer el progreso.
+      result: |
+        El resultado es una aplicación estática con datos locales, una vista semanal
+        legible y un flujo de creación de hábitos que funciona con teclado.
+  en:
+    title: Habit Tracker
+    summary: A daily habit log with a weekly history and local reminders.
+    role: Individual design and development of the complete product.
+    result: The application lets people create habits, mark them each day, and review the weekly streak.
+    gallery:
+      - src: week-view
+        alt: Weekly view with seven columns and the completed habits marked in green.
+      - src: habit-form
+        alt: Form for creating a habit with a name, color, and days of the week.
+    narrative:
+      problem: |
+        Tracking habits in a notebook works at first, but the weekly review requires
+        counting marks by hand and loses the context of missed days.
+
+        The application had to support that review without requiring an account or
+        sending data to a server.
+      role: |
+        I worked on the complete product: requirements, data model, interface, local
+        persistence, and tests.
+      decisions:
+        - title: Local persistence first
+          body: |
+            I stored state in SQLite through a repository layer so the application works
+            offline and without registration.
+        - title: One weekly view
+          body: |
+            The main screen shows all seven days and every habit at once instead of
+            hiding the history behind another route.
+        - title: Accessibility from the model
+          body: |
+            Every mark has an accessible name and a textual state, so color is never the
+            only way to read progress.
+      result: |
+        The result is a static application with local data, a readable weekly view, and
+        a habit-creation flow that works with a keyboard.

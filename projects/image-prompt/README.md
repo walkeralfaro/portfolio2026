@@ -9,6 +9,10 @@ Evita la “cara genérica de IA” (brochazos, pan de oro, destellos, lemas inv
 - live: https://image-prompt-mauve.vercel.app/
 - codigo: https://github.com/walkeralfaro/image-prompt
 
+## Year
+
+2026
+
 ## El método 7 líneas
 
 El prompt final sigue siempre este orden estricto:

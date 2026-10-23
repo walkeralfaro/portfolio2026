@@ -1,0 +1,90 @@
+slug: alura-challenge-decryptor
+year: 2024
+category: frontend
+tags:
+  - javascript
+  - encriptación
+  - reto
+  - responsive
+status: live
+featured: false
+order: 1
+stack:
+  - HTML5
+  - CSS3
+  - JavaScript
+links:
+  live: https://walkeralfaro.github.io/alura-challenge-decryptor/
+  code: https://github.com/walkeralfaro/alura-challenge-decryptor
+locales:
+  es:
+    title: Decodificador de Texto
+    summary: Una aplicación web que encripta y desencripta texto con las llaves del reto de Alura.
+    role: Diseño responsive a partir del lineamiento de Figma y desarrollo individual en JavaScript.
+    result: Convierte texto con las reglas del reto, valida minúsculas y espacios, y permite copiar el resultado.
+    gallery: []
+    narrative:
+      problem: |
+        El reto del Bootcamp Alura ONE pedía una herramienta capaz de encriptar y
+        desencriptar texto con cinco llaves fijas, pero solo con letras minúsculas,
+        sin acentos ni caracteres especiales.
+
+        Además del flujo principal, la página debía mostrar el resultado en pantalla
+        y ofrecer una forma de copiarlo.
+      role: |
+        Asumí el diseño responsive y el desarrollo completo en JavaScript: validación
+        de entrada, encriptación, desencriptación y copia al portapapeles.
+      decisions:
+        - title: Seguir el lineamiento de Figma
+          body: |
+            Mantuve la distribución, los tamaños, los colores y las tipografías del
+            diseño entregado para simular el trabajo con un área de UX/UI, en lugar de
+            proponer una interfaz propia.
+        - title: Validar antes de transformar
+          body: |
+            Una expresión regular permite solo letras de la a a la z y espacios. Así se
+            evitan caracteres especiales y se reduce la superficie de inyección antes de
+            procesar el texto.
+        - title: Recorrer el texto como arreglo
+          body: |
+            La encriptación desestructura el texto con el operador spread y reemplaza
+            cada vocal con un switch. La desencriptación usa replace con expresiones
+            globales para recuperar el texto original.
+      result: |
+        El decodificador funciona en móvil, tablet y escritorio, respeta el lineamiento
+        visual y añade copia al portapapeles con desplazamiento suave hacia el resultado.
+  en:
+    title: Text Decoder
+    summary: A web application that encrypts and decrypts text with the keys defined by the Alura challenge.
+    role: Responsive design based on the Figma guidelines and individual development in JavaScript.
+    result: It converts text with the challenge rules, validates lowercase letters and spaces, and lets people copy the result.
+    gallery: []
+    narrative:
+      problem: |
+        The Alura ONE Bootcamp challenge called for a tool that could encrypt and
+        decrypt text with five fixed keys, but only with lowercase letters, without
+        accents or special characters.
+
+        Beyond the main flow, the page had to display the result on screen and offer a
+        way to copy it.
+      role: |
+        I handled the responsive design and the full JavaScript implementation:
+        input validation, encryption, decryption, and clipboard copy.
+      decisions:
+        - title: Follow the Figma guidelines
+          body: |
+            I kept the provided layout, sizes, colors, and typefaces to simulate working
+            with a UX/UI team instead of proposing a different interface.
+        - title: Validate before transforming
+          body: |
+            A regular expression allows only letters from a to z and spaces. This avoids
+            special characters and reduces the injection surface before processing the
+            text.
+        - title: Treat the text as an array
+          body: |
+            Encryption spreads the text into an array and replaces each vowel through a
+            switch. Decryption uses replace with global expressions to recover the
+            original text.
+      result: |
+        The decoder works on mobile, tablet, and desktop, follows the visual guidelines,
+        and adds clipboard copy with smooth scrolling to the result.

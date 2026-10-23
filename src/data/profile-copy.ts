@@ -1,4 +1,4 @@
-import type { ProjectSlug } from '../content/project-slugs';
+import type { ProjectSlug } from '../lib/content/taxonomy';
 
 const es = {
   intro: {
@@ -8,19 +8,19 @@ const es = {
   },
   featured: {
     title: 'Proyectos destacados',
-    intro: 'Cuatro proyectos que muestran distintas partes de mi trabajo web.',
+    intro: 'Una selección de proyectos que muestra distintas partes de mi trabajo web.',
   },
   excerpt: {
     title: 'Más trabajo',
-    action: 'Explorar los 14 proyectos',
+    action: 'Explorar todos los proyectos',
   },
   capabilities: {
     title: 'Cómo trabajo',
     items: [
-      { title: 'Producto de extremo a extremo', description: 'De los requisitos y el modelo de datos a una aplicación lista para usar.', slug: 'todo-mcp' as ProjectSlug },
+      { title: 'Producto de extremo a extremo', description: 'De los requisitos y el modelo de datos a una aplicación lista para usar.', slug: 'cheatsheet-editor' as ProjectSlug },
       { title: 'Interfaz y experiencia', description: 'Interfaces responsive con estado, accesibilidad y atención al detalle.', slug: 'image-prompt' as ProjectSlug },
       { title: 'Backend y datos', description: 'APIs propias, validación compartida y persistencia para flujos reales.', slug: 'url-shortener' as ProjectSlug },
-      { title: 'Calidad y documentación', description: 'Pruebas en varias capas y decisiones técnicas explicadas con claridad.', slug: 'todo-mcp' as ProjectSlug },
+      { title: 'Calidad y documentación', description: 'Pruebas en varias capas y decisiones técnicas explicadas con claridad.', slug: 'todo-mcp-dual' as ProjectSlug },
     ],
   },
   about: {
@@ -51,19 +51,19 @@ const en = {
   },
   featured: {
     title: 'Selected work',
-    intro: 'Four projects that show different parts of my web development practice.',
+    intro: 'A selection of projects that shows different parts of my web development practice.',
   },
   excerpt: {
     title: 'More work',
-    action: 'Explore all 14 projects',
+    action: 'Explore all projects',
   },
   capabilities: {
     title: 'How I work',
     items: [
-      { title: 'End-to-end product', description: 'From requirements and data modeling to an application people can use.', slug: 'todo-mcp' as ProjectSlug },
+      { title: 'End-to-end product', description: 'From requirements and data modeling to an application people can use.', slug: 'cheatsheet-editor' as ProjectSlug },
       { title: 'Interface and experience', description: 'Responsive interfaces with state, accessibility, and attention to detail.', slug: 'image-prompt' as ProjectSlug },
       { title: 'Backend and data', description: 'Purpose-built APIs, shared validation, and persistence for real workflows.', slug: 'url-shortener' as ProjectSlug },
-      { title: 'Quality and documentation', description: 'Testing across layers and technical decisions explained clearly.', slug: 'todo-mcp' as ProjectSlug },
+      { title: 'Quality and documentation', description: 'Testing across layers and technical decisions explained clearly.', slug: 'todo-mcp-dual' as ProjectSlug },
     ],
   },
   about: {

@@ -1,18 +1,23 @@
 /**
  * Rules for the project image asset contract.
  *
- * Covers live in `src/assets/covers/<project-slug>.<ext>` and gallery
- * screenshots in `src/assets/gallery/<project-slug>/<shot>.<ext>`. Content
- * references them by key, which is the file name without its extension.
+ * Each project folder is self-contained:
+ *
+ *   projects/<slug>/cover.webp
+ *   projects/<slug>/screenshots/<key>.webp
+ *
+ * The cover is detected automatically. Gallery entries reference a key, the
+ * file name without its extension.
  *
  * This module stays free of filesystem and Vite APIs so the Astro build and
  * the standalone content validator share the same rules.
  */
 
-export const COVER_ASSET_DIRECTORY = 'src/assets/covers';
-export const GALLERY_ASSET_DIRECTORY = 'src/assets/gallery';
+export const PROJECTS_DIRECTORY = 'projects';
+export const COVER_FILE_KEY = 'cover';
+export const GALLERY_DIRECTORY = 'screenshots';
 
-export const IMAGE_EXTENSIONS = ['webp', 'png', 'jpg', 'jpeg', 'avif'] as const;
+export const IMAGE_EXTENSIONS = ['webp'] as const;
 
 /** The key of an asset is its file name without the extension. */
 export function assetKeyFromPath(path: string): string {

@@ -17,6 +17,10 @@ A responsive weather dashboard built as a solution to the [Frontend Mentor Weath
 - Switch between light and dark themes.
 - Responsive layout for mobile and desktop screens.
 
+## Year
+
+2025
+
 ## Built with
 
 - [Next.js 16](https://nextjs.org/) with the App Router

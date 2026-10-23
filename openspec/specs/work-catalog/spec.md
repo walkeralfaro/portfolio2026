@@ -2,9 +2,28 @@
 
 ## Purpose
 
-Presents Walker's 14 documented projects as a curated, filterable catalog with a master–detail preview, honest project metadata, and three depths of detail so breadth and proof can coexist.
+Presents the project folders as a curated, bilingual, filterable catalog with honest metadata, a master-detail preview, and a dedicated detail page for every published project.
 
 ## Requirements
+
+### Requirement: Folder-discovered catalog
+
+The catalog SHALL discover projects from `projects/<slug>/content.yaml` without a central slug inventory. The folder name SHALL be the project slug and SHALL match the record's `slug`. The displayed count and category totals SHALL be computed from valid project content. Existing project folder names SHALL remain stable.
+
+#### Scenario: Add a project without central registration
+
+- **WHEN** a valid `content.yaml` is added under a kebab-case project folder
+- **THEN** the catalog, localized detail routes, count, and filters discover it without editing a central inventory or route list
+
+#### Scenario: Folder and record disagree
+
+- **WHEN** a record's slug differs from its containing folder
+- **THEN** content validation fails and reports both values
+
+#### Scenario: No project content has been authored
+
+- **WHEN** project folders exist without `content.yaml` files
+- **THEN** the site can build with an empty catalog and the content-status command reports those folders as pending
 
 ### Requirement: Project row horizontal inset
 
@@ -13,36 +32,21 @@ Every project row SHALL inset its content from both horizontal edges while the r
 #### Scenario: Desktop row inset
 
 - **WHEN** the catalog is viewed at 1280 pixels wide
-- **THEN** each row's title, summary, and metadata start inside the row's left edge and end inside its right edge, while the divider and link surface still span the full row width
+- **THEN** row content is inset while its divider and interactive surface remain full width
 
 #### Scenario: Mobile row inset
 
 - **WHEN** the catalog is viewed at 375 pixels wide
-- **THEN** each row's thumbnail starts inside the row's left edge and the page has no horizontal scroll
+- **THEN** each row's content is inset and the page has no horizontal scroll
 
+### Requirement: Master-detail index
 
-### Requirement: Catalog inventory
-
-The catalog SHALL contain exactly 14 projects: TODO-mcp, Image Prompt, Cheatsheet Editor, URL Shortener, Multi-step Form, Pokedex, Todo App, Tic Tac Toe, Tip Calculator, Weather App, REST Countries Explorer, Tetris, Portfolio Profesional, and Portfolio 2026. Puja Inmobiliaria SHALL NOT appear in the catalog, navigation, sitemap, metadata, or search results.
-
-#### Scenario: All documented projects are present
-
-- **WHEN** a visitor opens the work catalog
-- **THEN** the catalog lists the 14 named projects and the displayed count is 14
-
-#### Scenario: Excluded client work is absent
-
-- **WHEN** any public page, sitemap, or metadata file is inspected
-- **THEN** Puja Inmobiliaria does not appear
-
-### Requirement: Master–detail index
-
-On viewports 900 pixels and wider, the work page SHALL show a project list and a sticky cover preview. The preview SHALL update on pointer entry after a short intentional delay and immediately on keyboard focus. The project row SHALL remain the navigation target; the preview SHALL NOT contain required actions.
+At 900 pixels and wider, the work page SHALL show a project list and sticky cover preview. The preview SHALL update after a short pointer delay and immediately on keyboard focus. The project row SHALL remain the navigation target.
 
 #### Scenario: Pointer preview
 
 - **WHEN** the pointer enters a project row and rests briefly
-- **THEN** the preview pane shows that project's cover, title, and one-line summary without navigating
+- **THEN** the preview shows that project's cover, title, and summary without navigating
 
 #### Scenario: Keyboard preview
 
@@ -56,21 +60,21 @@ On viewports 900 pixels and wider, the work page SHALL show a project list and a
 
 ### Requirement: Mobile catalog
 
-Below 900 pixels, the work page SHALL render a single-column list where each entry includes a thumbnail, title, year, primary category, and one-line summary. The sticky preview pane SHALL NOT render on these viewports.
+Below 900 pixels, the work page SHALL render a single-column list with a thumbnail, title, year, category, and summary per entry. The sticky preview SHALL be hidden.
 
 #### Scenario: Mobile list
 
 - **WHEN** the catalog is viewed at 375 pixels wide
-- **THEN** each project appears as a full-width row with a thumbnail and no sticky preview pane
+- **THEN** each published project appears as a row with a thumbnail and there is no sticky preview pane
 
 ### Requirement: Category filtering
 
-The work page SHALL offer filters for all projects and the four primary categories: IA y agentes, Producto, Frontend, and Juegos. Each filter SHALL show its real project count, update the visible results without a full page reload, and persist in the URL so the filtered view can be shared and restored.
+The work page SHALL offer filters for all projects and the categories `ia`, `producto`, `frontend`, and `juegos`. Counts SHALL be computed from project records, and a selected filter SHALL update visible results and persist in the `c` query parameter.
 
 #### Scenario: Filter by category
 
-- **WHEN** a visitor selects "IA y agentes"
-- **THEN** only the projects in that category remain visible and the count matches the visible entries
+- **WHEN** a visitor selects a category
+- **THEN** only matching projects remain visible and the count equals the visible entries
 
 #### Scenario: Shareable filter state
 
@@ -80,220 +84,111 @@ The work page SHALL offer filters for all projects and the four primary categori
 #### Scenario: Empty result
 
 - **WHEN** a filter has no matching projects
-- **THEN** the page shows a clear empty state with an action to clear the filter
+- **THEN** the page shows an explicit empty state and an action to clear the filter
 
 ### Requirement: Project metadata
 
-Each catalog entry SHALL display the project title, a one-line summary, the year, the primary category, three to five stack items, and a status of live, in development, or archived.
+Each project SHALL declare localized title, summary, role, and result; year or `pending`; one category; at least one tag; a status; three to five stack items; real optional live/code URLs; and the editorial `featured` and `order` values. The project content schema SHALL reject unknown fields.
 
-#### Scenario: Entry anatomy
+#### Scenario: Catalog entry anatomy
 
-- **WHEN** a catalog row is rendered
-- **THEN** title, summary, year, category, stack, and status are all present
+- **WHEN** a project is rendered in the catalog
+- **THEN** title, summary, year, category, stack, and status are present
 
-### Requirement: Unified project detail pages
+#### Scenario: Honest missing destinations
 
-Every project in the catalog SHALL have a dedicated Spanish and English detail page at its slug route. Page availability SHALL NOT depend on project tier, external links, cover assets, gallery images, or the presence of supplemental case narrative.
+- **WHEN** both live and code links are absent
+- **THEN** each locale provides an availability note instead of a fake destination
 
-#### Scenario: Every catalog project has a detail page
+### Requirement: Bilingual detail pages
 
-- **WHEN** a visitor opens any project row or its localized slug URL
-- **THEN** the project's own detail page loads in Spanish and English, including for projects without external links or images
+Every project with valid content SHALL have dedicated Spanish and English detail pages at its slug route. Page availability SHALL NOT depend on external links, images, or an optional narrative.
 
-#### Scenario: Same page structure for every project
+#### Scenario: Direct project route
 
-- **WHEN** any project detail page is rendered
-- **THEN** it uses the shared project header and common localized project information, and any supplemental narrative does not determine whether the page or its shared sections exist
+- **WHEN** a visitor opens a project's localized slug URL
+- **THEN** the project detail loads directly with localized metadata
 
-#### Scenario: External destinations remain actions
+#### Scenario: Unknown project route
 
-- **WHEN** a project has a live or repository URL
-- **THEN** the URL is offered as a conditional action on its detail page and does not replace the internal page
+- **WHEN** a visitor opens a slug that has no project content
+- **THEN** the localized not-found route is returned
 
 ### Requirement: Single-source project facts
 
-Every project detail page, including a project without a narrative, SHALL render its stack once from the project record in the shared header, in the declared order. A case narrative SHALL NOT declare a Stack section or a Gallery section. Gallery images SHALL come only from the active locale's project-record gallery list; when that list is empty, no gallery heading, caption, pending message, cover substitute, or dialog SHALL be rendered.
+The catalog and detail page SHALL read shared metadata from the same project record. The stack SHALL appear once in the detail header. A narrative SHALL be optional and SHALL exist in both locales or neither.
 
-#### Scenario: Narrative keeps the shared stack
+#### Scenario: Project without narrative
 
-- **WHEN** a visitor opens a project with a case narrative
-- **THEN** the stack appears in the shared header and the narrative contains only Problem, Role, Decisions, and Result headings
+- **WHEN** a project has no narrative
+- **THEN** the body renders its localized summary, role, and result
 
-#### Scenario: Baseline project keeps the shared stack
+#### Scenario: Project with narrative
 
-- **WHEN** a visitor opens a project without a case narrative
-- **THEN** the shared header shows the project record's stack in its declared order and the body contains no stack heading
+- **WHEN** a project has a narrative
+- **THEN** the body renders Problem, Role, Decisions, and Result; Decisions has three or four structured items
 
-#### Scenario: Stack survives locale switching
+### Requirement: Self-contained project images
 
-- **WHEN** the same project detail page is opened in Spanish and English
-- **THEN** both pages render the project record's stack with the same items and order
+Project assets SHALL live within their project folder: `projects/<slug>/cover.<ext>` and `projects/<slug>/screenshots/<key>.<ext>`. The cover SHALL be autodetected and SHALL NOT be declared as a content field. Gallery references SHALL use screenshot keys with localized alternative text.
 
-#### Scenario: Locale has no screenshots
+#### Scenario: Cover exists
 
-- **WHEN** the active locale has an empty gallery list
-- **THEN** the detail page renders no gallery element, caption, pending text, or dialog
-
-#### Scenario: Locale has screenshots
-
-- **WHEN** the active locale declares at least one valid screenshot
-- **THEN** the gallery renders those images in the declared order below the narrative
-
-### Requirement: Optional project galleries
-
-Every project SHALL support an ordered gallery list with localized alternative text. A gallery SHALL appear only when the current locale has at least one valid screenshot entry.
-
-#### Scenario: Project has gallery screenshots
-
-- **WHEN** a project's localized content declares one or more gallery screenshots
-- **THEN** the detail page renders those screenshots in the declared order with their localized alternative text
-
-#### Scenario: Project has no gallery screenshots
-
-- **WHEN** a project's localized gallery list is empty or absent
-- **THEN** no gallery section, gallery caption, cover substitute, or gallery dialog is rendered
-
-#### Scenario: Gallery differs by locale
-
-- **WHEN** the same project detail is opened in Spanish and English
-- **THEN** each page uses its own gallery list and alternative text
-
-### Requirement: Project image references
-
-Project records SHALL support an optional cover and locale-specific gallery references by asset key. A reference without a matching local image SHALL fail validation and the production build with the project and key identified.
+- **WHEN** an accepted cover image exists in the project folder
+- **THEN** catalog and detail cover surfaces render that image responsively
 
 #### Scenario: Cover is absent
 
-- **WHEN** a project has no cover asset reference
-- **THEN** all cover surfaces render the designed placeholder with the same cover dimensions and descriptive alternative text
+- **WHEN** no cover image exists
+- **THEN** every cover surface renders the designed placeholder with the same aspect ratio
 
-#### Scenario: Cover is present
+#### Scenario: Gallery reference is invalid
 
-- **WHEN** a project references an existing cover asset
-- **THEN** all cover surfaces render that asset responsively instead of the placeholder
+- **WHEN** a locale references a screenshot key with no matching file
+- **THEN** content validation fails with the project and missing key identified
 
-#### Scenario: Image key is invalid
+#### Scenario: Locale has no gallery
 
-- **WHEN** a cover or gallery entry names an asset key with no matching file
-- **THEN** content validation and the production build fail with the project and missing key in the error
+- **WHEN** a locale has an empty gallery list
+- **THEN** no gallery section, caption, pending text, or dialog is rendered
 
-### Requirement: Project asset references
+#### Scenario: Unused screenshot
 
-Project images SHALL be added under `src/assets/covers/<project-slug>.<ext>` for covers and `src/assets/gallery/<project-slug>/<shot>.<ext>` for screenshots. Content SHALL reference them by asset key, never by file path. An image file that no project record references SHALL be reported as unused without failing the build.
+- **WHEN** a screenshot file is not referenced by either locale
+- **THEN** validation reports it as unused without failing
 
-#### Scenario: Reference by asset key
+### Requirement: Efficient preview image delivery
 
-- **WHEN** a cover file is added under the covers directory and the project record references its key
-- **THEN** the build succeeds and the image is published with responsive sources
+The catalog SHALL NOT request cover images for inactive preview panels on initial load. The active preview cover SHALL load eagerly; other preview covers SHALL be deferred until activation. All rows SHALL remain navigable without JavaScript.
 
-#### Scenario: Unused asset is reported
-
-- **WHEN** an image file exists that no project record references
-- **THEN** validation reports it as unused without failing the build
-
-### Requirement: Project cover assets
-
-A project record MAY reference one cover image. When a cover is referenced, every cover surface — the detail-page case header, the catalog row thumbnail, and the sticky preview — SHALL render that image at the catalog aspect ratio with descriptive alternative text, and SHALL NOT render the placeholder. When no cover is referenced, those surfaces SHALL render the placeholder cover.
-
-#### Scenario: Real cover on the detail page
-
-- **WHEN** a visitor opens a project detail page whose record references a cover
-- **THEN** the case header renders the referenced image at the catalog aspect ratio with descriptive alternative text instead of the placeholder
-
-#### Scenario: Real cover across the catalog
-
-- **WHEN** the work catalog renders a project whose record references a cover
-- **THEN** the row thumbnail and the sticky preview show that same image rather than the placeholder
-
-### Requirement: Conditional live and code actions
-
-A project SHALL show a live action only when a real live URL exists and a code action only when a real repository URL exists. When an action is unavailable, the interface SHALL omit it and show an honest availability label instead of a disabled control or a `#` link.
-
-#### Scenario: Only one action exists
-
-- **WHEN** a project has a repository but no deployment
-- **THEN** only the code action appears and a label states that no demo is available
-
-#### Scenario: No actions exist
-
-- **WHEN** a project has neither a live URL nor a repository URL
-- **THEN** no action buttons render and the page states that links are pending
-
-### Requirement: Placeholder covers
-
-A project without a cover asset SHALL use a local placeholder cover that includes the project name and category, preserves the catalog aspect ratio, and provides descriptive alternative text. The placeholder SHALL occupy the same position and dimensions as a real cover, and a broken image SHALL NOT appear.
-
-#### Scenario: Missing screenshot
-
-- **WHEN** a project's cover asset is absent
-- **THEN** the placeholder cover renders at the same dimensions as a real cover with descriptive alternative text
-
-#### Scenario: Placeholder in every cover surface
-
-- **WHEN** a project without a cover asset appears in the catalog, in the sticky preview, or on its detail page
-- **THEN** every one of those surfaces renders the placeholder at the catalog aspect ratio
-
-### Requirement: Catalog image delivery
-
-The work catalog SHALL NOT download a cover image for a preview panel that is not active. Row thumbnails SHALL be requested at the size they are rendered, and the active preview cover SHALL load eagerly. The catalog SHALL remain usable without JavaScript, showing the first project's cover and every project row.
-
-#### Scenario: Single cover on load
-
-- **WHEN** a visitor loads the work catalog
-- **THEN** only the active preview cover and the visible row thumbnails are requested
-
-#### Scenario: Cover on preview change
+#### Scenario: Change preview
 
 - **WHEN** a visitor activates a different project row
-- **THEN** that project's cover is requested and rendered in the preview pane
+- **THEN** its cover is loaded and displayed in the preview
 
 #### Scenario: No JavaScript
 
 - **WHEN** JavaScript is unavailable
-- **THEN** the catalog shows the first project's cover and all 14 project rows remain visible and navigable
+- **THEN** every authored project row remains visible and navigable
+
+### Requirement: Conditional actions
+
+A live action SHALL render only for a real live URL, and a code action only for a real repository URL. Missing actions SHALL be omitted and described with localized availability text. Placeholder `#` links and disabled action buttons SHALL NOT be used.
 
 ### Requirement: Screenshot lightbox
 
-Project screenshots MAY open in a modal dialog for enlargement. The dialog SHALL fit the image within the available viewport while preserving the image's aspect ratio, SHALL NOT require internal scrolling to reveal the full image, SHALL be keyboard operable, SHALL close with Escape, SHALL return focus to the trigger, and SHALL prevent background scrolling while open.
+Project screenshots MAY open in a native modal dialog. The full image SHALL fit in the viewport without cropping or internal scrolling. The dialog SHALL be keyboard operable, close with Escape, return focus to its trigger, and prevent background scrolling while open.
 
-#### Scenario: Open and close a screenshot
+#### Scenario: Close screenshot dialog
 
-- **WHEN** a visitor opens a screenshot and presses Escape
-- **THEN** the dialog closes, focus returns to the thumbnail, and the page scroll position is preserved
-
-#### Scenario: Portrait image fits without dialog scroll
-
-- **WHEN** a visitor opens a portrait screenshot such as a 9:16 image
-- **THEN** the entire image fits within the dialog's available height and width, the image remains uncropped, and the dialog has no scrollable overflow
-
-#### Scenario: Landscape image fits without dialog scroll
-
-- **WHEN** a visitor opens a landscape screenshot
-- **THEN** the entire image fits within the dialog's available height and width, the image remains uncropped, and the dialog has no scrollable overflow
-
-### Requirement: Details are pages, not modals
-
-Project details SHALL be dedicated pages with stable, shareable URLs. A project detail SHALL NOT be rendered only inside a dialog or overlay.
-
-#### Scenario: Share a project
-
-- **WHEN** a visitor copies the URL of a project detail page and opens it elsewhere
-- **THEN** the same project detail page loads directly
-
-### Requirement: Bilingual catalog
-
-Every catalog entry and project detail page SHALL exist in Spanish and English with equivalent metadata and content. A page SHALL NOT mix languages within the same view.
-
-#### Scenario: English catalog
-
-- **WHEN** a visitor opens the English work catalog
-- **THEN** navigation, filters, summaries, statuses, and actions are in English and the project set matches the Spanish catalog
+- **WHEN** a visitor closes a screenshot dialog with Escape
+- **THEN** the dialog closes, focus returns to the trigger, and page scroll position is preserved
 
 ### Requirement: Computed project count
 
-The displayed project count SHALL be computed from the catalog data and SHALL match the number of entries in the current filtered view.
+The displayed project count SHALL be derived from loaded project content and SHALL match the visible entries for the active filter.
 
 #### Scenario: Count reflects filter
 
 - **WHEN** a visitor filters the catalog
-- **THEN** the visible count equals the number of rendered project entries
+- **THEN** the displayed count equals the number of matching rows

@@ -1,0 +1,102 @@
+slug: pokedex
+year: 2026
+category: frontend
+tags:
+  - pokémon
+  - api
+  - react
+  - tipos
+status: live
+featured: false
+order: 5
+stack:
+  - React
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - Zustand
+links:
+  live: https://pokedex.walkeralfaro.com/
+  code: https://github.com/walkeralfaro/pokedex-react
+locales:
+  es:
+    title: Pokédex
+    summary: Una Pokédex que explora los primeros 151 Pokémon con tipos, peso, movimientos y cadena de evolución.
+    role: Desarrollo individual de la aplicación.
+    result: Incluye listado en cuadrícula, detalle por Pokémon, insignias de tipo, cadena de evolución y navegación entre vistas.
+    gallery: []
+    narrative:
+      problem: |
+        Consultar los primeros 151 Pokémon en PokeAPI implica combinar el listado, el
+        detalle de cada especie y un árbol de evolución anidado. La aplicación debía
+        presentar esa información sin repetir la lógica de carga en cada vista.
+      role: |
+        Desarrollé la aplicación con React, TypeScript, Vite y Zustand: el consumo de
+        PokeAPI, el estado centralizado, los esquemas de validación y las vistas de
+        listado y detalle.
+      decisions:
+        - title: Un store centralizado de Zustand
+          body: |
+            usePokemonsStore reúne la lista, el Pokémon activo, la cadena de evolución y el
+            error, con las acciones de carga dentro del store. Las actualizaciones
+            parciales de set() mantienen el estado tipado y evitan duplicar la lógica de
+            fetch en las vistas.
+        - title: Parser recursivo de la cadena de evolución
+          body: |
+            extractEvolutionChain recorre el tipo recursivo EvolutionNode con búsqueda en
+            profundidad, convierte el árbol de PokeAPI en un arreglo plano y procesa todas
+            las ramificaciones con forEach.
+        - title: Separar servicio, esquemas y vistas
+          body: |
+            Las llamadas viven en services/pokeapi.ts, los esquemas de Zod validan la forma
+            de los datos y route.tsx conecta Home y Pokemon. Los componentes de carga,
+            error y footer cubren los estados de la interfaz.
+        - title: Navegación entre listado y detalle
+          body: |
+            La portada muestra los 151 Pokémon en una cuadrícula y cada detalle ofrece
+            tipos, peso, movimientos y evoluciones, con botones para volver al inicio o a
+            la página anterior.
+      result: |
+        La Pokédex lista los primeros 151 Pokémon, muestra su detalle con insignias de
+        tipo y cadena de evolución, y cubre los estados de carga, error y navegación entre
+        las dos vistas.
+  en:
+    title: Pokédex
+    summary: A Pokédex that explores the first 151 Pokémon with types, weight, moves, and evolution chains.
+    role: Individual development of the application.
+    result: It includes a grid listing, a detail page for each Pokémon, type badges, an evolution chain, and navigation between views.
+    gallery: []
+    narrative:
+      problem: |
+        Looking up the first 151 Pokémon in PokeAPI means combining the listing, each
+        species' detail, and a nested evolution tree. The application had to present that
+        information without repeating the loading logic in every view.
+      role: |
+        I developed the application with React, TypeScript, Vite, and Zustand: the PokeAPI
+        integration, centralized state, validation schemas, and the listing and detail
+        views.
+      decisions:
+        - title: A centralized Zustand store
+          body: |
+            usePokemonsStore holds the list, the active Pokémon, the evolution chain, and
+            the error, with loading actions inside the store. Partial updates through set()
+            keep the state typed and avoid duplicating fetch logic in the views.
+        - title: A recursive evolution chain parser
+          body: |
+            extractEvolutionChain traverses the recursive EvolutionNode type with
+            depth-first search, turns the PokeAPI tree into a flat array, and processes
+            every branch with forEach.
+        - title: Separate service, schemas, and views
+          body: |
+            Requests live in services/pokeapi.ts, Zod schemas validate the data shape, and
+            route.tsx connects Home and Pokemon. Loading, error, and footer components
+            cover the interface states.
+        - title: Navigation between listing and detail
+          body: |
+            The home page shows the 151 Pokémon in a grid, and each detail page offers
+            types, weight, moves, and evolutions, with buttons to return home or to the
+            previous page.
+      result: |
+        The Pokédex lists the first 151 Pokémon, shows each detail with type badges and an
+        evolution chain, and covers loading, error, and navigation states between the two
+        views.

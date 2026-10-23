@@ -1,0 +1,33 @@
+# Canonical scaffold copied by `npm run project:new -- <slug>`.
+# Replace every <placeholder>. Do not add fields outside the documented schema.
+
+slug: <slug>
+year: pending
+category: <category>
+tags:
+  - <tag>
+status: <status>
+featured: false
+order: 1
+stack:
+  - <technology-1>
+  - <technology-2>
+  - <technology-3>
+links:
+  live: null
+  code: null
+locales:
+  es:
+    title: <título en español>
+    summary: <una frase que explica qué es el proyecto>
+    role: <rol en español>
+    result: <resultado en español>
+    availability: <nota honesta sobre demo o código pendiente>
+    gallery: []
+  en:
+    title: <English title>
+    summary: <one sentence explaining what the project is>
+    role: <English role>
+    result: <English result>
+    availability: <honest note about a pending demo or code link>
+    gallery: []

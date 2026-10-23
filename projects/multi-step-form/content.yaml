@@ -1,0 +1,100 @@
+slug: multi-step-form
+year: 2024
+category: frontend
+tags:
+  - formularios
+  - validación
+  - responsive
+  - frontend mentor
+status: live
+featured: false
+order: 4
+stack:
+  - Next.js
+  - React
+  - TypeScript
+  - Tailwind CSS
+  - shadcn/ui
+links:
+  live: https://multi-step-form-walker.vercel.app/
+  code: https://github.com/walkeralfaro/frontendmentor-multi-step-form
+locales:
+  es:
+    title: Formulario multipaso
+    summary: Una solución al reto de formulario multipaso de Frontend Mentor, con validación por paso y resumen final.
+    role: Desarrollo individual de la interfaz y del flujo de formulario.
+    result: Permite avanzar y volver entre pasos, validar campos y selecciones, y confirmar un resumen antes de finalizar.
+    gallery: []
+    narrative:
+      problem: |
+        El reto de Frontend Mentor pedía un formulario dividido en pasos que permitiera
+        volver a editar selecciones, mostrar un resumen antes de confirmar y validar
+        campos faltantes, correos mal formados y pasos sin selección. También exigía un
+        layout responsive y estados de hover y foco.
+      role: |
+        Implementé la solución con Next.js, React, TypeScript, Tailwind CSS y componentes
+        de shadcn/ui, apoyándome en React Hook Form para compartir el estado del
+        formulario.
+      decisions:
+        - title: React Hook Form como estado compartido
+          body: |
+            El contexto global de React Hook Form permitió que los pasos y sus componentes
+            leyeran y actualizaran el mismo formulario sin pasar cada valor por props.
+        - title: Validación por paso
+          body: |
+            Cada paso comprueba sus propios requisitos antes de avanzar: campo faltante,
+            email con formato incorrecto y selección vacía. Los mensajes se muestran en el
+            paso correspondiente.
+        - title: Resumen y confirmación
+          body: |
+            El último paso reúne las selecciones en un resumen editable y pide confirmación
+            antes de cerrar el flujo, de modo que el usuario puede corregir antes de
+            enviar.
+        - title: Tipografía y sistema visual coherente
+          body: |
+            La fuente Ubuntu se configuró con la variable --font-sans y se combinó con los
+            tokens de shadcn y Tailwind para mantener una misma escala y jerarquía en todos
+            los pasos.
+      result: |
+        El formulario permite completar y revisar cada paso, volver a editar, validar
+        entradas y selecciones, y confirmar un resumen final, con un layout adaptable y
+        estados de foco visibles.
+  en:
+    title: Multi-step Form
+    summary: A solution to the Frontend Mentor multi-step form challenge, with per-step validation and a final summary.
+    role: Individual development of the interface and the form flow.
+    result: It lets people move forward and back between steps, validate fields and selections, and confirm a summary before finishing.
+    gallery: []
+    narrative:
+      problem: |
+        The Frontend Mentor challenge asked for a form split into steps that allowed
+        people to go back and edit selections, show a summary before confirming, and
+        validate missing fields, malformed emails, and steps without a selection. It also
+        required a responsive layout and hover and focus states.
+      role: |
+        I implemented the solution with Next.js, React, TypeScript, Tailwind CSS, and
+        shadcn/ui components, using React Hook Form to share the form state.
+      decisions:
+        - title: React Hook Form as shared state
+          body: |
+            The global React Hook Form context let the steps and their components read and
+            update the same form without passing every value through props.
+        - title: Per-step validation
+          body: |
+            Each step checks its own requirements before advancing: a missing field, an
+            email with the wrong format, and an empty selection. Messages appear in the
+            corresponding step.
+        - title: Summary and confirmation
+          body: |
+            The final step gathers the selections into an editable summary and asks for
+            confirmation before closing the flow, so people can correct anything before
+            submitting.
+        - title: Coherent typography and visual system
+          body: |
+            The Ubuntu typeface is configured through the --font-sans variable and combined
+            with the shadcn and Tailwind tokens to keep the same scale and hierarchy across
+            every step.
+      result: |
+        The form lets people complete and review each step, go back and edit, validate
+        fields and selections, and confirm a final summary, with an adaptive layout and
+        visible focus states.

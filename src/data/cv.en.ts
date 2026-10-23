@@ -188,18 +188,6 @@ export const cvEn = parseCv({
       link: "https://github.com/walkeralfaro/cheatsheet-editor-",
     },
     {
-      project: "Portfolio Profesional",
-      organisation: "Personal project",
-      location: "Lima, Peru",
-      dates: "Apr 2023 - Present",
-      bullets: [
-        "Design and development of a web portfolio to present frontend and full-stack projects, with a focus on performance, accessibility, and scalable architecture.",
-        "Implementation with Next.js, React, TypeScript, and Tailwind CSS, applying UI/UX best practices and reusable components.",
-      ],
-      techSkills: "Next.js, React, TypeScript, Tailwind CSS.",
-      link: "https://walkeralfaro.com/",
-    },
-    {
       project: "REST Countries Explorer",
       organisation: "Personal project",
       location: "Lima, Peru",

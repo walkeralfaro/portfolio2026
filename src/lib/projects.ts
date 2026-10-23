@@ -1,29 +1,20 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import type { ProjectSlug } from '../content/project-slugs';
+import type { ProjectSlug } from '../lib/content/taxonomy';
 import type { Locale } from '../i18n/locales';
 
 export type ProjectEntry = CollectionEntry<'projects'>;
-export type CaseEntry = CollectionEntry<'cases'>;
 
 export async function getProjects(): Promise<ProjectEntry[]> {
   const projects = await getCollection('projects');
   return projects.sort((first, second) => first.data.order - second.data.order);
 }
 
-export function getProjectCopy(project: ProjectEntry, locale: Locale) {
-  return project.data.locales[locale];
+export function getFeaturedProjects(projects: ProjectEntry[]): ProjectEntry[] {
+  return projects.filter((project) => project.data.featured);
 }
 
-export async function getCaseEntry(
-  slug: ProjectSlug,
-  locale: Locale,
-): Promise<CaseEntry | null> {
-  const cases = await getCollection('cases');
-  return (
-    cases.find(
-      (entry) => entry.data.project === slug && entry.data.locale === locale,
-    ) ?? null
-  );
+export function getProjectCopy(project: ProjectEntry, locale: Locale) {
+  return project.data.locales[locale];
 }
 
 /**

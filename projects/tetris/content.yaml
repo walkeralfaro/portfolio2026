@@ -1,0 +1,80 @@
+slug: tetris
+year: 2024
+category: juegos
+tags:
+  - juego
+  - canvas
+  - javascript
+  - táctil
+status: live
+featured: false
+order: 7
+stack:
+  - HTML5
+  - CSS3
+  - JavaScript
+links:
+  live: https://tetris.walkeralfaro.com
+  code: https://github.com/walkeralfaro/tetris_game_js
+locales:
+  es:
+    title: Tetris JS
+    summary: Una implementación de Tetris con JavaScript puro, canvas, sonido y controles táctiles.
+    role: Desarrollo y adaptación del juego en JavaScript puro, tomando como base el código de MiduDev.
+    result: El juego corre en un bucle de animación, reproduce efectos y música, y responde a controles de teclado y gestos táctiles.
+    gallery: []
+    narrative:
+      problem: |
+        El objetivo era construir Tetris íntegramente con JavaScript, sin bibliotecas
+        externas, y que el juego funcionara también en pantallas táctiles.
+      role: |
+        Partí del código de MiduDev y trabajé el bucle de juego, la gestión de audio y
+        los controles táctiles que se describen en la nota de origen.
+      decisions:
+        - title: Un bucle con requestAnimationFrame
+          body: |
+            El juego dibuja en un canvas dentro de un bucle sincronizado con el refresco
+            de la pantalla y separa la pantalla de inicio, la partida y el game over con
+            una máquina de estados.
+        - title: Audio con la Web Audio API
+          body: |
+            Los efectos y la música se cargan como objetos de audio, se clonan para poder
+            reproducirlos y se guardan en un registro que permite detenerlos y reiniciar
+            su posición.
+        - title: Gestos táctiles
+          body: |
+            Los eventos touchstart, touchmove y touchend calculan el desplazamiento para
+            mover la pieza, y un toque sin desplazamiento la rota.
+      result: |
+        El juego incluye pantallas de inicio, partida y fin, efectos de sonido y música,
+        y controles táctiles además del teclado.
+  en:
+    title: Tetris JS
+    summary: A Tetris implementation in plain JavaScript with canvas, sound, and touch controls.
+    role: Development and adaptation of the game in plain JavaScript, based on MiduDev's code.
+    result: The game runs in an animation loop, plays sound effects and music, and responds to keyboard controls and touch gestures.
+    gallery: []
+    narrative:
+      problem: |
+        The goal was to build Tetris entirely in JavaScript, without external libraries,
+        and make the game playable on touch screens as well.
+      role: |
+        I started from MiduDev's code and worked on the game loop, audio management, and
+        touch controls described in the source note.
+      decisions:
+        - title: A requestAnimationFrame loop
+          body: |
+            The game draws to a canvas inside a loop synchronized with the screen refresh
+            rate and separates the start screen, gameplay, and game over with a state
+            machine.
+        - title: Audio with the Web Audio API
+          body: |
+            Sound effects and music load as audio objects, are cloned for playback, and
+            are kept in a registry that can stop them and reset their position.
+        - title: Touch gestures
+          body: |
+            touchstart, touchmove, and touchend events calculate the displacement to move
+            the piece, and a tap without movement rotates it.
+      result: |
+        The game includes start, play, and game over screens, sound effects and music,
+        and touch controls in addition to the keyboard.

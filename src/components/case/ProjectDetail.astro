@@ -1,10 +1,8 @@
 ---
-import { render } from 'astro:content';
 import type { Locale } from '../../i18n/locales';
 import { getUi } from '../../i18n/ui';
 import {
   getAdjacentProjects,
-  getCaseEntry,
   getProjectCopy,
   type ProjectEntry,
 } from '../../lib/projects';
@@ -26,10 +24,17 @@ const { project, projects, locale } = Astro.props;
 const ui = getUi(locale);
 const data = project.data;
 const copy = getProjectCopy(project, locale);
+const narrative = copy.narrative;
 const adjacent = getAdjacentProjects(projects, data.slug);
-const caseEntry = await getCaseEntry(data.slug, locale);
-const CaseBody = caseEntry ? (await render(caseEntry)).Content : null;
 const galleryImages = getProjectGallery(project, locale);
+
+function paragraphs(value: string): string[] {
+  return value
+    .trim()
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
 ---
 
 <article class="project-detail" data-project-detail={data.slug}>
@@ -37,9 +42,26 @@ const galleryImages = getProjectGallery(project, locale);
 
   <div class="project-detail__body" data-case-body>
     {
-      CaseBody ? (
+      narrative ? (
         <Prose class="case-body">
-          <CaseBody components={{ h2: CaseSection, ol: DecisionList }} />
+          <CaseSection>{ui.project.problem}</CaseSection>
+          {paragraphs(narrative.problem).map((paragraph) => <p>{paragraph}</p>)}
+
+          <CaseSection>{ui.project.role}</CaseSection>
+          {paragraphs(narrative.role).map((paragraph) => <p>{paragraph}</p>)}
+
+          <CaseSection>{ui.project.decisions}</CaseSection>
+          <DecisionList>
+            {narrative.decisions.map((decision) => (
+              <li>
+                <strong>{decision.title}.</strong>
+                {paragraphs(decision.body).map((paragraph) => <p>{paragraph}</p>)}
+              </li>
+            ))}
+          </DecisionList>
+
+          <CaseSection>{ui.project.result}</CaseSection>
+          {paragraphs(narrative.result).map((paragraph) => <p>{paragraph}</p>)}
         </Prose>
       ) : (
         <Prose class="case-body">
@@ -91,5 +113,9 @@ const galleryImages = getProjectGallery(project, locale);
 
   .project-detail__body :global(.decision-list li) {
     margin-block-start: 0;
+  }
+
+  .project-detail__body :global(.decision-list li p) {
+    margin-block: var(--space-2) 0;
   }
 </style>

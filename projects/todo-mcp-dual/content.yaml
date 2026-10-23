@@ -1,0 +1,96 @@
+slug: todo-mcp-dual
+year: 2026
+category: ia
+tags:
+  - mcp
+  - agentes
+  - tareas
+  - sqlite
+  - autenticación
+status: live
+featured: true
+order: 11
+stack:
+  - Next.js
+  - React
+  - TypeScript
+  - Prisma
+  - SQLite
+links:
+  live: https://todo-mcp-dual.vercel.app/
+  code: https://github.com/walkeralfaro/todo-mcp-dual
+locales:
+  es:
+    title: Todo MCP
+    summary: Una aplicación de tareas con una interfaz Next.js y un servidor MCP que operan sobre el mismo SQLite.
+    role: Diseño y desarrollo individual de la aplicación y de su integración MCP.
+    result: Humanos y agentes crean, consultan y actualizan tareas sobre una única capa de negocio, con tokens MCP por usuario y caducidad.
+    gallery: []
+    narrative:
+      problem: |
+        La aplicación buscaba que humanos y agentes de IA operaran sobre el mismo estado
+        de tareas sin duplicar la lógica de negocio ni mantener dos fuentes de verdad.
+      role: |
+        Trabajé la arquitectura dual completa: interfaz, Server Actions, capa Prisma,
+        servidor MCP, autenticación de tokens y pruebas.
+      decisions:
+        - title: Una sola capa de negocio
+          body: |
+            lib/tasks.ts concentra las operaciones sobre tareas. Las Server Actions y el
+            servidor MCP son adaptadores delgados que validan y formatean respuestas,
+            pero comparten la misma implementación y la misma base SQLite.
+        - title: Tokens MCP con hash y caducidad
+          body: |
+            Cada token se muestra una sola vez, se guarda como hash SHA-256 con un prefijo
+            visible, expira a los noventa días y puede revocarse desde la interfaz. Al
+            revocarlo, las peticiones con ese token dejan de autenticarse.
+        - title: Validación Zod en ambos accesos
+          body: |
+            Los límites de título, descripción y paginación se aplican tanto en las
+            Server Actions como en las tools MCP, de modo que el agente recibe errores
+            controlados y en español.
+        - title: Documento de arquitectura autocontenido
+          body: |
+            La ruta /arquitectura sirve un HTML con CSS, JavaScript y diagramas embebidos,
+            sin CDN ni peticiones de red, generado a partir de una fuente versionada.
+      result: |
+        La interfaz y el endpoint MCP comparten SQLite y validación. Los tokens se
+        generan, copian una vez, caducan y revocan desde /mcp, y la documentación de
+        arquitectura se publica con el build.
+  en:
+    title: Todo MCP
+    summary: A task application with a Next.js interface and an MCP server operating on the same SQLite database.
+    role: Individual design and development of the application and its MCP integration.
+    result: Humans and agents create, read, and update tasks through a single business layer, with per-user MCP tokens and expiration.
+    gallery: []
+    narrative:
+      problem: |
+        The application aimed to let humans and AI agents operate on the same task state
+        without duplicating business logic or maintaining two sources of truth.
+      role: |
+        I worked on the complete dual architecture: interface, Server Actions, Prisma
+        layer, MCP server, token authentication, and tests.
+      decisions:
+        - title: A single business layer
+          body: |
+            lib/tasks.ts centralizes task operations. Server Actions and the MCP server are
+            thin adapters that validate and format responses but share the same
+            implementation and SQLite database.
+        - title: MCP tokens with hashing and expiration
+          body: |
+            Each token is shown once, stored as a SHA-256 hash with a visible prefix,
+            expires after ninety days, and can be revoked from the interface. Once
+            revoked, requests with that token are no longer authenticated.
+        - title: Zod validation on both access paths
+          body: |
+            Title, description, and pagination limits are enforced in both Server Actions
+            and MCP tools, so the agent receives controlled error messages in Spanish.
+        - title: A self-contained architecture document
+          body: |
+            The /arquitectura route serves an HTML document with embedded CSS,
+            JavaScript, and diagrams, with no CDN or network requests, generated from a
+            versioned source.
+      result: |
+        The interface and the MCP endpoint share SQLite and validation. Tokens are
+        generated, copied once, expired, and revoked from /mcp, and the architecture
+        documentation is published with the build.

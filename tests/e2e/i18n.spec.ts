@@ -1,13 +1,21 @@
 import { expect, test } from '@playwright/test';
+import { hasProjects, projectPath, projects } from './projects';
 
 const routePairs = [
   { es: '/', en: '/en/', status: 200 },
   { es: '/work/', en: '/en/work/', status: 200 },
-  { es: '/work/todo-mcp/', en: '/en/work/todo-mcp/', status: 200 },
   { es: '/about/', en: '/en/about/', status: 200 },
   { es: '/colophon/', en: '/en/colophon/', status: 200 },
   { es: '/404', en: '/en/404', status: 404 },
 ];
+
+if (hasProjects) {
+  routePairs.splice(2, 0, {
+    es: projectPath(projects[0].slug, 'es'),
+    en: projectPath(projects[0].slug, 'en'),
+    status: 200,
+  });
+}
 
 test('every Spanish route has an English counterpart', async ({ page }) => {
   for (const pair of routePairs) {
@@ -22,14 +30,16 @@ test('every Spanish route has an English counterpart', async ({ page }) => {
 });
 
 test('switching language on a project page preserves the project', async ({ page }) => {
-  await page.goto('/work/todo-mcp/');
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
+  const project = projects[0];
+  await page.goto(projectPath(project.slug));
 
-  await expect(page.locator('h1')).toHaveText('TODO-mcp');
+  await expect(page.locator('h1')).toHaveText(project.title);
   await page.getByRole('link', { name: /English — Cambiar idioma a inglés/ }).click();
 
-  await expect(page).toHaveURL('/en/work/todo-mcp/');
+  await expect(page).toHaveURL(projectPath(project.slug, 'en'));
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.locator('main h1')).toHaveText('TODO-mcp');
+  await expect(page.locator('main h1')).toHaveText(project.englishTitle);
 });
 
 test('language switching preserves the work category query', async ({ page }) => {

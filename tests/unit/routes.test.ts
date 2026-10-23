@@ -11,8 +11,14 @@ test('route helpers map home, work, filtered work, project, about, and colophon'
   assert.equal(routeHref('es', { name: 'work', category: 'ia' }), '/work/?c=ia');
   assert.equal(routeHref('en', { name: 'work', category: 'ia' }), '/en/work/?c=ia');
 
-  assert.equal(routeHref('es', { name: 'project', slug: 'todo-mcp' }), '/work/todo-mcp/');
-  assert.equal(routeHref('en', { name: 'project', slug: 'todo-mcp' }), '/en/work/todo-mcp/');
+  assert.equal(
+    routeHref('es', { name: 'project', slug: 'todo-mcp-dual' }),
+    '/work/todo-mcp-dual/',
+  );
+  assert.equal(
+    routeHref('en', { name: 'project', slug: 'todo-mcp-dual' }),
+    '/en/work/todo-mcp-dual/',
+  );
 
   assert.equal(routeHref('es', { name: 'about' }), '/about/');
   assert.equal(routeHref('en', { name: 'about' }), '/en/about/');
@@ -23,8 +29,8 @@ test('route helpers map home, work, filtered work, project, about, and colophon'
 });
 
 test('the language switch preserves a project slug and the category filter', () => {
-  assert.equal(switchLocaleHref('en', '/work/todo-mcp/'), '/en/work/todo-mcp/');
-  assert.equal(switchLocaleHref('es', '/en/work/todo-mcp/'), '/work/todo-mcp/');
+  assert.equal(switchLocaleHref('en', '/work/todo-mcp-dual/'), '/en/work/todo-mcp-dual/');
+  assert.equal(switchLocaleHref('es', '/en/work/todo-mcp-dual/'), '/work/todo-mcp-dual/');
   assert.equal(switchLocaleHref('en', '/work/', '?c=juegos'), '/en/work/?c=juegos');
   assert.equal(switchLocaleHref('es', '/en/work/', '?c=producto'), '/work/?c=producto');
   assert.equal(switchLocaleHref('en', '/about/'), '/en/about/');
@@ -38,9 +44,14 @@ test('the route parser recognizes localized work and project routes', () => {
     name: 'work',
     category: 'ia',
   });
-  assert.deepEqual(parseLocalizedUrl('/en/work/portfolio-2026/'), {
+  assert.deepEqual(parseLocalizedUrl('/en/work/todo-mcp-dual/'), {
     name: 'project',
-    slug: 'portfolio-2026',
+    slug: 'todo-mcp-dual',
   });
-  assert.equal(parseLocalizedUrl('/en/work/not-a-project/'), null);
+});
+
+test('the route parser rejects malformed project slugs', () => {
+  assert.equal(parseLocalizedUrl('/en/work/Not_A_Project/'), null);
+  assert.equal(parseLocalizedUrl('/en/work/todo_mcp/'), null);
+  assert.equal(parseLocalizedUrl('/en/work/todo-mcp--dual/'), null);
 });

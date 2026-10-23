@@ -1,0 +1,105 @@
+slug: rest-countries-explorer
+year: 2025
+category: frontend
+tags:
+  - países
+  - búsqueda
+  - filtros
+  - tema oscuro
+status: live
+featured: true
+order: 6
+stack:
+  - Next.js
+  - React
+  - TypeScript
+  - Tailwind CSS
+  - Zod
+links:
+  live: https://countries-app-walker.vercel.app/
+  code: https://github.com/walkeralfaro/frontendmentor-countries
+locales:
+  es:
+    title: Explorador de países
+    summary: Un explorador de países con búsqueda, filtro por región, detalle y países fronterizos sobre un dataset local validado.
+    role: Desarrollo individual de la solución al reto de Frontend Mentor.
+    result: Lista y filtra países, muestra una ruta de detalle con fronteras y permite alternar entre tema claro y oscuro.
+    gallery: []
+    narrative:
+      problem: |
+        El reto de Frontend Mentor pedía listar países, buscar por nombre, filtrar por
+        región, abrir un detalle con información y fronteras, y alternar entre tema
+        claro y oscuro.
+
+        El proyecto incluía un data.json con la forma legacy de REST Countries v2, así
+        que la aplicación también debía normalizar y validar esos datos antes de
+        renderizarlos.
+      role: |
+        Implementé la solución completa: las rutas de listado y detalle, la
+        normalización del dataset, la validación con Zod y el cambio de tema.
+      decisions:
+        - title: Validar los datos en el límite
+          body: |
+            El dataset se trata como entrada no confiable. Un esquema de Zod describe solo
+            los campos que usa la interfaz y, si la validación falla, la ruta responde con
+            notFound en lugar de renderizar una vista rota.
+        - title: Resolver las fronteras en memoria
+          body: |
+            La ruta de detalle indexa el dataset por alpha3Code una sola vez y resuelve
+            tanto el país como sus vecinos desde ese mapa, sin pedir cada frontera a una
+            API.
+        - title: Filtrar en un solo useMemo
+          body: |
+            La búsqueda y el filtro por región se combinan sobre el arreglo ya validado.
+            Escribir o cambiar la región no dispara peticiones adicionales, y la búsqueda
+            reproduce el comportamiento de prefijo del diseño.
+        - title: Tema con variables CSS
+          body: |
+            La paleta vive en variables para :root y .dark, y Tailwind la mapea con
+            @theme inline. next-themes alterna la clase del documento sin duplicar
+            estilos por componente.
+      result: |
+        Las vistas de listado y detalle funcionan sobre el dataset local, con estados de
+        carga y no encontrado, y el tema claro u oscuro se mantiene en toda la
+        navegación.
+  en:
+    title: Countries Explorer
+    summary: A country explorer with search, region filtering, detail pages, and bordering countries over a validated local dataset.
+    role: Individual development of the Frontend Mentor challenge solution.
+    result: It lists and filters countries, shows a detail route with borders, and lets people switch between light and dark themes.
+    gallery: []
+    narrative:
+      problem: |
+        The Frontend Mentor challenge asked for a country listing with name search,
+        region filtering, a detail page with information and borders, and a light/dark
+        theme switch.
+
+        The project shipped a data.json in the legacy REST Countries v2 shape, so the
+        application also had to normalize and validate that data before rendering it.
+      role: |
+        I implemented the complete solution: the listing and detail routes, dataset
+        normalization, Zod validation, and theme switching.
+      decisions:
+        - title: Validate data at the boundary
+          body: |
+            The dataset is treated as untrusted input. A Zod schema describes only the
+            fields the interface uses, and if validation fails the route responds with
+            notFound instead of rendering a broken view.
+        - title: Resolve borders in memory
+          body: |
+            The detail route indexes the dataset by alpha3Code once and resolves both the
+            country and its neighbors from that map, without requesting each border from
+            an API.
+        - title: Filter in a single useMemo
+          body: |
+            Search and region filtering are combined over the already validated array.
+            Typing or changing the region does not trigger additional requests, and the
+            search mirrors the prefix behavior shown in the design.
+        - title: Theme with CSS variables
+          body: |
+            The palette lives in variables for :root and .dark, and Tailwind maps it with
+            @theme inline. next-themes toggles the document class without duplicating
+            styles per component.
+      result: |
+        The listing and detail views work over the local dataset, with loading and
+        not-found states, and the light or dark theme persists across navigation.

@@ -1,12 +1,11 @@
 import { expect, test } from '@playwright/test';
+import { hasProjects, projectPath, projects } from './projects';
 
 const shellRoutes = [
   '/',
   '/en/',
   '/work/',
   '/en/work/',
-  '/work/todo-mcp/',
-  '/en/work/todo-mcp/',
   '/about/',
   '/en/about/',
   '/colophon/',
@@ -14,6 +13,10 @@ const shellRoutes = [
   '/404',
   '/en/404',
 ];
+
+if (hasProjects) {
+  shellRoutes.splice(4, 0, projectPath(projects[0].slug), projectPath(projects[0].slug, 'en'));
+}
 
 test('the skip link moves keyboard focus to the main landmark', async ({ page }) => {
   await page.goto('/');

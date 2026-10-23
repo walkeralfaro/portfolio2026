@@ -12,6 +12,10 @@ Todo se guarda localmente en tu navegador — 100% local, sin servidores, sin re
 - live: https://cheatsheet.walkeralfaro.com/
 - codigo: https://github.com/walkeralfaro/cheatsheet-editor
 
+## Year
+
+2026
+
 ## Cómo funciona
 
 La aplicación tiene tres áreas principales:

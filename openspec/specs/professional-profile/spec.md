@@ -17,12 +17,12 @@ The home page SHALL state Walker's name, full-stack role, a one-sentence value p
 
 ### Requirement: Featured work
 
-The home page SHALL feature exactly four projects: TODO-mcp, Image Prompt, URL Shortener, and Tetris. Each featured project SHALL link to its internal project detail page.
+The home page SHALL render the projects marked `featured: true` in project content, with a maximum of four. The curated featured set is `todo-mcp-dual`, `image-prompt`, `url-shortener`, and `tetris`. Each SHALL link to its internal project detail page.
 
 #### Scenario: Featured set
 
 - **WHEN** the home page renders its featured section
-- **THEN** the four named projects appear and no other project is featured there
+- **THEN** the four curated projects appear when their content records are authored, and no other project appears there
 
 #### Scenario: Featured projects open their detail pages
 
@@ -31,12 +31,12 @@ The home page SHALL feature exactly four projects: TODO-mcp, Image Prompt, URL S
 
 ### Requirement: Home catalog excerpt
 
-The home page SHALL render an excerpt of the first four projects in catalog order, below the featured set. The excerpt count SHALL match the number of rows it renders, not the size of the whole inventory, and the excerpt SHALL keep an action that leads to the full catalog.
+The home page SHALL render up to the first four available projects in catalog order, below the featured set. The excerpt count SHALL match the number of rows it renders, not the total catalog size, and the excerpt SHALL keep an action that leads to the full catalog.
 
 #### Scenario: Excerpt size and order
 
 - **WHEN** a visitor opens the home page in either locale
-- **THEN** the excerpt renders exactly the first four projects in catalog order
+- **THEN** the excerpt renders up to four projects in catalog order
 
 #### Scenario: Count matches the excerpt
 

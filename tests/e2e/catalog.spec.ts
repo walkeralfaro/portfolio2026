@@ -1,21 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
-
-const projectOrder = [
-  'TODO-mcp',
-  'Image Prompt',
-  'Cheatsheet Editor',
-  'URL Shortener',
-  'Multi-step Form',
-  'Pokedex',
-  'Todo App',
-  'Tic Tac Toe',
-  'Tip Calculator',
-  'Weather App',
-  'REST Countries Explorer',
-  'Tetris',
-  'Portfolio Profesional',
-  'Portfolio 2026',
-];
+import {
+  categoryCounts,
+  firstProjectWithCover,
+  firstProjectWithoutCover,
+  hasProjects,
+  projects,
+} from './projects';
 
 async function waitForCatalog(page: Page): Promise<void> {
   await page.waitForSelector('[data-catalog-ready="true"]');
@@ -25,36 +15,39 @@ async function activePreview(page: Page) {
   return page.locator('[data-preview-panel][data-active="true"]');
 }
 
-test('the catalog contains all 14 documented projects and no excluded work', async ({ page }) => {
+test('the catalog renders the project folders and computed category counts', async ({ page }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   await page.goto('/work/');
   await waitForCatalog(page);
 
-  await expect(page.locator('[data-project-row]')).toHaveCount(14);
-  await expect(page.locator('[data-catalog-count]')).toHaveText('14');
-  await expect(page.locator('[data-project-row] .project-row__title')).toHaveText(projectOrder);
-  await expect(page.locator('main')).not.toContainText('Puja Inmobiliaria');
-
-  const filterCounts = await page.locator('[data-filter]').evaluateAll((links) =>
-    Object.fromEntries(
-      links.map((link) => [
-        link.getAttribute('data-filter'),
-        Number(link.getAttribute('data-filter-count')),
-      ]),
-    ),
+  await expect(page.locator('[data-project-row]')).toHaveCount(projects.length);
+  await expect(page.locator('[data-catalog-count]')).toHaveText(String(projects.length));
+  await expect(page.locator('[data-project-row] .project-row__title')).toHaveText(
+    projects.map((project) => project.title),
   );
+  await expect(page.locator('main')).not.toContainText('Puja Inmobiliaria');
+  expect(await page.locator('[data-filter="all"]').getAttribute('data-filter-count')).toBe(
+    String(categoryCounts.all),
+  );
+  for (const category of ['ia', 'producto', 'frontend', 'juegos'] as const) {
+    await expect(page.locator(`[data-filter="${category}"]`)).toHaveAttribute(
+      'data-filter-count',
+      String(categoryCounts[category]),
+    );
+  }
+});
 
-  expect(filterCounts).toEqual({
-    all: 14,
-    ia: 2,
-    producto: 4,
-    frontend: 6,
-    juegos: 2,
-  });
+test('an empty catalog remains usable before project content is authored', async ({ page }) => {
+  test.skip(hasProjects, 'This test only applies while project content is empty.');
+  await page.goto('/work/');
+  await expect(page.locator('[data-project-row]')).toHaveCount(0);
+  await expect(page.locator('[data-catalog-count]')).toHaveText('0');
 });
 
 test('every row exposes its metadata and the whole row is the navigation target', async ({
   page,
 }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   await page.goto('/work/');
   await waitForCatalog(page);
 
@@ -95,21 +88,16 @@ test('every row exposes its metadata and the whole row is the navigation target'
     expect(entry.linkWidth).toBeCloseTo(entry.rowWidth, 0);
   }
 
-  await expect(
-    page.locator('[data-project="todo-mcp"] a.project-row__inner'),
-  ).toHaveAttribute('href', '/work/todo-mcp/');
-  await expect(
-    page.locator('[data-project="portfolio-profesional"] a.project-row__inner'),
-  ).toHaveAttribute('href', '/work/portfolio-profesional/');
-  await expect(
-    page.locator('[data-project="weather-app"] a.project-row__inner'),
-  ).toHaveAttribute('href', '/work/weather-app/');
-  await expect(
-    page.locator('[data-project="rest-countries-explorer"] a.project-row__inner'),
-  ).toHaveAttribute('href', '/work/rest-countries-explorer/');
+  for (const project of projects) {
+    await expect(page.locator(`[data-project="${project.slug}"] a.project-row__inner`)).toHaveAttribute(
+      'href',
+      `/work/${project.slug}/`,
+    );
+  }
 });
 
 test('the desktop catalog uses a stable 7/5 master-detail layout', async ({ page }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/work/');
   await waitForCatalog(page);
@@ -144,12 +132,13 @@ test('the desktop catalog uses a stable 7/5 master-detail layout', async ({ page
 });
 
 test('pointer preview waits 90 ms and focus preview is immediate', async ({ page }) => {
+  test.skip(projects.length < 2, 'At least two projects are needed for preview switching.');
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/work/');
   await waitForCatalog(page);
 
   const active = await activePreview(page);
-  await expect(active).toHaveAttribute('data-project', 'todo-mcp');
+  await expect(active).toHaveAttribute('data-project', projects[0].slug);
 
   await page.evaluate(() => {
     const target = window as typeof window & {
@@ -171,8 +160,8 @@ test('pointer preview waits 90 ms and focus preview is immediate', async ({ page
     }) as typeof window.setTimeout;
   });
 
-  await page.locator('[data-project-row][data-project="image-prompt"]').hover();
-  await expect(active).toHaveAttribute('data-project', 'todo-mcp');
+  await page.locator(`[data-project-row][data-project="${projects[1].slug}"]`).hover();
+  await expect(active).toHaveAttribute('data-project', projects[0].slug);
 
   const captured = await page.evaluate(() => {
     const target = window as typeof window & {
@@ -194,29 +183,27 @@ test('pointer preview waits 90 ms and focus preview is immediate', async ({ page
     target.__catalogPreviewTimer?.callback();
   });
 
-  await expect(active).toHaveAttribute('data-project', 'image-prompt');
-  await expect(active.locator('.work-preview__title')).toHaveText('Image Prompt');
+  await expect(active).toHaveAttribute('data-project', projects[1].slug);
+  await expect(active.locator('.work-preview__title')).toHaveText(projects[1].title);
 
-  const tetrisLink = page.locator('[data-project-row][data-project="tetris"] a');
-  await tetrisLink.focus();
+  const lastProjectLink = page.locator(`[data-project-row][data-project="${projects.at(-1)!.slug}"] a`);
+  await lastProjectLink.focus();
 
-  await expect(active).toHaveAttribute('data-project', 'tetris');
-  await expect(tetrisLink).toBeFocused();
+  await expect(active).toHaveAttribute('data-project', projects.at(-1)!.slug);
+  await expect(lastProjectLink).toBeFocused();
   expect(
-    await tetrisLink.evaluate((element) => getComputedStyle(element).outlineWidth),
+    await lastProjectLink.evaluate((element) => getComputedStyle(element).outlineWidth),
   ).toBe('3px');
 });
 
 test('filters use real counts, update ?c=, and restore from a shared URL', async ({ page }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   await page.goto('/work/');
   await waitForCatalog(page);
 
-  const cases = [
-    { value: 'ia', count: 2 },
-    { value: 'producto', count: 4 },
-    { value: 'frontend', count: 6 },
-    { value: 'juegos', count: 2 },
-  ];
+  const cases = (['ia', 'producto', 'frontend', 'juegos'] as const)
+    .map((value) => ({ value, count: categoryCounts[value] }))
+    .filter((entry) => entry.count > 0);
 
   for (const entry of cases) {
     await page.locator(`[data-filter="${entry.value}"]`).click();
@@ -245,8 +232,8 @@ test('filters use real counts, update ?c=, and restore from a shared URL', async
 
   await page.locator('[data-filter="all"]').click();
   await expect(page).toHaveURL(/\/work\/$/);
-  await expect(page.locator('.project-row:visible')).toHaveCount(14);
-  await expect(page.locator('[data-catalog-count]')).toHaveText('14');
+  await expect(page.locator('.project-row:visible')).toHaveCount(projects.length);
+  await expect(page.locator('[data-catalog-count]')).toHaveText(String(projects.length));
   await expect(page.locator('[data-filter][aria-current="page"]')).toHaveAttribute(
     'data-filter',
     'all',
@@ -256,6 +243,7 @@ test('filters use real counts, update ?c=, and restore from a shared URL', async
 test('an empty filter state explains the result and reset restores all projects', async ({
   page,
 }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   await page.goto('/work/?c=');
   await waitForCatalog(page);
 
@@ -272,8 +260,8 @@ test('an empty filter state explains the result and reset restores all projects'
 
   await expect(page).toHaveURL(/\/work\/$/);
   await waitForCatalog(page);
-  await expect(page.locator('.project-row:visible')).toHaveCount(14);
-  await expect(page.locator('[data-catalog-count]')).toHaveText('14');
+  await expect(page.locator('.project-row:visible')).toHaveCount(projects.length);
+  await expect(page.locator('[data-catalog-count]')).toHaveText(String(projects.length));
   await expect(emptyState).toBeHidden();
 
   await page.goto('/work/?c=desconocida');
@@ -285,14 +273,15 @@ test('an empty filter state explains the result and reset restores all projects'
 test('the mobile catalog is a single-column thumbnail list without a preview pane', async ({
   page,
 }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   for (const width of [375, 768]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/work/');
     await waitForCatalog(page);
 
     await expect(page.locator('[data-work-preview]')).toBeHidden();
-    await expect(page.locator('.project-row:visible')).toHaveCount(14);
-    await expect(page.locator('.project-row__thumb')).toHaveCount(14);
+    await expect(page.locator('.project-row:visible')).toHaveCount(projects.length);
+    await expect(page.locator('.project-row__thumb')).toHaveCount(projects.length);
     await expect(page.locator('.project-row__thumb').first()).toBeVisible();
 
     const boxes = await page.locator('.project-row:visible').evaluateAll((rows) =>
@@ -314,6 +303,7 @@ test('the mobile catalog is a single-column thumbnail list without a preview pan
 });
 
 test('project rows inset their content on a full-width navigation surface', async ({ page }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   for (const width of [375, 768, 1280]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/work/');
@@ -347,7 +337,7 @@ test('project rows inset their content on a full-width navigation surface', asyn
       }),
     );
 
-    expect(rows).toHaveLength(14);
+    expect(rows).toHaveLength(projects.length);
 
     for (const entry of rows) {
       expect(entry.innerX).toBeCloseTo(entry.rowX, 0);
@@ -365,7 +355,7 @@ test('project rows inset their content on a full-width navigation surface', asyn
   }
 });
 
-test('without JavaScript all 14 projects remain visible and navigable', async ({ browser }) => {
+test('without JavaScript all authored projects remain visible and navigable', async ({ browser }) => {
   const context = await browser.newContext({
     javaScriptEnabled: false,
     baseURL: 'http://localhost:4321',
@@ -374,20 +364,21 @@ test('without JavaScript all 14 projects remain visible and navigable', async ({
 
   await page.goto('/work/');
 
-  await expect(page.locator('.project-row')).toHaveCount(14);
-  await expect(page.locator('.project-row:visible')).toHaveCount(14);
+  await expect(page.locator('.project-row')).toHaveCount(projects.length);
+  await expect(page.locator('.project-row:visible')).toHaveCount(projects.length);
 
   const hrefs = await page.locator('.project-row a.project-row__inner').evaluateAll((links) =>
     links.map((link) => link.getAttribute('href') ?? ''),
   );
 
-  expect(hrefs).toContain('/work/todo-mcp/');
-  expect(hrefs).toContain('/work/weather-app/');
+  expect(hrefs).toEqual(projects.map((project) => `/work/${project.slug}/`));
   expect(hrefs.every((href) => href.startsWith('/work/'))).toBe(true);
   expect(hrefs).not.toContain('#');
 
-  await page.locator('[data-project-row][data-project="todo-mcp"] a.project-row__inner').click();
-  await expect(page).toHaveURL(/\/work\/todo-mcp\/$/);
+  if (projects.length > 0) {
+    await page.locator(`[data-project-row][data-project="${projects[0].slug}"] a.project-row__inner`).click();
+    await expect(page).toHaveURL(new RegExp(`/work/${projects[0].slug}/$`));
+  }
 
   await context.close();
 });
@@ -395,39 +386,18 @@ test('without JavaScript all 14 projects remain visible and navigable', async ({
 test('project actions only render real destinations and state pending availability', async ({
   page,
 }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   await page.goto('/work/');
   await waitForCatalog(page);
 
-  const actionsFor = (slug: string) =>
-    page.locator(`[data-preview-panel][data-project="${slug}"] [data-project-actions]`);
-
-  const todo = actionsFor('todo-mcp');
-  await expect(todo).toHaveAttribute('data-has-live', 'false');
-  await expect(todo).toHaveAttribute('data-has-code', 'true');
-  await expect(todo.locator('a')).toHaveCount(1);
-  await expect(todo.locator('a')).toHaveAttribute(
-    'href',
-    'https://github.com/walkeralfaro/todo-mcp-dual',
-  );
-  await expect(todo.locator('button, a[href="#"]')).toHaveCount(0);
-  await expect(todo).toContainText('Demo pública pendiente');
-
-  const urlShortener = actionsFor('url-shortener');
-  await expect(urlShortener).toHaveAttribute('data-has-live', 'true');
-  await expect(urlShortener).toHaveAttribute('data-has-code', 'true');
-  await expect(urlShortener.locator('a')).toHaveCount(2);
-
-  const portfolio = actionsFor('portfolio-profesional');
-  await expect(portfolio).toHaveAttribute('data-has-live', 'true');
-  await expect(portfolio).toHaveAttribute('data-has-code', 'false');
-  await expect(portfolio.locator('a')).toHaveCount(1);
-  await expect(portfolio).toContainText('Código público pendiente');
-
-  const weather = actionsFor('weather-app');
-  await expect(weather).toHaveAttribute('data-has-live', 'false');
-  await expect(weather).toHaveAttribute('data-has-code', 'false');
-  await expect(weather.locator('a, button')).toHaveCount(0);
-  await expect(weather).toContainText('Demo y código pendientes');
+  for (const project of projects) {
+    const actions = page.locator(`[data-preview-panel][data-project="${project.slug}"] [data-project-actions]`);
+    await expect(actions).toHaveAttribute('data-has-live', String(Boolean(project.links.live)));
+    await expect(actions).toHaveAttribute('data-has-code', String(Boolean(project.links.code)));
+    await expect(actions.locator('a')).toHaveCount(
+      Number(Boolean(project.links.live)) + Number(Boolean(project.links.code)),
+    );
+  }
 
   await expect(page.locator('a[href="#"]')).toHaveCount(0);
   await expect(page.locator('button:disabled')).toHaveCount(0);
@@ -436,12 +406,13 @@ test('project actions only render real destinations and state pending availabili
 test('the preview defers the cover of an inactive panel until the panel is shown', async ({
   page,
 }) => {
+  test.skip(!firstProjectWithCover(), 'No project cover has been authored yet.');
   await page.setViewportSize({ width: 1280, height: 900 });
 
   const requested: string[] = [];
 
   page.on('request', (request) => {
-    if (request.url().includes('todo-app')) {
+    if (request.url().includes(firstProjectWithCover()!.slug)) {
       requested.push(request.url());
     }
   });
@@ -449,7 +420,8 @@ test('the preview defers the cover of an inactive panel until the panel is shown
   await page.goto('/work/');
   await waitForCatalog(page);
 
-  const panel = page.locator('[data-preview-panel][data-project="todo-app"]');
+  const project = firstProjectWithCover()!;
+  const panel = page.locator(`[data-preview-panel][data-project="${project.slug}"]`);
 
   await expect(panel).toHaveAttribute('data-active', 'false');
   await expect(panel.locator('img')).toHaveCount(0);
@@ -460,10 +432,10 @@ test('the preview defers the cover of an inactive panel until the panel is shown
   ).toBe(1);
   expect(requested).toHaveLength(0);
 
-  await page.locator('[data-project-row][data-project="todo-app"]').hover();
+  await page.locator(`[data-project-row][data-project="${project.slug}"]`).hover();
 
   const active = page.locator('[data-preview-panel][data-active="true"]');
-  await expect(active).toHaveAttribute('data-project', 'todo-app');
+  await expect(active).toHaveAttribute('data-project', project.slug);
   await expect(active.locator('[data-cover-target] img')).toHaveCount(1);
   await expect(active.locator('[data-cover-target]')).toHaveAttribute(
     'data-cover-loaded',
@@ -473,26 +445,30 @@ test('the preview defers the cover of an inactive panel until the panel is shown
 });
 
 test('a project without a cover keeps the designed placeholder', async ({ page }) => {
+  test.skip(!firstProjectWithoutCover(), 'All authored projects have covers.');
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/work/');
   await waitForCatalog(page);
 
-  const panel = page.locator('[data-preview-panel][data-project="todo-mcp"]');
+  const project = firstProjectWithoutCover()!;
+  const panel = page.locator(`[data-preview-panel][data-project="${project.slug}"]`);
 
   await expect(panel.locator('.placeholder-cover')).toHaveCount(1);
   await expect(panel.locator('img')).toHaveCount(0);
 });
 
 test('the mobile catalog renders the cover of a project that has one', async ({ page }) => {
+  test.skip(!firstProjectWithCover(), 'No project cover has been authored yet.');
   await page.setViewportSize({ width: 375, height: 900 });
   await page.goto('/work/');
   await waitForCatalog(page);
 
-  const thumb = page.locator('[data-project-row][data-project="todo-app"] .project-row__thumb');
+  const project = firstProjectWithCover()!;
+  const thumb = page.locator(`[data-project-row][data-project="${project.slug}"] .project-row__thumb`);
 
   await expect(thumb).toBeVisible();
   await expect(thumb.locator('img')).toHaveCount(1);
-  await expect(thumb.locator('img')).toHaveAttribute('src', /todo-app/);
+  await expect(thumb.locator('img')).toHaveAttribute('src', new RegExp(project.slug));
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
@@ -501,22 +477,27 @@ test('the mobile catalog renders the cover of a project that has one', async ({ 
 });
 
 test('the English catalog mirrors the inventory, filters, and metadata', async ({ page }) => {
+  test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
   await page.goto('/en/work/');
   await waitForCatalog(page);
 
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.locator('[data-project-row]')).toHaveCount(14);
-  await expect(page.locator('[data-catalog-count]')).toHaveText('14');
+  await expect(page.locator('[data-project-row]')).toHaveCount(projects.length);
+  await expect(page.locator('[data-catalog-count]')).toHaveText(String(projects.length));
   await expect(page.locator('[data-catalog-count-wrap]')).toContainText('projects');
   await expect(page.locator('[data-filter="all"]')).toContainText('All');
   await expect(page.locator('[data-filter="ia"]')).toContainText('AI & agents');
-  await expect(page.locator('[data-project="todo-mcp"] .project-row__summary')).toContainText(
-    'Task app with a Next.js interface',
+  await expect(page.locator(`[data-project="${projects[0].slug}"] .project-row__summary`)).toHaveText(
+    projects[0].summary.en,
   );
 
-  await page.locator('[data-filter="ia"]').click();
-  await expect(page).toHaveURL(/\/en\/work\/\?c=ia$/);
-  await expect(page.locator('.project-row:visible')).toHaveCount(2);
-  await expect(page.locator('[data-catalog-count]')).toHaveText('2');
+  const category = (['ia', 'producto', 'frontend', 'juegos'] as const).find(
+    (value) => categoryCounts[value] > 0,
+  );
+  if (!category) return;
+  await page.locator(`[data-filter="${category}"]`).click();
+  await expect(page).toHaveURL(new RegExp(`/en/work/\\?c=${category}$`));
+  await expect(page.locator('.project-row:visible')).toHaveCount(categoryCounts[category]);
+  await expect(page.locator('[data-catalog-count]')).toHaveText(String(categoryCounts[category]));
   await expect(page.locator('main')).not.toContainText('Puja Inmobiliaria');
 });

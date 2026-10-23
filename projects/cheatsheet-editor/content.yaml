@@ -1,0 +1,96 @@
+slug: cheatsheet-editor
+year: 2026
+category: producto
+tags:
+  - productividad
+  - atajos de teclado
+  - localStorage
+  - editor
+status: live
+featured: true
+order: 2
+stack:
+  - Astro
+  - React
+  - TypeScript
+  - Tailwind CSS
+links:
+  live: https://cheatsheet.walkeralfaro.com/
+  code: https://github.com/walkeralfaro/cheatsheet-editor
+locales:
+  es:
+    title: Cheatsheet Editor
+    summary: Un editor local para crear, organizar e imprimir cheat sheets de atajos de teclado.
+    role: Diseño y desarrollo individual de la aplicación.
+    result: Permite gestionar varias cheat sheets, editar atajos en línea, verlos en tabla y prepararlos para imprimir.
+    gallery: []
+    narrative:
+      problem: |
+        La aplicación debía permitir crear varias cheat sheets, organizarlas por secciones
+        y conservar los atajos sin backend, registro ni conexión a Internet.
+      role: |
+        Desarrollé la aplicación con Astro, React, TypeScript y Tailwind CSS, incluyendo el
+        panel de cheat sheets, el editor de secciones y atajos, la vista previa y la
+        persistencia local.
+      decisions:
+        - title: Tres paneles con responsabilidades claras
+          body: |
+            El panel lateral lista y administra las cheat sheets; el editor agrega
+            secciones y atajos; la vista previa muestra la tabla agrupada por sección. Cada
+            panel tiene una tarea concreta y comparte el mismo estado.
+        - title: Edición inline en la vista previa
+          body: |
+            Cualquier tecla o acción de la tabla se puede editar con un clic, y el cambio
+            aparece de inmediato en la vista previa en vivo sin abrir otro formulario.
+        - title: Persistencia 100% local
+          body: |
+            Todo se guarda en localStorage, así que la aplicación funciona sin servidores ni
+            registro y conserva el trabajo al recargar. El tema oscuro se detecta antes de
+            pintar para evitar el destello inicial.
+        - title: Impresión como vista de dos columnas
+          body: |
+            La vista previa usa un layout de dos columnas y elimina colores de fondo
+            innecesarios para que el resultado se pueda imprimir o exportar a PDF y
+            consultar en papel.
+      result: |
+        El editor permite gestionar varias cheat sheets, añadir secciones y atajos,
+        editarlos en línea, revisarlos en una tabla, seguir el tema del sistema e
+        imprimirlos en dos columnas.
+  en:
+    title: Cheatsheet Editor
+    summary: A local editor for creating, organizing, and printing keyboard shortcut cheat sheets.
+    role: Individual design and development of the application.
+    result: It lets people manage multiple cheat sheets, edit shortcuts inline, review them in a table, and prepare them for printing.
+    gallery: []
+    narrative:
+      problem: |
+        The application had to let people create multiple cheat sheets, organize them by
+        section, and keep their shortcuts without a backend, registration, or internet
+        connection.
+      role: |
+        I developed the application with Astro, React, TypeScript, and Tailwind CSS,
+        including the cheat sheet panel, the section and shortcut editor, the preview, and
+        local persistence.
+      decisions:
+        - title: Three panels with clear responsibilities
+          body: |
+            The side panel lists and manages cheat sheets; the editor adds sections and
+            shortcuts; the preview shows the table grouped by section. Each panel has a
+            specific job and shares the same state.
+        - title: Inline editing in the preview
+          body: |
+            Any key or action in the table can be edited with a click, and the change
+            appears immediately in the live preview without opening another form.
+        - title: 100% local persistence
+          body: |
+            Everything is stored in localStorage, so the application works without servers
+            or registration and keeps the work after a reload. The dark theme is detected
+            before painting to avoid the initial flash.
+        - title: Printing as a two-column view
+          body: |
+            The preview uses a two-column layout and removes unnecessary background colors
+            so the result can be printed or exported to PDF and used on paper.
+      result: |
+        The editor lets people manage multiple cheat sheets, add sections and shortcuts,
+        edit them inline, review them in a table, follow the system theme, and print them
+        in two columns.

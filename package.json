@@ -8,12 +8,12 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "prebuild": "npm run validate:cv && npm run validate:theme && npm run validate:i18n",
+    "prebuild": "npm run validate:cv && npm run validate:theme && npm run validate:i18n && npm run validate:content",
     "preview": "astro preview",
     "check": "astro check",
     "validate:content": "node scripts/validate-content.ts",
-    "content:import": "node scripts/content-import/cli.ts",
-    "content:status": "node scripts/content-import/cli.ts status",
+    "content:status": "node scripts/content-status.ts",
+    "project:new": "node scripts/project-new.ts",
     "validate:contrast": "node scripts/validate-theme.ts",
     "validate:cv": "node scripts/validate-cv.ts",
     "validate:i18n": "node scripts/validate-i18n.ts",
@@ -25,7 +25,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^8.1.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.1",
     "tailwindcss": "^4.3.3",

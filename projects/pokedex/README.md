@@ -18,6 +18,10 @@ Explora los primeros 151 Pokémon con información detallada incluyendo tipos, p
 - live: https://pokedex.walkeralfaro.com/
 - codigo: https://github.com/walkeralfaro/pokedex-react
 
+## Year
+
+2026
+
 ## Inicio rápido
 
 ```bash

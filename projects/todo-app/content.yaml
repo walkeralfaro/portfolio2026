@@ -1,0 +1,78 @@
+slug: todo-app
+year: 2023
+category: frontend
+tags:
+  - tareas
+  - arrastrar y soltar
+  - temas
+  - frontend mentor
+status: live
+featured: false
+order: 10
+stack:
+  - React
+  - Sass
+  - Vite
+  - "@hello-pangea/dnd"
+links:
+  live: https://walker-alfaro-todo-app.netlify.app
+  code: https://github.com/WalkerAlfaro/FrontendMentor_Todo_App
+locales:
+  es:
+    title: Lista de tareas
+    summary: Una lista de tareas con filtros, tema claro y oscuro y reordenación mediante arrastrar y soltar.
+    role: Desarrollo individual de la solución al reto de Frontend Mentor.
+    result: Permite añadir, completar, borrar y filtrar tareas, limpiar las completadas y reordenarlas arrastrándolas.
+    gallery: []
+    narrative:
+      problem: |
+        El reto de Frontend Mentor pedía una lista de tareas responsive con filtros,
+        cambio de tema y, como extra, reordenación mediante arrastrar y soltar.
+      role: |
+        Implementé la interfaz y el estado con componentes funcionales de React, un
+        contexto para el tema y módulos Sass para los estilos.
+      decisions:
+        - title: Contexto para el tema
+          body: |
+            El tema claro u oscuro vive en un contexto global para que todos los
+            componentes compartan el mismo valor sin pasar la preferencia por props.
+        - title: Arrastrar y soltar con @hello-pangea/dnd
+          body: |
+            La reordenación de tareas se resolvió con la librería de arrastrar y soltar,
+            incluyendo la referencia interna necesaria en componentes funcionales.
+        - title: Sass combinado con CSS Modules
+          body: |
+            Los módulos de React aíslan los estilos y Sass aporta mixins y anidamiento.
+            clsx permite aplicar variantes de tema de forma condicional.
+      result: |
+        La aplicación cubre el flujo completo de tareas, conserva el tema elegido y
+        permite reordenar la lista arrastrando los elementos.
+  en:
+    title: Todo List
+    summary: A todo list with filters, light and dark themes, and drag-and-drop reordering.
+    role: Individual development of the Frontend Mentor challenge solution.
+    result: It lets people add, complete, delete, and filter tasks, clear completed items, and reorder them by dragging.
+    gallery: []
+    narrative:
+      problem: |
+        The Frontend Mentor challenge asked for a responsive todo list with filters, a
+        theme switch, and, as a bonus, drag-and-drop reordering.
+      role: |
+        I implemented the interface and state with React functional components, a theme
+        context, and Sass modules for styling.
+      decisions:
+        - title: A context for the theme
+          body: |
+            The light or dark theme lives in a global context so every component shares
+            the same value without passing the preference through props.
+        - title: Drag and drop with @hello-pangea/dnd
+          body: |
+            Task reordering uses the drag-and-drop library, including the inner reference
+            required by functional components.
+        - title: Sass combined with CSS Modules
+          body: |
+            React modules isolate the styles while Sass provides mixins and nesting.
+            clsx applies theme variants conditionally.
+      result: |
+        The application covers the complete task flow, keeps the selected theme, and
+        lets people reorder the list by dragging items.

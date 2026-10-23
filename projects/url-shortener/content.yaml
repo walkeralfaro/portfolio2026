@@ -1,0 +1,82 @@
+slug: url-shortener
+year: 2024
+category: producto
+tags:
+  - acortador
+  - enlaces
+  - full-stack
+  - mongodb
+status: live
+featured: false
+order: 12
+stack:
+  - Next.js
+  - React
+  - TypeScript
+  - MongoDB
+  - Mongoose
+links:
+  live: https://urlshortener.walkeralfaro.com/
+  code: https://github.com/walkeralfaro/url-shortener
+locales:
+  es:
+    title: Acortador de URLs
+    summary: Un acortador de URLs con backend propio, persistencia en MongoDB Atlas y copia del enlace en un clic.
+    role: Desarrollo individual de la solución al reto de Frontend Mentor.
+    result: Acorta URLs válidas, conserva la lista tras recargar y redirige desde rutas cortas propias.
+    gallery: []
+    narrative:
+      problem: |
+        El reto de Frontend Mentor proponía usar Clean URI, pero el proyecto requería un
+        backend propio capaz de resolver enlaces cortos y conservarlos.
+      role: |
+        Implementé el frontend y el backend en Next.js, el modelo con Mongoose y la
+        validación compartida con Zod.
+      decisions:
+        - title: Backend propio en lugar de Clean URI
+          body: |
+            Una ruta con el patrón /r/123abc consulta la base de datos, recupera la URL
+            original asociada y redirige al destino en lugar de delegar el acortado en un
+            servicio externo.
+        - title: Validación con Zod en frontend y backend
+          body: |
+            El mismo esquema comprueba que la entrada sea una URL válida antes de guardarla
+            y que la URL recuperada de la base de datos sea una dirección real y bien
+            formada.
+        - title: MongoDB Atlas con Mongoose
+          body: |
+            El modelo de enlaces y la persistencia se resolvieron con Mongoose sobre
+            MongoDB Atlas, aprovechando las capacidades full-stack de Next.js.
+      result: |
+        El servicio acorta y redirige enlaces, mantiene la lista de enlaces cortos tras
+        recargar y permite copiar cada resultado con un clic.
+  en:
+    title: URL Shortener
+    summary: A URL shortener with its own backend, MongoDB Atlas persistence, and one-click link copying.
+    role: Individual development of the Frontend Mentor challenge solution.
+    result: It shortens valid URLs, keeps the list after a reload, and redirects through its own short routes.
+    gallery: []
+    narrative:
+      problem: |
+        The Frontend Mentor challenge suggested using Clean URI, but the project required
+        its own backend capable of resolving short links and keeping them.
+      role: |
+        I implemented the frontend and backend in Next.js, the Mongoose model, and the
+        validation shared through Zod.
+      decisions:
+        - title: An own backend instead of Clean URI
+          body: |
+            A route following the /r/123abc pattern queries the database, retrieves the
+            associated original URL, and redirects to the destination instead of
+            delegating shortening to an external service.
+        - title: Zod validation on frontend and backend
+          body: |
+            The same schema checks that the input is a valid URL before storing it and
+            that the URL retrieved from the database is a real, well-formed address.
+        - title: MongoDB Atlas with Mongoose
+          body: |
+            The link model and persistence use Mongoose over MongoDB Atlas, taking
+            advantage of the full-stack capabilities of Next.js.
+      result: |
+        The service shortens and redirects links, keeps the list of short links after a
+        reload, and lets people copy each result with one click.

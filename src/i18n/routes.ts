@@ -1,9 +1,9 @@
 import {
   PROJECT_CATEGORIES,
-  PROJECT_SLUGS,
+  isProjectSlug,
   type ProjectCategory,
   type ProjectSlug,
-} from '../content/project-slugs.ts';
+} from '../lib/content/taxonomy.ts';
 import type { Locale } from './locales.ts';
 
 export type LocalizedRoute =
@@ -16,10 +16,6 @@ export type LocalizedRoute =
 
 function localePrefix(locale: Locale): string {
   return locale === 'en' ? '/en' : '';
-}
-
-function isProjectSlug(value: string): value is ProjectSlug {
-  return (PROJECT_SLUGS as readonly string[]).includes(value);
 }
 
 function isProjectCategory(value: string | null): value is ProjectCategory {

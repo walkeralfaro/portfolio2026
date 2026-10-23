@@ -5,6 +5,10 @@ Reto del Bootcamp Alura ONE - G6 2024
 - Link aplicación: [Decodificador](https://walkeralfaro.github.io/alura-challenge-decryptor/)
 - Link código: https://github.com/walkeralfaro/alura-challenge-decryptor
 
+## Year
+
+2024
+
 ## Check List
 
 - [x] Filtra solo letras en minúsculas

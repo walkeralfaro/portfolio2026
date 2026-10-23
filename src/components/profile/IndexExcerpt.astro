@@ -18,18 +18,22 @@ const copy = profileCopy[locale].excerpt;
 const excerpt = projects.slice(0, 4);
 ---
 
-<section class="index-excerpt" aria-labelledby="index-excerpt-title" data-home-index-excerpt data-excerpt-count={excerpt.length}>
-  <header class="index-excerpt__header">
-    <div>
-      <h2 id="index-excerpt-title">{copy.title}</h2>
-      <p>{excerpt.length} {excerpt.length === 1 ? ui.filters.countOne : ui.filters.countMany}</p>
-    </div>
-    <ButtonLink href={routeHref(locale, { name: 'work' })} variant="secondary">{copy.action}</ButtonLink>
-  </header>
-  <ul class="index-excerpt__list">
-    {excerpt.map((project, index) => <ProjectRow project={project} locale={locale} position={index + 1} headingLevel="h3" />)}
-  </ul>
-</section>
+{
+  excerpt.length > 0 && (
+    <section class="index-excerpt" aria-labelledby="index-excerpt-title" data-home-index-excerpt data-excerpt-count={excerpt.length}>
+      <header class="index-excerpt__header">
+        <div>
+          <h2 id="index-excerpt-title">{copy.title}</h2>
+          <p>{excerpt.length} {excerpt.length === 1 ? ui.filters.countOne : ui.filters.countMany}</p>
+        </div>
+        <ButtonLink href={routeHref(locale, { name: 'work' })} variant="secondary">{copy.action}</ButtonLink>
+      </header>
+      <ul class="index-excerpt__list">
+        {excerpt.map((project, index) => <ProjectRow project={project} locale={locale} position={index + 1} headingLevel="h3" />)}
+      </ul>
+    </section>
+  )
+}
 
 <style>
   .index-excerpt {
