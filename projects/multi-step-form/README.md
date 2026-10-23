@@ -35,7 +35,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [Code](https://github.com/walkeralfaro/frontendmentor-multi-step-form.git)
-- Live Site URL: [Multi step form](https://multi-step-form-walker-alfaro.vercel.app/)
+- Live Site URL: [Multi step form](https://multi-step-form-walker.vercel.app/)
 
 ## My process
 

@@ -19,7 +19,7 @@ All English fields are translations of the Spanish fields. Translation does not 
 | --- | --- | --- | --- |
 | Catalog size | 14 | Catalog | `proposal.md:10,34`; `specs/work-catalog/spec.md:11` |
 | Featured projects | 4 | Home | `design.md:171` |
-| Published galleries | 1 (Tetris, 3 screenshots) | Catalog | `src/content/projects/tetris.yaml`; `src/assets/gallery/README.md` |
+| Published galleries | 1 (Tetris, 3 screenshots) | Catalog | `src/content/projects/tetris.yaml`; `src/assets/gallery/tetris/` |
 | Prompt length | 7 lines | Image Prompt | `data.js:151` |
 | Prompt styles | 17 | Image Prompt | `data.js:152` |
 | Anti-topic themes | 7 | Image Prompt | `data.js:152` |

@@ -59,53 +59,40 @@ Case bodies are narrative only. They must not declare `Stack` or `Gallery` secti
 
 Project images live inside the repository and are processed by the build. They are never hotlinked.
 
-| Kind | Location | Key |
+| Kind | Location | Scope |
 | --- | --- | --- |
-| Cover | `src/assets/covers/<project-slug>.<ext>` | File name without extension, for example `tetris` |
-| Gallery screenshot | `src/assets/gallery/<project-slug>/<shot>.<ext>` | File name without extension, for example `start-screen` |
+| Cover | `src/assets/covers/<slug>.<ext>` | One per project |
+| Gallery screenshot | `src/assets/gallery/<slug>/<key>.<ext>` | Many per project, per locale |
 
-Content references an image by **key**, never by path. The key is resolved against the files in the directory it belongs to.
-
-### Covers
-
-A project record sets `cover` to the key of its cover file, or leaves it `null`:
+The file name without its extension is the **asset key**. Content references keys, never paths. Both assets are optional and independent: a project can have a cover, a gallery, both, or neither.
 
 ```yaml
-# src/content/projects/tetris.yaml
-cover: tetris
-```
+# src/content/projects/<slug>.yaml
+cover: <key>
 
-| Rule | Value |
-| --- | --- |
-| Formats | `.webp` (preferred) or `.png` |
-| Aspect ratio | 16:10, matching `--cover-aspect` |
-| Minimum width | 1600 px |
-
-The file is rendered with `object-fit: cover` inside the 16:10 cover box, so an off-ratio source is cropped rather than letterboxed. A project without a cover renders `PlaceholderCover`.
-
-### Gallery screenshots
-
-A project declares its gallery under each locale, because the alternative text is written per locale. The list is optional and empty by default:
-
-```yaml
-# src/content/projects/tetris.yaml
 locales:
   es:
     gallery:
-      - src: start-screen
-        alt: Pantalla de inicio del juego, con el tablero vacío.
+      - src: <key>
+        alt: <texto alternativo>
 ```
 
-| Rule | Value |
-| --- | --- |
-| Formats | `.webp` (preferred) or `.png` |
-| Minimum width | 1200 px |
+`alt` is required for every gallery entry and is the only description assistive technology receives. The list order is the display order.
 
-Every project can declare a gallery. When a locale declares no entries, the detail page omits the gallery section entirely; it does not substitute the cover.
+| Rule | Cover | Gallery |
+| --- | --- | --- |
+| Formats | `.webp` (preferred), `.png`, `.jpg`, `.jpeg`, `.avif` | Same |
+| Frame | 16:10, matching `--cover-aspect` | Native ratio |
+| Recommended width | 1600 px or more | 1200 px or more |
+| Colour | sRGB | sRGB |
+
+Only the cover is cropped: it fills the fixed 16:10 box with `object-fit: cover`, so keep the subject centred. Gallery thumbnails preserve the image ratio and show the whole frame. Dimensions are recommendations, not validation rules; a smaller source still renders without upscaling beyond its own width.
+
+A project without a cover keeps `cover: null` and renders `PlaceholderCover`, which occupies the same 16:10 box. A locale with no gallery renders no section, caption, or dialog; it does not substitute the cover or stock images.
 
 ### Validation
 
-- A reference to a key with no file is an error: `npm run validate:content` fails and the build fails with the record and the key in the message. A broken image is never published.
+- A key with no matching file fails `npm run validate:content`. `npm run build` does not run that validator, but the image resolver throws on a missing key, so a broken reference fails the build too.
 - A file that no record references is reported as a notice and does not fail the run, so a file can be added before it is referenced.
 
 ## Inventory
