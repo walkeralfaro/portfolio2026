@@ -6,6 +6,11 @@ Juego clásico de tres en línea implementado con React 19 y Next.js 16.
 
 El jugador compite contra otro jugador (local) en un tablero de 3x3. Los jugadores alternan turnos colocando "X" y "O" hasta que alguien forme una línea de tres o se declare empate.
 
+## Links
+
+- live: https://tictactoe-walker.vercel.app/
+- codigo: https://github.com/walkeralfaro/tictactoe
+
 ## Arquitectura
 
 ### Componentes

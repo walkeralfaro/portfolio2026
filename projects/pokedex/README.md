@@ -13,6 +13,11 @@ Explora los primeros 151 Pokémon con información detallada incluyendo tipos, p
 - **Axios** - Cliente HTTP
 - **Zod** 4 - Validación de esquemas
 
+## Links
+
+- live: https://pokedex.walkeralfaro.com/
+- codigo: https://github.com/walkeralfaro/pokedex-react
+
 ## Inicio rápido
 
 ```bash
