@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { Locale } from '../../i18n/locales';
 import { getUi } from '../../i18n/ui';
@@ -27,6 +27,22 @@ const candidatesFor = (image: ImageMetadata): number[] => {
 
   return [...new Set([...widths, image.width])].sort((first, second) => first - second);
 };
+
+/*
+ * The lightbox needs an emitted file for the full-size view. Using the original
+ * `image.src` is unsafe: Astro deletes original assets that are only consumed by
+ * `<Image>` and, when a gallery screenshot is byte-identical to the project
+ * cover, the referenced path can differ from the one registered for processing,
+ * leaving a 404. Asking the image service for the full-size variant guarantees
+ * the file exists (and reuses the thumbnail's largest candidate).
+ */
+const lightboxSources = await Promise.all(
+  images.map(async ({ image }) => {
+    const variant = await getImage({ src: image, width: image.width, format: image.format });
+
+    return variant.src;
+  }),
+);
 ---
 
 {
@@ -79,7 +95,7 @@ const candidatesFor = (image: ImageMetadata): number[] => {
           closeLabel={ui.caseStudy.closeLightbox}
         >
           <img
-            src={entry.image.src}
+            src={lightboxSources[index]}
             alt={entry.alt}
             width={entry.image.width}
             height={entry.image.height}
