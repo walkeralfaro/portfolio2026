@@ -26,7 +26,13 @@ locales:
     summary: Una aplicación de tareas con una interfaz Next.js y un servidor MCP que operan sobre el mismo SQLite.
     role: Diseño y desarrollo individual de la aplicación y de su integración MCP.
     result: Humanos y agentes crean, consultan y actualizan tareas sobre una única capa de negocio, con tokens MCP por usuario y caducidad.
-    gallery: []
+    gallery:
+      - src: todo-mcp-cover
+        alt: Portada de Todo App con el mensaje “Tus tareas, para ti y para tus agentes” y una vista previa de la lista compartida.
+      - src: todo-mcp-create-token
+        alt: Página de tokens MCP con un token generado, su caducidad y el bloque de configuración para conectar un cliente.
+      - src: todo-mcp-task
+        alt: Página de tareas con filtros por estado, búsqueda, una tarea pendiente y el formulario para crear otra.
     narrative:
       problem: |
         La aplicación buscaba que humanos y agentes de IA operaran sobre el mismo estado
@@ -63,7 +69,13 @@ locales:
     summary: A task application with a Next.js interface and an MCP server operating on the same SQLite database.
     role: Individual design and development of the application and its MCP integration.
     result: Humans and agents create, read, and update tasks through a single business layer, with per-user MCP tokens and expiration.
-    gallery: []
+    gallery:
+      - src: todo-mcp-cover
+        alt: Todo App landing page with the headline “Tus tareas, para ti y para tus agentes” and a preview of the shared task list.
+      - src: todo-mcp-create-token
+        alt: MCP tokens page with a generated token, its expiry, and the configuration block for connecting a client.
+      - src: todo-mcp-task
+        alt: Tasks page with status filters, search, one pending task, and the form for creating another.
     narrative:
       problem: |
         The application aimed to let humans and AI agents operate on the same task state

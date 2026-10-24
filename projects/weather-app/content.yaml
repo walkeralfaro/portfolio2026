@@ -25,7 +25,11 @@ locales:
     summary: Un panel del clima con búsqueda de ciudades, pronóstico horario y diario, y preferencias de unidades.
     role: Desarrollo individual de la solución al reto de Frontend Mentor.
     result: Detecta una ubicación aproximada, permite buscar ciudades y muestra condiciones, pronóstico y unidades configurables.
-    gallery: []
+    gallery:
+      - src: weather-cover
+        alt: Panel del clima de Lima con 21 °C, métricas de sensación, humedad, viento y precipitación, y pronóstico horario y semanal.
+      - src: weather-search
+        alt: Buscador de ciudades con sugerencias para Cusco y el panel actualizado a 8 °C.
     narrative:
       problem: |
         El reto pedía consultar el clima por ciudad y mostrar las condiciones actuales y
@@ -60,7 +64,11 @@ locales:
     summary: A weather dashboard with city search, hourly and daily forecasts, and unit preferences.
     role: Individual development of the Frontend Mentor challenge solution.
     result: It detects an approximate location, lets people search for cities, and shows current conditions, forecasts, and configurable units.
-    gallery: []
+    gallery:
+      - src: weather-cover
+        alt: Lima weather dashboard at 21 °C with feels-like, humidity, wind, and precipitation metrics plus hourly and daily forecasts.
+      - src: weather-search
+        alt: City search with suggestions for Cusco and the dashboard updated to 8 °C.
     narrative:
       problem: |
         The challenge asked for a way to check the weather by city and show current

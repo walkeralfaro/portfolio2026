@@ -25,7 +25,13 @@ locales:
     summary: Un cuestionario guiado que construye prompts de siete líneas para generadores de imágenes con IA.
     role: Diseño y desarrollo individual de la aplicación.
     result: Genera un prompt estructurado, detecta adjetivos vacíos, aplica filtros anti-tópicos y permite copiarlo o descargarlo en Markdown.
-    gallery: []
+    gallery:
+      - src: cover
+        alt: Portada del generador de prompts de 7 líneas en tema claro, con el proyecto Dentista y una entrada del historial local.
+      - src: cover-ligth
+        alt: Portada del generador de prompts de 7 líneas en tema oscuro, con el proyecto Mi primer proyecto y el historial vacío.
+      - src: steps-image-prompt
+        alt: Paso 6 del cuestionario sobre tipografía y paleta, con la opción Bold Brutalista seleccionada y los pasos anteriores confirmados.
     narrative:
       problem: |
         Los prompts improvisados para generadores de imágenes suelen producir
@@ -67,7 +73,13 @@ locales:
     summary: A guided questionnaire that builds seven-line prompts for AI image generators.
     role: Individual design and development of the application.
     result: It generates a structured prompt, detects empty adjectives, applies anti-cliché filters, and lets people copy it or download it as Markdown.
-    gallery: []
+    gallery:
+      - src: cover
+        alt: Seven-line prompt generator in the light theme, with the Dentista project and one entry in the local history.
+      - src: cover-ligth
+        alt: Seven-line prompt generator in the dark theme, with the Mi primer proyecto project and an empty history.
+      - src: steps-image-prompt
+        alt: Step 6 of the questionnaire, typography and palette, with Bold Brutalista selected and the previous steps confirmed.
     narrative:
       problem: |
         Improvised prompts for image generators often produce generic results:

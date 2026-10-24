@@ -24,7 +24,11 @@ locales:
     summary: Un editor local para crear, organizar e imprimir cheat sheets de atajos de teclado.
     role: Diseño y desarrollo individual de la aplicación.
     result: Permite gestionar varias cheat sheets, editar atajos en línea, verlos en tabla y prepararlos para imprimir.
-    gallery: []
+    gallery:
+      - src: editar-key-dark
+        alt: Editor de la cheat sheet NVim en tema oscuro, con la sección Navigation y los atajos gg y Ctrl + 4.
+      - src: editar-key-light
+        alt: Editor de la cheat sheet NVim en tema claro, con la sección Navigation y los atajos gg y Ctrl + 4.
     narrative:
       problem: |
         La aplicación debía permitir crear varias cheat sheets, organizarlas por secciones
@@ -62,7 +66,11 @@ locales:
     summary: A local editor for creating, organizing, and printing keyboard shortcut cheat sheets.
     role: Individual design and development of the application.
     result: It lets people manage multiple cheat sheets, edit shortcuts inline, review them in a table, and prepare them for printing.
-    gallery: []
+    gallery:
+      - src: editar-key-dark
+        alt: NVim cheat sheet editor in the dark theme, showing the Navigation section and the gg and Ctrl + 4 shortcuts.
+      - src: editar-key-light
+        alt: NVim cheat sheet editor in the light theme, showing the Navigation section and the gg and Ctrl + 4 shortcuts.
     narrative:
       problem: |
         The application had to let people create multiple cheat sheets, organize them by

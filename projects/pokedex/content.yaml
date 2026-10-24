@@ -25,7 +25,11 @@ locales:
     summary: Una Pokédex que explora los primeros 151 Pokémon con tipos, peso, movimientos y cadena de evolución.
     role: Desarrollo individual de la aplicación.
     result: Incluye listado en cuadrícula, detalle por Pokémon, insignias de tipo, cadena de evolución y navegación entre vistas.
-    gallery: []
+    gallery:
+      - src: cover
+        alt: Listado en cuadrícula de los primeros Pokémon con su número, ilustración y nombre.
+      - src: pokemon
+        alt: Detalle de Venusaur con sus tipos, peso, movimientos y cadena de evolución.
     narrative:
       problem: |
         Consultar los primeros 151 Pokémon en PokeAPI implica combinar el listado, el
@@ -66,7 +70,11 @@ locales:
     summary: A Pokédex that explores the first 151 Pokémon with types, weight, moves, and evolution chains.
     role: Individual development of the application.
     result: It includes a grid listing, a detail page for each Pokémon, type badges, an evolution chain, and navigation between views.
-    gallery: []
+    gallery:
+      - src: cover
+        alt: Grid listing of the first Pokémon with their number, artwork, and name.
+      - src: pokemon
+        alt: Venusaur detail page with its types, weight, moves, and evolution chain.
     narrative:
       problem: |
         Looking up the first 151 Pokémon in PokeAPI means combining the listing, each

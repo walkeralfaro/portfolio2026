@@ -25,7 +25,13 @@ locales:
     summary: Una solución al reto de formulario multipaso de Frontend Mentor, con validación por paso y resumen final.
     role: Desarrollo individual de la interfaz y del flujo de formulario.
     result: Permite avanzar y volver entre pasos, validar campos y selecciones, y confirmar un resumen antes de finalizar.
-    gallery: []
+    gallery:
+      - src: multi-step-form-cover
+        alt: Paso de información personal con los campos de nombre, correo y teléfono vacíos y el botón Next Step.
+      - src: multi-step-form-error
+        alt: Paso de información personal con errores de validación en los tres campos y un aviso de campos obligatorios.
+      - src: multi-step-form-next-step
+        alt: Paso de selección de plan con las opciones Arcade, Advanced y Pro, la facturación anual activa y el botón Go Back.
     narrative:
       problem: |
         El reto de Frontend Mentor pedía un formulario dividido en pasos que permitiera
@@ -65,7 +71,13 @@ locales:
     summary: A solution to the Frontend Mentor multi-step form challenge, with per-step validation and a final summary.
     role: Individual development of the interface and the form flow.
     result: It lets people move forward and back between steps, validate fields and selections, and confirm a summary before finishing.
-    gallery: []
+    gallery:
+      - src: multi-step-form-cover
+        alt: Personal info step with empty name, email, and phone fields and the Next Step button.
+      - src: multi-step-form-error
+        alt: Personal info step showing validation errors on all three fields and a required-fields notice.
+      - src: multi-step-form-next-step
+        alt: Plan selection step with Arcade, Advanced, and Pro options, yearly billing selected, and the Go Back button.
     narrative:
       problem: |
         The Frontend Mentor challenge asked for a form split into steps that allowed
