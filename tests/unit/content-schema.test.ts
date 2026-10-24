@@ -130,6 +130,26 @@ test('a narrative requires three or four structured decisions', () => {
   assert.equal(projectSchema.safeParse(project).success, false);
 });
 
+test('a numeric year requires a month between 1 and 12', () => {
+  const project = { ...validProject(), year: 2026, month: 3 };
+  assert.equal(projectSchema.safeParse(project).success, true);
+
+  const missingMonth = { ...validProject(), year: 2026 };
+  assert.equal(projectSchema.safeParse(missingMonth).success, false);
+
+  for (const month of [0, 13]) {
+    assert.equal(
+      projectSchema.safeParse({ ...validProject(), year: 2026, month }).success,
+      false,
+    );
+  }
+});
+
+test('a pending year cannot carry a month', () => {
+  const project = { ...validProject(), month: 3 };
+  assert.equal(projectSchema.safeParse(project).success, false);
+});
+
 test('the slug must be lowercase kebab-case', () => {
   for (const slug of ['Pokedex', 'poke_dex', 'pokedex-', 'pokedex--app']) {
     assert.equal(projectSchema.safeParse({ ...validProject(), slug }).success, false);

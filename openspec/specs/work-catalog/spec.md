@@ -25,6 +25,20 @@ The catalog SHALL discover projects from `projects/<slug>/content.yaml` without 
 - **WHEN** project folders exist without `content.yaml` files
 - **THEN** the site can build with an empty catalog and the content-status command reports those folders as pending
 
+### Requirement: Newest-first catalog
+
+The catalog SHALL order projects by documented date descending (`year`, then `month`), using `order` ascending as a stable tiebreaker. Projects with `year: pending` SHALL appear after dated projects. The same order SHALL drive the detail pager and the home excerpt.
+
+#### Scenario: Projects share a month
+
+- **WHEN** two projects have the same year and month
+- **THEN** the lower `order` value appears first
+
+#### Scenario: Pending date
+
+- **WHEN** a project has `year: pending`
+- **THEN** it appears after every project with a documented date
+
 ### Requirement: Project row horizontal inset
 
 Every project row SHALL inset its content from both horizontal edges while the row divider and interactive surface remain full width. The inset SHALL apply on desktop and mobile and SHALL NOT introduce horizontal overflow.
@@ -60,12 +74,27 @@ At 900 pixels and wider, the work page SHALL show a project list and sticky cove
 
 ### Requirement: Mobile catalog
 
-Below 900 pixels, the work page SHALL render a single-column list with a thumbnail, title, year, category, and summary per entry. The sticky preview SHALL be hidden.
+Below 900 pixels, the work page SHALL render a single-column list. Each entry SHALL stack its cover above its content: the cover SHALL span the row's content width, and the title, month and year, category, summary, stack, and status SHALL follow below it. The sticky preview SHALL be hidden. The whole row SHALL remain one navigation target.
 
 #### Scenario: Mobile list
 
 - **WHEN** the catalog is viewed at 375 pixels wide
-- **THEN** each published project appears as a row with a thumbnail and there is no sticky preview pane
+- **THEN** each published project appears as a row with its cover above its content and there is no sticky preview pane
+
+#### Scenario: Mobile row anatomy
+
+- **WHEN** a project row is rendered below 900 pixels
+- **THEN** the cover, title, month and year, category, summary, stack, and status are all visible within the row
+
+#### Scenario: Just below the desktop breakpoint
+
+- **WHEN** the catalog is viewed at 899 pixels wide
+- **THEN** project rows use the stacked layout with the cover above the content
+
+#### Scenario: Mobile row navigation
+
+- **WHEN** a visitor activates any part of a stacked mobile row, including its cover
+- **THEN** the browser navigates to that project's internal detail page
 
 ### Requirement: Category filtering
 
@@ -88,12 +117,12 @@ The work page SHALL offer filters for all projects and the categories `ia`, `pro
 
 ### Requirement: Project metadata
 
-Each project SHALL declare localized title, summary, role, and result; year or `pending`; one category; at least one tag; a status; three to five stack items; real optional live/code URLs; and the editorial `featured` and `order` values. The project content schema SHALL reject unknown fields.
+Each project SHALL declare localized title, summary, role, and result; year and month, or `year: pending`; one category; at least one tag; a status; three to five stack items; real optional live/code URLs; and the editorial `featured` and `order` values. The project content schema SHALL reject unknown fields.
 
 #### Scenario: Catalog entry anatomy
 
 - **WHEN** a project is rendered in the catalog
-- **THEN** title, summary, year, category, stack, and status are present
+- **THEN** title, summary, date, category, stack, and status are present
 
 #### Scenario: Honest missing destinations
 

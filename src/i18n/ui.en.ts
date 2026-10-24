@@ -114,7 +114,7 @@ export const uiEn = {
     required: 'Required',
   },
   project: {
-    year: 'Year',
+    date: 'Date',
     category: 'Category',
     status: 'Status',
     stack: 'Stack',

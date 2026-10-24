@@ -6,6 +6,8 @@ export interface E2EProject {
   slug: string;
   title: string;
   englishTitle: string;
+  year: number | 'pending';
+  month: number | null;
   order: number;
   category: string;
   status: string;
@@ -36,6 +38,8 @@ function readProjects(): E2EProject[] {
 
       const record = parse(readFileSync(file, 'utf8')) as {
         slug: string;
+        year: number | 'pending';
+        month?: number;
         order: number;
         category: string;
         status: string;
@@ -63,6 +67,8 @@ function readProjects(): E2EProject[] {
           slug: record.slug,
           title: record.locales.es.title,
           englishTitle: record.locales.en.title,
+          year: record.year,
+          month: record.month ?? null,
           order: record.order,
           category: record.category,
           status: record.status,
@@ -84,7 +90,18 @@ function readProjects(): E2EProject[] {
         },
       ];
     })
-    .sort((first, second) => first.order - second.order);
+    .sort((first, second) => {
+      const firstDate =
+        first.year === 'pending' || first.month === null
+          ? Number.NEGATIVE_INFINITY
+          : first.year * 100 + first.month;
+      const secondDate =
+        second.year === 'pending' || second.month === null
+          ? Number.NEGATIVE_INFINITY
+          : second.year * 100 + second.month;
+
+      return secondDate - firstDate || first.order - second.order;
+    });
 }
 
 export const projects = readProjects();

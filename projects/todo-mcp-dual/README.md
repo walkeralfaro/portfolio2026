@@ -11,7 +11,7 @@ Una app moderna de gestión de tareas donde humanos y agentes de IA operan sobre
 
 ## Year
 
-2026
+2026 septiembre
 
 ## Features
 

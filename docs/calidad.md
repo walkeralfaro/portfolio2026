@@ -26,7 +26,9 @@ npm run audit:performance
 - Esquema Zod estricto para cada `projects/<slug>/content.yaml`.
 - Slug igual al nombre de la carpeta.
 - Sin marcadores `<...>` ni `TODO`.
+- `month` obligatorio con `year` numérico y ausente con `year: pending`.
 - `order` único y entre uno y cuatro destacados cuando hay proyectos.
+- Orden del catálogo por fecha descendente, con `order` como desempate.
 - `availability` obligatoria si ambos enlaces son `null`.
 - `availability` y `narrative` simétricos entre español e inglés.
 - Claves de galería existentes en `projects/<slug>/screenshots/`.

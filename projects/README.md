@@ -39,6 +39,8 @@ También puedes pedir la skill `add-project` o usar el comando `/add-project`, q
 ## Reglas rápidas
 
 - El slug de `content.yaml` debe coincidir con la carpeta.
+- `month` (1–12) es obligatorio cuando `year` es numérico y debe omitirse cuando `year` es `pending`.
+- El catálogo se ordena por fecha descendente, usando `order` como desempate.
 - `locales.es` y `locales.en` son obligatorios.
 - `availability` es obligatoria cuando no hay enlace de demo ni de código.
 - `narrative` es opcional, pero debe existir en ambos idiomas o en ninguno.

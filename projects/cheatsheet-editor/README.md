@@ -14,7 +14,7 @@ Todo se guarda localmente en tu navegador — 100% local, sin servidores, sin re
 
 ## Year
 
-2026
+2026 julio
 
 ## Cómo funciona
 

@@ -22,7 +22,7 @@ Each published project SHALL live under `projects/<slug>/` with one `content.yam
 
 ### Requirement: Strict bilingual schema
 
-Every record SHALL contain `slug`, `year`, `category`, `tags`, `status`, `featured`, `order`, `stack`, `links`, and both `locales.es` and `locales.en`. Each locale SHALL contain `title`, `summary`, `role`, `result`, and a gallery list. Unknown fields SHALL fail validation.
+Every record SHALL contain `slug`, `year`, `month`, `category`, `tags`, `status`, `featured`, `order`, `stack`, `links`, and both `locales.es` and `locales.en`. `month` SHALL be present when `year` is numeric and SHALL be absent when `year` is `pending`. Each locale SHALL contain `title`, `summary`, `role`, `result`, and a gallery list. Unknown fields SHALL fail validation.
 
 #### Scenario: Complete record
 
@@ -36,7 +36,7 @@ Every record SHALL contain `slug`, `year`, `category`, `tags`, `status`, `featur
 
 ### Requirement: Valid project metadata
 
-Slugs SHALL use lowercase kebab-case and match the folder. Categories SHALL be `ia`, `producto`, `frontend`, or `juegos`. Status SHALL be `live`, `in-development`, or `archived`. Order SHALL be a unique positive integer. Stack SHALL contain three to five non-empty items. Year SHALL be an integer or `pending`.
+Slugs SHALL use lowercase kebab-case and match the folder. Categories SHALL be `ia`, `producto`, `frontend`, or `juegos`. Status SHALL be `live`, `in-development`, or `archived`. Order SHALL be a unique positive integer used as a date tiebreaker. Stack SHALL contain three to five non-empty items. Year SHALL be an integer or `pending`; month SHALL be an integer from 1 to 12 when the year is numeric.
 
 ### Requirement: Honest links and availability
 
@@ -72,7 +72,7 @@ The cover SHALL be autodetected from `projects/<slug>/cover.<ext>` and SHALL NOT
 
 ### Requirement: Content validation
 
-`npm run validate:content` SHALL validate every authored record, folder/slug agreement, unique ordering, featured count (one to four when content exists), placeholders, availability, gallery references, and excluded client content. It SHALL allow zero authored records.
+`npm run validate:content` SHALL validate every authored record, folder/slug agreement, unique ordering, month/year consistency, featured count (one to four when content exists), placeholders, availability, gallery references, and excluded client content. It SHALL allow zero authored records.
 
 #### Scenario: Empty repository content
 
@@ -81,7 +81,7 @@ The cover SHALL be autodetected from `projects/<slug>/cover.<ext>` and SHALL NOT
 
 ### Requirement: Generated status inventory
 
-`npm run content:status` SHALL discover folders and read their `content.yaml` files to display order, slug, category, status, and featured state. The inventory SHALL NOT be duplicated as a hardcoded project table in runtime source or current documentation.
+`npm run content:status` SHALL discover folders and read their `content.yaml` files to display date, order, slug, category, status, and featured state, ordered by date descending. The inventory SHALL NOT be duplicated as a hardcoded project table in runtime source or current documentation.
 
 #### Scenario: Pending and invalid entries
 

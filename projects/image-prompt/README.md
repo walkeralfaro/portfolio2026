@@ -11,7 +11,7 @@ Evita la “cara genérica de IA” (brochazos, pan de oro, destellos, lemas inv
 
 ## Year
 
-2026
+2026 agosto
 
 ## El método 7 líneas
 

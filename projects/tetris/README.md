@@ -7,6 +7,10 @@ El juego Tetris desarrollado integramente con JavaScript, sin bibliotecas extern
 [link_midudev]: https://www.youtube.com/watch?v=pNiyz0sl1no
 [link_code]: https://github.com/walkeralfaro/tetris_game_js
 
+## Year
+
+2024 marzo
+
 ## Demo
 Este es el link del juego [Tetris JS][link_demo_tetris]
 
@@ -169,10 +173,6 @@ function onTouchMove (eventTouch) {
   }
 }
 ```
-
-## Year
-
-2024
 
 ## Tech Stack
 

@@ -5,6 +5,7 @@ import type { Locale } from '../../i18n/locales';
 import {
   getFeaturedProjects,
   getProjectCopy,
+  getProjectDateLabel,
   type ProjectEntry,
 } from '../../lib/projects';
 import { profileCopy } from '../../data/profile-copy';
@@ -30,10 +31,11 @@ const featured = getFeaturedProjects(projects);
       <ul class="featured-work__list">
         {featured.map((project) => {
           const projectCopy = getProjectCopy(project, locale);
+          const dateLabel = getProjectDateLabel(project, locale) ?? ui.project.pending;
           return (
             <li data-featured-project={project.data.slug}>
               <article>
-                <p class="featured-work__meta">{project.data.year === 'pending' ? ui.project.pending : project.data.year} · {ui.categories[project.data.category]}</p>
+                <p class="featured-work__meta">{dateLabel} · {ui.categories[project.data.category]}</p>
                 <h3 translate="no">{projectCopy.title}</h3>
                 <p class="featured-work__summary">{projectCopy.summary}</p>
                 <a href={routeHref(locale, { name: 'project', slug: project.data.slug })}>

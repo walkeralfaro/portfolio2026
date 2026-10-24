@@ -2,7 +2,7 @@
 import type { Locale } from '../../i18n/locales';
 import { routeHref } from '../../i18n/routes';
 import { getUi } from '../../i18n/ui';
-import { getProjectCopy, type ProjectEntry } from '../../lib/projects';
+import { getProjectCopy, getProjectDateLabel, type ProjectEntry } from '../../lib/projects';
 import Icon from '../icons/Icon.astro';
 import MetaLabel from '../primitives/MetaLabel.astro';
 import StackList from '../primitives/StackList.astro';
@@ -21,7 +21,7 @@ const ui = getUi(locale);
 const data = project.data;
 const copy = getProjectCopy(project, locale);
 const categoryLabel = ui.categories[data.category];
-const yearLabel = data.year === 'pending' ? ui.project.pending : String(data.year);
+const dateLabel = getProjectDateLabel(project, locale) ?? ui.project.pending;
 ---
 
 <header class:list={['case-header', className]} data-case-header>
@@ -36,8 +36,8 @@ const yearLabel = data.year === 'pending' ? ui.project.pending : String(data.yea
 
     <dl class="case-header__meta">
       <div class="case-header__meta-item">
-        <MetaLabel as="dt">{ui.project.year}</MetaLabel>
-        <dd>{yearLabel}</dd>
+        <MetaLabel as="dt">{ui.project.date}</MetaLabel>
+        <dd>{dateLabel}</dd>
       </div>
       <div class="case-header__meta-item">
         <MetaLabel as="dt">{ui.project.category}</MetaLabel>

@@ -59,7 +59,7 @@ test('every row exposes its metadata and the whole row is the navigation target'
       return {
         title: row.querySelector('.project-row__title')?.textContent?.trim() ?? '',
         summary: row.querySelector('.project-row__summary')?.textContent?.trim() ?? '',
-        year: row.querySelector('.project-row__meta .meta-label')?.textContent?.trim() ?? '',
+        date: row.querySelector('.project-row__meta .meta-label')?.textContent?.trim() ?? '',
         category: row.querySelector('.project-row__category')?.textContent?.trim() ?? '',
         status: row.querySelector('.status-badge')?.textContent?.trim() ?? '',
         stackItems: row.querySelectorAll('.stack-list__item').length,
@@ -76,7 +76,7 @@ test('every row exposes its metadata and the whole row is the navigation target'
   for (const entry of anatomy) {
     expect(entry.title.length).toBeGreaterThan(0);
     expect(entry.summary.length).toBeGreaterThan(0);
-    expect(entry.year.length).toBeGreaterThan(0);
+    expect(entry.date.length).toBeGreaterThan(0);
     expect(entry.category.length).toBeGreaterThan(0);
     expect(entry.status.length).toBeGreaterThan(0);
     expect(entry.stackItems).toBeGreaterThanOrEqual(3);
@@ -270,7 +270,7 @@ test('an empty filter state explains the result and reset restores all projects'
   await expect(page.locator('.project-row:visible')).toHaveCount(0);
 });
 
-test('the mobile catalog is a single-column thumbnail list without a preview pane', async ({
+test('the mobile catalog stacks each cover above its content without a preview pane', async ({
   page,
 }) => {
   test.skip(!hasProjects, 'No project content.yaml files have been authored yet.');
@@ -294,6 +294,37 @@ test('the mobile catalog is a single-column thumbnail list without a preview pan
     expect(new Set(boxes.map((box) => box.x)).size).toBe(1);
     expect(new Set(boxes.map((box) => box.width)).size).toBe(1);
     expect(boxes.at(-1)!.y).toBeGreaterThan(boxes[0].y);
+
+    const stacking = await page.locator('.project-row:visible').evaluateAll((rows) =>
+      rows.map((row) => {
+        const inner = row.querySelector<HTMLElement>('.project-row__inner');
+        const thumb = row.querySelector<HTMLElement>('.project-row__thumb');
+        const content = row.querySelector<HTMLElement>('.project-row__content');
+
+        if (!inner || !thumb || !content) {
+          throw new Error('Project row is missing its inner surface, thumb, or content');
+        }
+
+        const innerBox = inner.getBoundingClientRect();
+        const innerStyle = getComputedStyle(inner);
+
+        return {
+          thumbBottom: thumb.getBoundingClientRect().bottom,
+          contentTop: content.getBoundingClientRect().top,
+          thumbWidth: thumb.getBoundingClientRect().width,
+          contentWidth:
+            innerBox.width -
+            Number.parseFloat(innerStyle.paddingInlineStart) -
+            Number.parseFloat(innerStyle.paddingInlineEnd),
+        };
+      }),
+    );
+
+    for (const entry of stacking) {
+      expect(entry.thumbBottom).toBeLessThanOrEqual(entry.contentTop);
+      expect(entry.thumbWidth).toBeCloseTo(entry.contentWidth, 0);
+    }
+
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,

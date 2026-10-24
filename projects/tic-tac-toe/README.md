@@ -13,7 +13,7 @@ El jugador compite contra otro jugador (local) en un tablero de 3x3. Los jugador
 
 ## Year
 
-2025
+2026 marzo
 
 ## Arquitectura
 

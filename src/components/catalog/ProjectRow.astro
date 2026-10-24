@@ -1,6 +1,6 @@
 ---
 import type { ProjectEntry } from '../../lib/projects';
-import { getProjectCopy } from '../../lib/projects';
+import { getProjectCopy, getProjectDateLabel } from '../../lib/projects';
 import { routeHref } from '../../i18n/routes';
 import { getUi } from '../../i18n/ui';
 import type { Locale } from '../../i18n/locales';
@@ -21,7 +21,7 @@ const ui = getUi(locale);
 const copy = getProjectCopy(project, locale);
 const data = project.data;
 const categoryLabel = ui.categories[data.category];
-const yearLabel = data.year === 'pending' ? ui.project.pending : String(data.year);
+const dateLabel = getProjectDateLabel(project, locale) ?? ui.project.pending;
 const href = routeHref(locale, { name: 'project', slug: data.slug });
 const TitleTag = headingLevel;
 ---
@@ -42,14 +42,14 @@ const TitleTag = headingLevel;
       <ProjectCover
         project={project}
         locale={locale}
-        widths={[120, 180, 240]}
-        sizes="104px"
+        widths={[240, 360, 480, 720]}
+        sizes="(min-width: 900px) 104px, 100vw"
       />
     </span>
 
     <span class="project-row__content">
       <span class="project-row__meta">
-        <MetaLabel>{yearLabel}</MetaLabel>
+        <MetaLabel>{dateLabel}</MetaLabel>
         <span class="project-row__category">{categoryLabel}</span>
       </span>
 
@@ -168,7 +168,7 @@ const TitleTag = headingLevel;
 
   @media (max-width: 899.98px) {
     .project-row__inner {
-      grid-template-columns: minmax(5.25rem, 6.5rem) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--space-4);
       align-items: start;
       padding-block: var(--space-4);
@@ -177,16 +177,7 @@ const TitleTag = headingLevel;
     .project-row__thumb {
       display: block;
       min-inline-size: 0;
-    }
-
-    .project-row__thumb :global(.placeholder-cover__content) {
-      display: none;
-    }
-
-    .project-row__thumb :global(.placeholder-cover__mark) {
-      inset: 50% auto auto 50%;
-      inline-size: 42%;
-      transform: translate(-50%, -50%);
+      line-height: 0;
     }
 
     .project-row__title {

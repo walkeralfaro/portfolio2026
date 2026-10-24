@@ -93,7 +93,7 @@ El selector de idioma conserva el slug del proyecto y el filtro `?c=`. El script
 
 `src/components/catalog/WorkIndex.astro` renderiza todas las filas y todos los paneles de vista previa en el servidor. El catálogo:
 
-- Ordena por `order`.
+- Ordena por fecha descendente (`year` y `month`), con `order` como desempate estable.
 - Calcula el total y los conteos por categoría desde los mismos datos.
 - Usa un layout maestro–detalle de 7/5 columnas desde 900 px.
 - Muestra una lista de una columna por debajo de 900 px.
@@ -121,7 +121,7 @@ La galería usa `<dialog>` nativo y `src/scripts/lightbox.ts`: abre con `showMod
 
 ## Inicio y perfil
 
-`src/data/profile-copy.ts` contiene la narrativa del perfil y los slugs que sirven como evidencia de cada capacidad. `FeaturedWork.astro` toma los proyectos con `featured: true`; `IndexExcerpt.astro` toma los primeros cuatro por `order`. Ambos toleran un catálogo vacío para que el build funcione antes de que exista contenido.
+`src/data/profile-copy.ts` contiene la narrativa del perfil y los slugs que sirven como evidencia de cada capacidad. `FeaturedWork.astro` toma los proyectos con `featured: true`; `IndexExcerpt.astro` toma los primeros cuatro del catálogo ordenado por fecha. Ambos toleran un catálogo vacío para que el build funcione antes de que exista contenido.
 
 Las capacidades se resuelven contra los proyectos presentes: si un slug de evidencia no existe todavía, esa capacidad no se renderiza. Así se evita romper el build durante la redacción del inventario.
 

@@ -3,6 +3,7 @@
 
 slug: <slug>
 year: pending
+# month: <1-12> (required when year is numeric)
 category: <category>
 tags:
   - <tag>

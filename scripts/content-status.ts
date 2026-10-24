@@ -16,6 +16,8 @@ if (!existsSync(projectsDir)) {
     .sort();
 
   const rows: Array<{
+    date: string;
+    dateValue: number;
     order: string;
     slug: string;
     category: string;
@@ -60,7 +62,17 @@ if (!existsSync(projectsDir)) {
       continue;
     }
 
+    const hasDate =
+      typeof result.data.year === 'number' && result.data.month !== undefined;
+    const date = hasDate
+      ? `${result.data.year}-${String(result.data.month).padStart(2, '0')}`
+      : 'pending';
+
     rows.push({
+      date,
+      dateValue: hasDate
+        ? (result.data.year as number) * 100 + (result.data.month as number)
+        : Number.NEGATIVE_INFINITY,
       order: String(result.data.order),
       slug: result.data.slug,
       category: result.data.category,
@@ -69,10 +81,15 @@ if (!existsSync(projectsDir)) {
     });
   }
 
-  rows.sort((first, second) => Number(first.order) - Number(second.order));
+  rows.sort(
+    (first, second) =>
+      second.dateValue - first.dateValue ||
+      Number(first.order) - Number(second.order),
+  );
 
   if (rows.length > 0) {
     const widths = {
+      date: Math.max(4, ...rows.map((row) => row.date.length)),
       order: Math.max(5, ...rows.map((row) => row.order.length)),
       slug: Math.max(4, ...rows.map((row) => row.slug.length)),
       category: Math.max(8, ...rows.map((row) => row.category.length)),
@@ -80,12 +97,12 @@ if (!existsSync(projectsDir)) {
     };
 
     console.log(
-      `${'ORDER'.padEnd(widths.order)}  ${'SLUG'.padEnd(widths.slug)}  ${'CATEGORY'.padEnd(widths.category)}  ${'STATUS'.padEnd(widths.status)}  FEATURED`,
+      `${'DATE'.padEnd(widths.date)}  ${'ORDER'.padEnd(widths.order)}  ${'SLUG'.padEnd(widths.slug)}  ${'CATEGORY'.padEnd(widths.category)}  ${'STATUS'.padEnd(widths.status)}  FEATURED`,
     );
 
     for (const row of rows) {
       console.log(
-        `${row.order.padEnd(widths.order)}  ${row.slug.padEnd(widths.slug)}  ${row.category.padEnd(widths.category)}  ${row.status.padEnd(widths.status)}  ${row.featured}`,
+        `${row.date.padEnd(widths.date)}  ${row.order.padEnd(widths.order)}  ${row.slug.padEnd(widths.slug)}  ${row.category.padEnd(widths.category)}  ${row.status.padEnd(widths.status)}  ${row.featured}`,
       );
     }
 

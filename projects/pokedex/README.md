@@ -20,7 +20,7 @@ Explora los primeros 151 Pokémon con información detallada incluyendo tipos, p
 
 ## Year
 
-2026
+2026 abril
 
 ## Inicio rápido
 

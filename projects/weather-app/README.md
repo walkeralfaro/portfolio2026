@@ -19,7 +19,7 @@ A responsive weather dashboard built as a solution to the [Frontend Mentor Weath
 
 ## Year
 
-2025
+2025 noviembre
 
 ## Built with
 

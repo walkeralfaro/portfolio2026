@@ -24,16 +24,19 @@ El esquema se define en `src/lib/content/schema.ts` y se valida con Zod. Es estr
 | --- | --- | --- |
 | `slug` | string | Kebab-case; igual al nombre de la carpeta. |
 | `year` | entero o `pending` | `pending` cuando la fuente no documenta fecha. Nunca se adivina. |
+| `month` | entero 1–12 | Obligatorio cuando `year` es numérico; debe omitirse cuando `year` es `pending`. |
 | `category` | `ia` \| `producto` \| `frontend` \| `juegos` | Categoría principal del catálogo. |
 | `tags` | string[] | Al menos una etiqueta de recuperación. |
 | `status` | `live` \| `in-development` \| `archived` | Estado de disponibilidad, no un resultado de negocio. |
 | `featured` | boolean | Entre uno y cuatro proyectos destacados en total. |
-| `order` | entero positivo | Orden único en el catálogo. |
+| `order` | entero positivo | Orden único de desempate cuando dos proyectos comparten fecha. |
 | `stack` | string[] | Entre tres y cinco tecnologías. |
 | `links.live` | URL o `null` | Solo una URL real de despliegue. |
 | `links.code` | URL o `null` | Solo una URL real de repositorio. |
 | `locales.es` | objeto | Copia en español. |
 | `locales.en` | objeto | Copia en inglés. |
+
+El catálogo, el paginador de detalle y el extracto de inicio se ordenan por fecha descendente (`year` y `month`). Cuando dos proyectos comparten mes, `order` decide el desempate.
 
 Cada objeto de locale contiene:
 
@@ -50,6 +53,7 @@ Cada objeto de locale contiene:
 ```yaml
 slug: mi-proyecto
 year: 2026
+month: 10
 category: producto
 tags: [productividad, accesibilidad]
 status: live
@@ -154,7 +158,7 @@ El inventario no está escrito a mano en la documentación ni en el código. Se 
 npm run content:status
 ```
 
-El comando recorre `projects/`, muestra una tabla con `order`, `slug`, `category`, `status` y `featured`, y lista las carpetas sin `content.yaml` o con contenido inválido. Es la vista operativa del catálogo.
+El comando recorre `projects/`, muestra una tabla con `date` (`YYYY-MM`), `order`, `slug`, `category`, `status` y `featured`, y lista las carpetas sin `content.yaml` o con contenido inválido. Es la vista operativa del catálogo, ordenada por fecha descendente.
 
 ## Validación
 
@@ -164,6 +168,7 @@ El comando recorre `projects/`, muestra una tabla con `order`, `slug`, `category
 - Que el slug coincide con la carpeta.
 - Que no quedan marcadores `<...>` ni `TODO`.
 - Que `order` es único y que hay entre uno y cuatro destacados.
+- Que `month` existe y está entre 1 y 12 cuando `year` es numérico, y que no aparece cuando `year` es `pending`.
 - Que cada locale tiene enlace o nota de disponibilidad.
 - Que las galerías apuntan a claves existentes.
 - Que el inglés no contiene fragmentos españoles evidentes.

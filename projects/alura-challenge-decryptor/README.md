@@ -7,7 +7,7 @@ Reto del Bootcamp Alura ONE - G6 2024
 
 ## Year
 
-2024
+2024 enero
 
 ## Check List
 

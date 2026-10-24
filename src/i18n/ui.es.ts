@@ -112,7 +112,7 @@ export const uiEs = {
     required: 'Obligatorio',
   },
   project: {
-    year: 'Año',
+    date: 'Fecha',
     category: 'Categoría',
     status: 'Estado',
     stack: 'Stack',

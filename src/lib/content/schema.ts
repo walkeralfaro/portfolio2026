@@ -51,6 +51,7 @@ export const projectSchema = z
       z.number().int().min(2000).max(2100),
       z.literal('pending'),
     ]),
+    month: z.number().int().min(1).max(12).optional(),
     category: z.enum(PROJECT_CATEGORIES),
     tags: z.array(z.string().min(1)).min(1),
     status: z.enum(PROJECT_STATUSES),
@@ -72,6 +73,24 @@ export const projectSchema = z
   })
   .strict()
   .superRefine((value, context) => {
+    const hasNumericYear = typeof value.year === 'number';
+
+    if (hasNumericYear && value.month === undefined) {
+      context.addIssue({
+        code: 'custom',
+        path: ['month'],
+        message: 'month is required when year is a number',
+      });
+    }
+
+    if (!hasNumericYear && value.month !== undefined) {
+      context.addIssue({
+        code: 'custom',
+        path: ['month'],
+        message: 'month must be omitted when year is pending',
+      });
+    }
+
     const hasSpanishAvailability = Boolean(value.locales.es.availability);
     const hasEnglishAvailability = Boolean(value.locales.en.availability);
 

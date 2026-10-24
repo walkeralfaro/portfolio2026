@@ -47,11 +47,12 @@ The folder name is the slug. There is no central project list to edit.
    | --- | --- |
    | `slug` | Same value as the folder. |
    | `year` | Integer, or `pending` when no date is documented. Never guess. |
+   | `month` | Integer 1-12. Required when `year` is numeric; omit it when `year` is `pending`. |
    | `category` | `ia`, `producto`, `frontend`, or `juegos`. Ask if the source is ambiguous. |
    | `tags` | One or more short retrieval labels drawn from the source. |
    | `status` | `live`, `in-development`, or `archived`. Existing projects are all in production and use `live`; for a new project, follow the documented deployment state. |
    | `featured` | `true` for at most four projects overall. Ask before changing the set. |
-   | `order` | Positive unique integer. `project:new` already assigned the next one. |
+   | `order` | Positive unique integer used as a date tiebreaker. `project:new` already assigned the next one. |
    | `stack` | Three to five normalized technologies. |
    | `links.live` | Real deployment URL or `null`. |
    | `links.code` | Real repository URL or `null`. |
